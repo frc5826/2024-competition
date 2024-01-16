@@ -15,8 +15,30 @@ package frc.robot;
  */
 public final class Constants
 {
+    //TODO find motor CAN IDs
+    public static final int cRotateMotor1ID = -1;
+    public static final int cRotateMotor2ID = -1;
+    public static final int cExtensionMotorID = -1;
+
+    //TODO tune PIDs
+    public static final double cRotateP = -1;
+    public static final double cRotateI = -1;
+    public static final double cRotateD = -1;
+    public static final double cRotateMin = -1;
+    public static final double cRotateMax = -1;
+    public static final double cRotateDeadband = -1;
+
+    public static final double cExtensionP = -1;
+    public static final double cExtensionI = -1;
+    public static final double cExtensionD = -1;
+    public static final double cExtensionMin = -1;
+    public static final double cExtensionMax = -1;
+    public static final double cExtensionDeadband = -1;
+
     public static class OperatorConstants
     {
         public static final int DRIVER_CONTROLLER_PORT = 0;
+
+
     }
 }
