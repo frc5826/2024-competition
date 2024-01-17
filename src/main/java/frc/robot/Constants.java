@@ -5,6 +5,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -15,6 +17,11 @@ package frc.robot;
  */
 public final class Constants
 {
+    //TODO ask Schaefer for arm lengths
+    public static final double cElevatorMinLength = -1;
+    public static final double cElevatorMaxLength = -1;
+    public static final Translation2d cElevatorOrigin = new Translation2d(-1, -1);
+
     //TODO find motor CAN IDs
     public static final int cRotateMotor1ID = -1;
     public static final int cRotateMotor2ID = -1;
@@ -31,8 +38,8 @@ public final class Constants
     public static final double cExtensionP = -1;
     public static final double cExtensionI = -1;
     public static final double cExtensionD = -1;
-    public static final double cExtensionMin = -1;
-    public static final double cExtensionMax = -1;
+    public static final double cExtensionMin = 0;
+    public static final double cExtensionMax = 1;
     public static final double cExtensionDeadband = -1;
 
     public static class OperatorConstants
