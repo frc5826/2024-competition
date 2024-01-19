@@ -1,6 +1,8 @@
 package frc.robot.math;
 
 
+import java.util.function.DoubleSupplier;
+
 public class PID {
     double P,I,D;
     double previous_error, integral = 0;
@@ -8,21 +10,34 @@ public class PID {
     double error;
     private double output;
 
+    private final DoubleSupplier actualSupplier;
+
     private double min_output = 0;
     private double max_output = 1;
     private double deadband = -1;
 
-    public PID(double P,double I,double D, double max, double min, double deadband){
+    public PID(double P, double I, double D, double max, double min, double deadband, DoubleSupplier actualSupplier){
         this.P = P;
         this.I = I;
         this.D = D;
         this.max_output = max;
         this.min_output = min;
         this.deadband = deadband;
+        this.actualSupplier = actualSupplier;
     }
 
     public double calculate(double actual) {
         error = setpoint - actual; // Error = Target - Actual
+        this.integral += (error * .02); // Integral is increased by the error*time (which is .02 seconds using normal
+        final double derivative = (error - this.previous_error) / .02;
+        this.output = P * error + I * this.integral + D * derivative;
+        this.previous_error = error;
+
+        return getOutput();
+    }
+
+    public double calculate() {
+        error = setpoint - actualSupplier.getAsDouble(); // Error = Target - Actual
         this.integral += (error * .02); // Integral is increased by the error*time (which is .02 seconds using normal
         final double derivative = (error - this.previous_error) / .02;
         this.output = P * error + I * this.integral + D * derivative;

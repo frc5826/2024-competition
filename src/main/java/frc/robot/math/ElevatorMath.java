@@ -10,7 +10,6 @@ public class ElevatorMath {
         this.minLength = minLength;
         this.maxLength = maxLength;
         this.elevatorOrigin = elevatorOrigin;
-
     }
 
     public double lerp(double lerp){
