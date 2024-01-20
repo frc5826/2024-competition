@@ -2,11 +2,12 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkAbsoluteEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.math.ElevatorMath;
 import frc.robot.math.PID;
+
+import java.util.ArrayList;
 
 public class IntakeElevatorSubsystem extends SubsystemBase {
     private CANSparkMax rotateMotor1;
@@ -26,7 +27,7 @@ public class IntakeElevatorSubsystem extends SubsystemBase {
         this.rotatePID = new PID(Constants.cRotateP, Constants.cRotateI, Constants.cRotateD, Constants.cRotateMax, Constants.cRotateMin, Constants.cRotateDeadband, this::getArmRotation);
         this.extensionPID = new PID(Constants.cExtensionP, Constants.cExtensionI, Constants.cExtensionD, Constants.cExtensionMax, Constants.cExtensionMin, Constants.cExtensionDeadband, this::getArmExtension);
 
-        this.elevatorMath = new ElevatorMath(Constants.cElevatorMinLength, Constants.cElevatorMaxLength, Constants.cElevatorOrigin);
+        this.elevatorMath = new ElevatorMath(Constants.cElevatorMinLength, Constants.cElevatorMaxLength, Constants.cElevatorOrigin, new ArrayList<ElevatorMath.ElevatorBoundary>());
     }
 
     @Override
