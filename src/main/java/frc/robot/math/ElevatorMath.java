@@ -4,6 +4,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 
 import java.util.List;
 
+/**
+ * A collection of all the functions required to make the elevator work properly
+ */
 public class ElevatorMath {
     private final double minLength;
     private final double maxLength;

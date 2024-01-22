@@ -28,7 +28,7 @@ public final class Constants
     public static final double cElevatorMaxLength = -1;
     public static final Translation2d cElevatorOrigin = new Translation2d(-1, -1);
 
-    //TODO add real boundaries, example here so you know how to use the list
+    //TODO add real boundaries, example here so whoever is unfortunate enough to work on this knows how to construct the list
     public static final BetterArrayList<ElevatorMath.ElevatorBoundary> elevatorBoundaries = new BetterArrayList<ElevatorMath.ElevatorBoundary>()
             .append(new ElevatorMath.ElevatorBoundary(50, ElevatorMath.ElevatorBoundary.BoundType.MAXIMUM, ElevatorMath.ElevatorBoundary.Axis.X))
             .append(new ElevatorMath.ElevatorBoundary(50, ElevatorMath.ElevatorBoundary.BoundType.MINIMUM, ElevatorMath.ElevatorBoundary.Axis.Y));
