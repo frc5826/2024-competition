@@ -5,14 +5,22 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.TeleopDriveCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.LocalizationSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
+import java.io.File;
 
 
 /**
@@ -23,19 +31,53 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer
 {
-    // The robot's subsystems and commands are defined here...
+
+    private final XboxController xbox = new XboxController(1);
+
     private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-    
-    // Replace with CommandPS4Controller or CommandJoystick if needed
-    private final CommandXboxController driverController =
-            new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
+
+    private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+
+    private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem(
+            new File(Filesystem.getDeployDirectory() + "/swerve"));
+
+    private final LocalizationSubsystem localizationSubsystem = new LocalizationSubsystem(visionSubsystem, swerveSubsystem);
+
+    private final TeleopDriveCommand teleopDriveCommand = new TeleopDriveCommand(
+            swerveSubsystem, ()->-xbox.getLeftY(), ()->-xbox.getLeftX(), ()->-xbox.getRightX());
+
     
     
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
-        // Configure the trigger bindings
-        configureBindings();
+
+        new Trigger(xbox::getAButtonPressed)
+                .onTrue(new InstantCommand(() ->
+                {
+                    //Need to be run in this order
+                    swerveSubsystem.zeroGyro();
+                    localizationSubsystem.reset();
+                }));
+
+        new Trigger(xbox::getYButtonPressed).onTrue(
+                new InstantCommand((swerveSubsystem::zeroOdometry)));
+
+
+        //all subject to changed keybinds
+        new Trigger(()-> xbox.getPOV() == 0).whileTrue(
+                localizationSubsystem.buildPath(Constants.speakerPark));
+
+        new Trigger(()-> xbox.getPOV() == 90).whileTrue(
+                localizationSubsystem.buildPath(Constants.ampPark));
+
+        new Trigger(()-> xbox.getPOV() == 180).whileTrue(
+                localizationSubsystem.buildPath(Constants.leftStagePark));
+
+        new Trigger(()-> xbox.getPOV() == 270).whileTrue(
+                localizationSubsystem.buildPath(Constants.rightStagePark));
+
+        CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }
     
     
@@ -48,16 +90,6 @@ public class RobotContainer
      * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
      * joysticks}.
      */
-    private void configureBindings()
-    {
-        // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-        new Trigger(exampleSubsystem::exampleCondition)
-                .onTrue(new ExampleCommand(exampleSubsystem));
-        
-        // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-        // cancelling on release.
-        driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
-    }
     
     
     /**
