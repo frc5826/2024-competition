@@ -8,6 +8,10 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.math.BetterArrayList;
+import frc.robot.math.ElevatorMath;
+
+import java.util.ArrayList;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -23,6 +27,11 @@ public final class Constants
     public static final double cElevatorMinLength = -1;
     public static final double cElevatorMaxLength = -1;
     public static final Translation2d cElevatorOrigin = new Translation2d(-1, -1);
+
+    //TODO add real boundaries, example here so you know how to use the list
+    public static final BetterArrayList<ElevatorMath.ElevatorBoundary> elevatorBoundaries = new BetterArrayList<ElevatorMath.ElevatorBoundary>()
+            .append(new ElevatorMath.ElevatorBoundary(50, ElevatorMath.ElevatorBoundary.BoundType.MAXIMUM, ElevatorMath.ElevatorBoundary.Axis.X))
+            .append(new ElevatorMath.ElevatorBoundary(50, ElevatorMath.ElevatorBoundary.BoundType.MINIMUM, ElevatorMath.ElevatorBoundary.Axis.Y));
 
     //TODO find motor CAN IDs
     public static final int cRotateMotor1ID = -1;

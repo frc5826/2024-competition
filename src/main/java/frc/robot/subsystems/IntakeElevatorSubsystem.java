@@ -27,7 +27,7 @@ public class IntakeElevatorSubsystem extends SubsystemBase {
         this.rotatePID = new PID(Constants.cRotateP, Constants.cRotateI, Constants.cRotateD, Constants.cRotateMax, Constants.cRotateMin, Constants.cRotateDeadband, this::getArmRotation);
         this.extensionPID = new PID(Constants.cExtensionP, Constants.cExtensionI, Constants.cExtensionD, Constants.cExtensionMax, Constants.cExtensionMin, Constants.cExtensionDeadband, this::getArmExtension);
 
-        this.elevatorMath = new ElevatorMath(Constants.cElevatorMinLength, Constants.cElevatorMaxLength, Constants.cElevatorOrigin, new ArrayList<ElevatorMath.ElevatorBoundary>());
+        this.elevatorMath = new ElevatorMath(Constants.cElevatorMinLength, Constants.cElevatorMaxLength, Constants.cElevatorOrigin, new ArrayList<>());
     }
 
     @Override
