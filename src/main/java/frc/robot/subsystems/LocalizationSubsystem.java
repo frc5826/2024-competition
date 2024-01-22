@@ -119,7 +119,7 @@ public class LocalizationSubsystem extends SubsystemBase {
                     var alliance = DriverStation.getAlliance();
                     return alliance.filter(value -> value == DriverStation.Alliance.Red).isPresent();
                 },
-                this // Reference to this subsystem to set requirements
+                swerveSubsystem // Reference to this subsystem to set requirements
         );
     }
 
@@ -131,7 +131,6 @@ public class LocalizationSubsystem extends SubsystemBase {
                 3.14159);
 
         Command path = AutoBuilder.pathfindToPose(targetPose, constraints);
-        path.addRequirements(this);
 
         return path;
     }
