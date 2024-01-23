@@ -7,8 +7,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import swervelib.SwerveDrive;
 import swervelib.math.SwerveMath;
@@ -42,6 +44,8 @@ public class SwerveSubsystem extends SubsystemBase {
             throw new RuntimeException(e);
         }
         swerveDrive.setHeadingCorrection(false);
+
+        modulesShuffleboard();
     }
 
     @Override
@@ -148,5 +152,15 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public SwerveModulePosition[] getModulePositions() {
         return swerveDrive.getModulePositions();
+    }
+
+    private void modulesShuffleboard() {
+        ShuffleboardTab tab = Shuffleboard.getTab("modules");
+
+        ShuffleboardLayout modules = tab.getLayout("modules", BuiltInLayouts.kList)
+                .withPosition(0, 0).withSize(2, 3);
+
+        modules.addDoubleArray("", ()-> SwerveDriveTelemetry.measuredStates);
+
     }
 }

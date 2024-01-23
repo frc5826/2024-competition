@@ -5,9 +5,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.*;
 import frc.robot.math.BetterArrayList;
 import frc.robot.math.ElevatorMath;
 
@@ -63,4 +61,6 @@ public final class Constants
     public static final Pose2d leftStagePark = new Pose2d(4.5, 5, Rotation2d.fromDegrees(300));
     public static final Pose2d centerStagePark = new Pose2d(5.8, 4.5, Rotation2d.fromDegrees(180));
     public static final Pose2d rightStagePark = new Pose2d(4.5, 3.5, Rotation2d.fromDegrees(60));
+
+    public static final Pose2d speakerTargetPos = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
 }
