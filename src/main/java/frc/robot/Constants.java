@@ -51,6 +51,11 @@ public final class Constants
     public static final double cExtensionMax = 1;
     public static final double cExtensionDeadband = -1;
 
+    public static final int maxArmEncoderRotation = -1;
+    public static final int minArmEncoderRotation = -1;
+    public static final int maxArmEncoderExtension = -1;
+    public static final int minArmEncoderExtension = -1;
+
 
     public static final double driveDeadBand = 0.15;
     public static final double turnDeadBand = 0.15;

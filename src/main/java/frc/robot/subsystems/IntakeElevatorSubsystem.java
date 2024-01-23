@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.math.ElevatorMath;
@@ -18,6 +19,8 @@ public class IntakeElevatorSubsystem extends SubsystemBase {
     private PID extensionPID;
 
     private ElevatorMath elevatorMath;
+
+    private Translation2d armTarget;
 
     public IntakeElevatorSubsystem(){
         this.rotateMotor1 = new CANSparkMax(Constants.cRotateMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
@@ -38,12 +41,19 @@ public class IntakeElevatorSubsystem extends SubsystemBase {
     }
 
     public double getArmExtension(){
-        return 0;
+        //TODO replace encoder value with encoder call
+        double encoderValue = -1;
+        return elevatorMath.lerp((encoderValue - Constants.minArmEncoderExtension)/(Constants.maxArmEncoderExtension - Constants.minArmEncoderExtension));
     }
 
     public double getArmRotation(){
-        return 0;
+        //TODO replace encoder value with encoder call
+        double encoderValue = -1;
+        return elevatorMath.lerp((encoderValue - Constants.minArmEncoderRotation)/(Constants.maxArmEncoderRotation - Constants.minArmEncoderRotation));
     }
 
+    public void setArmTarget(Translation2d point, ElevatorMath.OriginType originType){
+        armTarget = elevatorMath.clamp(point, ElevatorMath.PointType.CARTESIAN, originType);
+    }
 
 }
