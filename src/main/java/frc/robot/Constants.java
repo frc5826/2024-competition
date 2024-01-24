@@ -67,5 +67,13 @@ public final class Constants
     public static final Pose2d centerStagePark = new Pose2d(5.8, 4.5, Rotation2d.fromDegrees(180));
     public static final Pose2d rightStagePark = new Pose2d(4.5, 3.5, Rotation2d.fromDegrees(60));
 
+    //TODO set these values :)
     public static final Pose2d speakerTargetPos = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
+    public static final double speakerTargetHeight = 0;
+
+    //TODO these values :)
+    public static final double motorVeltoDistance = 100;
+    public static final double motorVeltoExitVel = 1;
+
+
 }

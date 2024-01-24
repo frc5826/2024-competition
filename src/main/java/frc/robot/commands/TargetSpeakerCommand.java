@@ -7,6 +7,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.math.PID;
+import frc.robot.math.ShooterMath;
 import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -16,7 +17,7 @@ public class TargetSpeakerCommand extends Command {
     private final LocalizationSubsystem localizationSubsystem;
     private final VisionSubsystem visionSubsystem;
 
-    private final PID turnPID = new PID(1, 0, 0, 1, 0, 0.5, this::getAngle);
+    private final PID turnPID = new PID(1, 0, 0, 10, 0, 0.5, this::getAngleDiff);
 
     public TargetSpeakerCommand(SwerveSubsystem swerveSubsystem, LocalizationSubsystem localizationSubsystem, VisionSubsystem visionSubsystem) {
         this.localizationSubsystem = localizationSubsystem;
@@ -28,23 +29,19 @@ public class TargetSpeakerCommand extends Command {
 
     @Override
     public void initialize() {
-        double angleDiff = localizationSubsystem.getCurrentPose().getRotation().getRadians() - getAngle();
-        turnPID.setGoal(angleDiff);
+        turnPID.setGoal(0);
     }
 
     @Override
     public void execute() {
         swerveSubsystem.driveRobotOriented(new ChassisSpeeds(0, 0,
-                turnPID.calculate(localizationSubsystem.getCurrentPose().getRotation().getRadians())));
+                turnPID.calculate()));
     }
 
-    private double getAngle() {
-
-        double xDiff = localizationSubsystem.getCurrentPose().getX() - Constants.speakerTargetPos.getX();
-        double yDiff = localizationSubsystem.getCurrentPose().getY() - Constants.speakerTargetPos.getY();
-
-        double targetAngle = Math.atan2(yDiff, xDiff);
-
-        return targetAngle;
+    private double getAngleDiff(){
+        return ShooterMath.fixSpin(
+                localizationSubsystem.getCurrentPose().getRotation().getRadians() -
+                        ShooterMath.getAngleToSpeaker(localizationSubsystem.getCurrentPose()));
     }
+
 }
