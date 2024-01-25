@@ -50,7 +50,8 @@ public class ElevatorMath {
      * @param pointType Type of point being used (Polar or Cartesian)
      * @param originType Type of origin being used (Robot or Arm)
      * @return a point clamped to within defined boundaries
-     * wyatt won't notice :)
+     * Wyatt won't notice :)
+     * Yes I did you turd, also capitalize my name next time or I'll hit you with a brick
      */
     public Translation2d clamp(Translation2d point, PointType pointType, OriginType originType){
         Translation2d newPoint;
