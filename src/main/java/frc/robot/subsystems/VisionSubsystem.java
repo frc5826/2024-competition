@@ -26,8 +26,14 @@ public class VisionSubsystem extends SubsystemBase
     /** Creates a new ExampleSubsystem. */
     public VisionSubsystem() {
         cameras = List.of(
-                new RobotCamera(new Translation3d(-0.37, 0, 0), new Rotation3d(0, Math.toRadians(-45), Math.PI), "alpha-studio", true),
-                new RobotCamera(new Translation3d(0.37, 0, 0), new Rotation3d(0, Math.toRadians(-45), 0), "alpha-3000", true)
+                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "beta-studio", true),
+                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "beta-3000", false),
+                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "gamma-studio", true),
+                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "gamma-3000", false),
+                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-studio", true),
+                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-3000", false),
+                new RobotCamera(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0), "alpha-studio", false),
+                new RobotCamera(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0), "alpha-3000", false)
         );
     }
 
