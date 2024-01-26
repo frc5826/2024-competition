@@ -52,6 +52,8 @@ public class ElevatorMath {
      * @return a point clamped to within defined boundaries
      * Wyatt won't notice :)
      * Yes I did you turd, also capitalize my name next time or I'll hit you with a brick
+     * no
+     * wyatt
      */
     public Translation2d clamp(Translation2d point, PointType pointType, OriginType originType){
         Translation2d newPoint;
