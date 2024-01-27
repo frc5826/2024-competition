@@ -36,7 +36,7 @@ public class SwerveSubsystem extends SubsystemBase {
         double driveConversionFactor = SwerveMath.calculateMetersPerRotation(
                 Units.inchesToMeters(4), 8.14, 1);
 
-        SwerveDriveTelemetry.verbosity = SwerveDriveTelemetry.TelemetryVerbosity.HIGH;
+//        SwerveDriveTelemetry.verbosity = SwerveDriveTelemetry.TelemetryVerbosity.HIGH;
 
         try {
             swerveDrive = new SwerveParser(directory).createSwerveDrive(maximumSpeed, angleConversionFactor, driveConversionFactor);
@@ -44,8 +44,6 @@ public class SwerveSubsystem extends SubsystemBase {
             throw new RuntimeException(e);
         }
         swerveDrive.setHeadingCorrection(false);
-
-        modulesShuffleboard();
     }
 
     @Override
@@ -154,13 +152,4 @@ public class SwerveSubsystem extends SubsystemBase {
         return swerveDrive.getModulePositions();
     }
 
-    private void modulesShuffleboard() {
-        ShuffleboardTab tab = Shuffleboard.getTab("modules");
-
-        ShuffleboardLayout modules = tab.getLayout("modules", BuiltInLayouts.kList)
-                .withPosition(0, 0).withSize(2, 3);
-
-        modules.addDoubleArray("", ()-> SwerveDriveTelemetry.measuredStates);
-
-    }
 }

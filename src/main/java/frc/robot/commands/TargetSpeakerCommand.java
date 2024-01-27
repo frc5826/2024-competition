@@ -15,16 +15,14 @@ import frc.robot.subsystems.VisionSubsystem;
 public class TargetSpeakerCommand extends Command {
     private final SwerveSubsystem swerveSubsystem;
     private final LocalizationSubsystem localizationSubsystem;
-    private final VisionSubsystem visionSubsystem;
 
-    private final PID turnPID = new PID(0.1, 0, 0, 3, 0, 0.5, this::getAngleDiff);
+    private final PID turnPID = new PID(1.5, 0, 0.1, 3, 0, 0.04, this::getAngleDiff);
 
-    public TargetSpeakerCommand(SwerveSubsystem swerveSubsystem, LocalizationSubsystem localizationSubsystem, VisionSubsystem visionSubsystem) {
+    public TargetSpeakerCommand(SwerveSubsystem swerveSubsystem, LocalizationSubsystem localizationSubsystem) {
         this.localizationSubsystem = localizationSubsystem;
         this.swerveSubsystem = swerveSubsystem;
-        this.visionSubsystem = visionSubsystem;
 
-        addRequirements(swerveSubsystem, localizationSubsystem, visionSubsystem);
+        addRequirements(swerveSubsystem);
     }
 
     @Override

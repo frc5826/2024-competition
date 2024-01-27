@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,14 +27,14 @@ public class VisionSubsystem extends SubsystemBase
     /** Creates a new ExampleSubsystem. */
     public VisionSubsystem() {
         cameras = List.of(
-                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "beta-studio", true),
-                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "beta-3000", false),
-                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "gamma-studio", true),
-                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "gamma-3000", false),
+                new RobotCamera(new Translation3d(.37,.08,.23), new Rotation3d(0,-Math.PI / 6,0), "beta-studio", true),
+                new RobotCamera(new Translation3d(.37,-.08,.23), new Rotation3d(0,0,0), "beta-3000", false),
+                new RobotCamera(new Translation3d(-.37,-.15,.23), new Rotation3d(0,-Math.PI / 6,Math.PI), "gamma-studio", true),
+                new RobotCamera(new Translation3d(-.37,.15,.23), new Rotation3d(0,0,Math.PI), "gamma-3000", false),
 //                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-3000", false),
 //                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-studio", true),
-                new RobotCamera(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0), "alpha-studio", false),
-                new RobotCamera(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0), "alpha-3000", false)
+                new RobotCamera(new Translation3d(0, .34, .23), new Rotation3d(0, 0, Math.PI / 2), "alpha-studio", false),
+                new RobotCamera(new Translation3d(0, -.34, .23), new Rotation3d(0, 0, -Math.PI / 2), "alpha-3000", false)
         );
     }
 
@@ -58,9 +59,23 @@ public class VisionSubsystem extends SubsystemBase
         return output;
     }
 
+//    public List<PhotonTrackedTarget> getRings() {
+//        List<PhotonTrackedTarget> targets = new LinkedList<>();
+//
+//        for (RobotCamera camera : cameras) {
+//            if (!camera.isAprilTag()) {
+//                PhotonPipelineResult result = camera.getCamera().getLatestResult();
+//                if (result.hasTargets()) {
+//                    targets.addAll(result.getTargets());
+//                }
+//            }
+//        }
+//    }
+
     @Override
     public void periodic()
     {
+        //cameras.get(1).getCamera().getLatestResult().getBestTarget().getYaw();
         // This method will be called once per scheduler run
     }
     

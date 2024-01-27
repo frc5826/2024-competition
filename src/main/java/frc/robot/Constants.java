@@ -68,10 +68,10 @@ public final class Constants
     public static final Pose2d rightStagePark = new Pose2d(4.5, 3.5, Rotation2d.fromDegrees(60));
     public static final Pose2d TopCloseRing1 = new Pose2d(2.2, 7, Rotation2d.fromDegrees(0));
     public static final Pose2d MidCloseRing2 = new Pose2d(2.2, 5.55, Rotation2d.fromDegrees(0));
-    public static final Pose2d BotCloseRing3 = new Pose2d(2.2, 4.1, Rotation2d.fromDegrees(0));
+    public static final Pose2d BotCloseRing3 = new Pose2d(2.9, 4.1, Rotation2d.fromDegrees(0));
 
     //TODO set these values :)
-    public static final Pose2d speakerTargetPos = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
+    public static final Pose2d speakerTargetPos = new Pose2d(0, 5.55, Rotation2d.fromDegrees(0));
     public static final double speakerTargetHeight = 0;
 
     //TODO these values :)

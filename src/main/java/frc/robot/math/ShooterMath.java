@@ -29,16 +29,16 @@ public class ShooterMath {
         double xDiff = getXDiff(robotPose);
         double yDiff = getYDiff(robotPose);
 
-        double targetAngle = (Math.PI / 2) - Math.atan2(yDiff, xDiff);
+        double targetAngle = /*(Math.PI / 2) -*/ Math.atan2(yDiff, xDiff);
 
         return targetAngle;
     }
 
     public static double fixSpin(double angleDifference) {
-        if(angleDifference < -180){
-            angleDifference += 360;
-        } else if (angleDifference > 180) {
-            angleDifference -= 360;
+        if(angleDifference < -Math.PI){
+            angleDifference += 2*Math.PI;
+        } else if (angleDifference > Math.PI) {
+            angleDifference -= 2*Math.PI;
         }
 
         return angleDifference;

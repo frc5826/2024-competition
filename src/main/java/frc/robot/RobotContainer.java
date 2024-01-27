@@ -5,13 +5,17 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.TargetSpeakerCommand;
 import frc.robot.commands.TeleopDriveCommand;
+import frc.robot.commands.autos.AutoRings;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -46,6 +50,8 @@ public class RobotContainer
     private final TeleopDriveCommand teleopDriveCommand = new TeleopDriveCommand(
             swerveSubsystem, ()->-xbox.getLeftY(), ()->-xbox.getLeftX(), ()->-xbox.getRightX());
 
+    private final TargetSpeakerCommand targetSpeakerCommand = new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem);
+
     
     
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -63,6 +69,9 @@ public class RobotContainer
         new Trigger(xbox::getYButtonPressed).onTrue(
                 new InstantCommand((swerveSubsystem::zeroOdometry)));
 
+        new Trigger(xbox::getXButton).whileTrue(targetSpeakerCommand);
+
+        new Trigger(xbox::getBButton).whileTrue(new AutoRings(localizationSubsystem,swerveSubsystem,new Pose2d(2,0,new Rotation2d(0))));
 
         //all subject to changed keybinds
         new Trigger(()-> xbox.getPOV() == 0).whileTrue(

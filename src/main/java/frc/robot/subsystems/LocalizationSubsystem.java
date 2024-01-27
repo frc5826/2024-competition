@@ -10,6 +10,8 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -34,7 +36,7 @@ public class LocalizationSubsystem extends SubsystemBase {
 
     private Pose3d robotPos = new Pose3d();
 
-    private Field2d field = new Field2d();
+    private final Field2d field = new Field2d();
 
     public LocalizationSubsystem(VisionSubsystem visionSubsystem, SwerveSubsystem swerveSubsystem) {
         try {
@@ -81,8 +83,8 @@ public class LocalizationSubsystem extends SubsystemBase {
         else {
             System.err.println("Unable to localize. Field Layout not loaded.");
         }
-
-        field.setRobotPose(getCurrentPose());
+        Pose2d pose = getCurrentPose();
+        field.setRobotPose(new Pose2d(pose.getX()+1,pose.getY(),pose.getRotation()));
     }
 
     public void reset() {
