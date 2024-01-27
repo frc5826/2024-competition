@@ -4,8 +4,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.Constants;
 
 public class ShooterMath {
-    public static double getDistance3D(double distance2d, double z) {
-        return Math.sqrt(Math.pow(distance2d, 2) + Math.pow(z, 2));
+    public static double getDistance3D(Pose2d robotPose) {
+        return Math.sqrt(Math.pow(getDistance2D(robotPose), 2) + Math.pow(Constants.speakerTargetHeight, 2));
     }
 
     public static double getDistance2D(Pose2d robotPose) {
@@ -16,8 +16,13 @@ public class ShooterMath {
         return getDistance2D(robotPose) * Constants.motorVeltoDistance;
     }
 
-    public static double getProjectileExitVel() {
-        return 1;
+    public static double getProjectileExitVel(double motorVel) {
+        return motorVel * Constants.motorVeltoExitVel;
+    }
+
+    //TODO pick up right here
+    public static double getProjectileTime(Pose2d robotPose, double motorVel) {
+        return Math.pow(getProjectileExitVel(motorVel), -1) * getDistance3D(robotPose);
     }
 
     public static double getAngleToSpeaker(Pose2d robotPose) {

@@ -17,7 +17,7 @@ public class TargetSpeakerCommand extends Command {
     private final LocalizationSubsystem localizationSubsystem;
     private final VisionSubsystem visionSubsystem;
 
-    private final PID turnPID = new PID(1, 0, 0, 10, 0, 0.5, this::getAngleDiff);
+    private final PID turnPID = new PID(0.1, 0, 0, 3, 0, 0.5, this::getAngleDiff);
 
     public TargetSpeakerCommand(SwerveSubsystem swerveSubsystem, LocalizationSubsystem localizationSubsystem, VisionSubsystem visionSubsystem) {
         this.localizationSubsystem = localizationSubsystem;
