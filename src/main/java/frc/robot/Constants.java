@@ -31,10 +31,12 @@ public final class Constants
             .append(new ElevatorMath.ElevatorBoundary(50, ElevatorMath.ElevatorBoundary.BoundType.MAXIMUM, ElevatorMath.ElevatorBoundary.Axis.X))
             .append(new ElevatorMath.ElevatorBoundary(50, ElevatorMath.ElevatorBoundary.BoundType.MINIMUM, ElevatorMath.ElevatorBoundary.Axis.Y));
 
-    //TODO find motor CAN IDs
+    //TODO find IDs
     public static final int cRotateMotor1ID = -1;
     public static final int cRotateMotor2ID = -1;
     public static final int cExtensionMotorID = -1;
+    public static final int cRotateEncoderID = -1;
+    public static final int cExtensionEncoderID = -1;
 
     //TODO tune PIDs
     public static final double cRotateP = -1;
@@ -55,8 +57,6 @@ public final class Constants
     public static final int minArmEncoderRotation = -1;
     public static final int maxArmEncoderExtension = -1;
     public static final int minArmEncoderExtension = -1;
-
-
     public static final double driveDeadBand = 0.15;
     public static final double turnDeadBand = 0.15;
 
@@ -73,8 +73,6 @@ public final class Constants
     //TODO set these values :)
     public static final Pose2d speakerTargetPos = new Pose2d(0, 5.55, Rotation2d.fromDegrees(0));
     public static final double speakerTargetHeight = 0;
-
-    //TODO these values :)
     public static final double motorVeltoDistance = 100;
     public static final double motorVeltoExitVel = 1;
 
