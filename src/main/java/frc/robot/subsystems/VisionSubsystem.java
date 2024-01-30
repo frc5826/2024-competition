@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,24 +58,31 @@ public class VisionSubsystem extends SubsystemBase
         return output;
     }
 
-//    public List<PhotonTrackedTarget> getRings() {
-//        List<PhotonTrackedTarget> targets = new LinkedList<>();
-//
-//        for (RobotCamera camera : cameras) {
-//            if (!camera.isAprilTag()) {
-//                PhotonPipelineResult result = camera.getCamera().getLatestResult();
-//                if (result.hasTargets()) {
-//                    targets.addAll(result.getTargets());
-//                }
-//            }
-//        }
-//    }
+    public List<RingResult> getRings() {
+        List<RingResult> targets = new LinkedList<>();
+
+        for (RobotCamera camera : cameras) {
+            if (!camera.isAprilTag()) {
+                PhotonPipelineResult result = camera.getCamera().getLatestResult();
+                if (result.hasTargets()) {
+                    for (PhotonTrackedTarget target : result.getTargets()) {
+                        targets.add(new RingResult(camera, target.getYaw(), target.getPitch(), target.getArea()));
+                    }
+                }
+            }
+        }
+
+        return targets;
+    }
 
     @Override
     public void periodic()
     {
         //cameras.get(1).getCamera().getLatestResult().getBestTarget().getYaw();
-        // This method will be called once per scheduler run
+
+//        for(RingResult ring : getRings()) {
+//            
+//        }
     }
     
     

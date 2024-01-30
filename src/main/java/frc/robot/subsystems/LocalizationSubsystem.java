@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -38,6 +39,8 @@ public class LocalizationSubsystem extends SubsystemBase {
 
     private final Field2d field = new Field2d();
 
+    private Rotation2d rotationTarget;
+
     public LocalizationSubsystem(VisionSubsystem visionSubsystem, SwerveSubsystem swerveSubsystem) {
         try {
             fieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
@@ -59,7 +62,23 @@ public class LocalizationSubsystem extends SubsystemBase {
 
         setupShuffleboard(field);
 
+        PPHolonomicDriveController.setRotationTargetOverride(this::updateRotationTarget);
+
         setupPathPlanner();
+    }
+
+    public void setRotationTarget(Rotation2d rotation) { rotationTarget = rotation; }
+
+    public Rotation2d getRotationTarget() { return rotationTarget; }
+
+    public void removeRotationTarget() { rotationTarget = null; }
+
+    private Optional<Rotation2d> updateRotationTarget() {
+        if (rotationTarget != null) {
+            return Optional.of(rotationTarget);
+        } else {
+            return Optional.empty();
+        }
     }
 
     public void periodic() {
@@ -83,8 +102,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         else {
             System.err.println("Unable to localize. Field Layout not loaded.");
         }
-        Pose2d pose = getCurrentPose();
-        field.setRobotPose(new Pose2d(pose.getX()+1,pose.getY(),pose.getRotation()));
+        field.setRobotPose(getCurrentPose());
     }
 
     public void reset() {
