@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -23,18 +25,29 @@ public class VisionSubsystem extends SubsystemBase
 
     private final List<RobotCamera> cameras;
 
+    private RingResult bestRing;
+    private RingResult emptyRing;
+
     /** Creates a new ExampleSubsystem. */
     public VisionSubsystem() {
         cameras = List.of(
-                new RobotCamera(new Translation3d(.37,.08,.23), new Rotation3d(0,-Math.PI / 6,0), "beta-studio", true),
-                new RobotCamera(new Translation3d(.37,-.08,.23), new Rotation3d(0,0,0), "beta-3000", false),
-                new RobotCamera(new Translation3d(-.37,-.15,.23), new Rotation3d(0,-Math.PI / 6,Math.PI), "gamma-studio", true),
-                new RobotCamera(new Translation3d(-.37,.15,.23), new Rotation3d(0,0,Math.PI), "gamma-3000", false),
+                new RobotCamera(new Translation3d(.37,-.08,.23), new Rotation3d(0,-Math.PI / 6,0), "beta-studio", true),
+                new RobotCamera(new Translation3d(.37,.08,.23), new Rotation3d(0,0,0), "beta-3000", false),
+                new RobotCamera(new Translation3d(-.37,.15,.23), new Rotation3d(0,-Math.PI / 6,-Math.PI), "gamma-studio", true),
+                new RobotCamera(new Translation3d(-.37,-.15,.23), new Rotation3d(0,0,-Math.PI), "gamma-3000", false),
 //                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-3000", false),
 //                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-studio", true),
-                new RobotCamera(new Translation3d(0, .34, .23), new Rotation3d(0, 0, Math.PI / 2), "alpha-studio", false),
-                new RobotCamera(new Translation3d(0, -.34, .23), new Rotation3d(0, 0, -Math.PI / 2), "alpha-3000", false)
+                //new RobotCamera(new Translation3d(0, .34, .23), new Rotation3d(0, 0, -Math.PI / 2), "alpha-studio", false),
+                new RobotCamera(new Translation3d(0, -.34, .23), new Rotation3d(0, 0, Math.PI / 2), "alpha-3000", false)
         );
+
+        emptyRing = new RingResult(cameras.get(0), 0, 0, 0);
+        bestRing = emptyRing;
+
+        ShuffleboardTab visionTest = Shuffleboard.getTab("vision test");
+        visionTest.addDouble("ring angle", () -> Math.toDegrees(bestRing.getAngleToHeading()));
+        visionTest.addDouble("ring distance", () -> bestRing.getDistance());
+        visionTest.addDouble("cam height", () -> bestRing.getCamera().getRobotLocation().getZ());
     }
 
 
@@ -78,11 +91,7 @@ public class VisionSubsystem extends SubsystemBase
     @Override
     public void periodic()
     {
-        //cameras.get(1).getCamera().getLatestResult().getBestTarget().getYaw();
-
-//        for(RingResult ring : getRings()) {
-//            
-//        }
+        bestRing = getBestRing();
     }
     
     
@@ -90,5 +99,23 @@ public class VisionSubsystem extends SubsystemBase
     public void simulationPeriodic()
     {
         // This method will be called once per scheduler run during simulation
+    }
+
+    public RingResult getBestRing() {
+        RingResult bestRing = null;
+
+        for(RingResult ring : getRings()) {
+            if (bestRing != null && ring.getDistance() > bestRing.getDistance()) {
+                bestRing = ring;
+            } else if (bestRing == null) {
+                bestRing = ring;
+            }
+        }
+
+        if (bestRing == null) {
+            bestRing = emptyRing;
+        }
+
+        return bestRing;
     }
 }
