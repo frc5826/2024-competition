@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.TargetSpeakerCommand;
 import frc.robot.commands.TeleopDriveCommand;
 import frc.robot.commands.autos.AutoRings;
@@ -75,16 +74,16 @@ public class RobotContainer
 
         //all subject to changed keybinds
         new Trigger(()-> xbox.getPOV() == 0).whileTrue(
-                localizationSubsystem.buildPath(Constants.speakerPark));
+                localizationSubsystem.buildPath(Constants.cSpeakerPark));
 
         new Trigger(()-> xbox.getPOV() == 90).whileTrue(
-                localizationSubsystem.buildPath(Constants.ampPark));
+                localizationSubsystem.buildPath(Constants.cAmpPark));
 
         new Trigger(()-> xbox.getPOV() == 180).whileTrue(
-                localizationSubsystem.buildPath(Constants.leftStagePark));
+                localizationSubsystem.buildPath(Constants.cLeftStagePark));
 
         new Trigger(()-> xbox.getPOV() == 270).whileTrue(
-                localizationSubsystem.buildPath(Constants.rightStagePark));
+                localizationSubsystem.buildPath(Constants.cRightStagePark));
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }
