@@ -34,7 +34,7 @@ public class IntakeElevatorSubsystem extends SubsystemBase {
         this.rotatePID = new PID(Constants.cRotateP, Constants.cRotateI, Constants.cRotateD, Constants.cRotateMax, Constants.cRotateMin, Constants.cRotateDeadband, this::getArmRotation);
         this.extensionPID = new PID(Constants.cExtensionP, Constants.cExtensionI, Constants.cExtensionD, Constants.cExtensionMax, Constants.cExtensionMin, Constants.cExtensionDeadband, this::getArmExtension);
 
-        this.elevatorMath = new ElevatorMath(Constants.cElevatorMinLength, Constants.cElevatorMaxLength, Constants.cElevatorOrigin, new ArrayList<>());
+        this.elevatorMath = new ElevatorMath(Constants.cStartingTarget, Constants.cElevatorMinLength, Constants.cElevatorMaxLength, Constants.cElevatorOrigin, new ArrayList<>());
     }
 
     @Override
@@ -47,13 +47,13 @@ public class IntakeElevatorSubsystem extends SubsystemBase {
     public double getArmExtension(){
         //TODO replace encoder value with encoder call and math
         double encoderValue = -1;
-        return elevatorMath.lerp((encoderValue - Constants.minArmEncoderExtension)/(Constants.maxArmEncoderExtension - Constants.minArmEncoderExtension));
+        return elevatorMath.lerp((encoderValue - Constants.cMinArmEncoderExtension)/(Constants.cMaxArmEncoderExtension - Constants.cMinArmEncoderExtension));
     }
 
     public double getArmRotation(){
         //TODO replace encoder value with encoder call and math
         double encoderValue = -1;
-        return elevatorMath.lerp((encoderValue - Constants.minArmEncoderRotation)/(Constants.maxArmEncoderRotation - Constants.minArmEncoderRotation));
+        return elevatorMath.lerp((encoderValue - Constants.cMinArmEncoderRotation)/(Constants.cMaxArmEncoderRotation - Constants.cMinArmEncoderRotation));
     }
 
     public void setArmTarget(Translation2d point, ElevatorMath.OriginType originType){

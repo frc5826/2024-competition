@@ -5,7 +5,7 @@ import frc.robot.Constants;
 
 public class ShooterMath {
     public static double getDistance3D(Pose2d robotPose) {
-        return Math.sqrt(Math.pow(getDistance2D(robotPose), 2) + Math.pow(Constants.speakerTargetHeight, 2));
+        return Math.sqrt(Math.pow(getDistance2D(robotPose), 2) + Math.pow(Constants.cSpeakerTargetHeight, 2));
     }
 
     public static double getDistance2D(Pose2d robotPose) {
@@ -13,11 +13,11 @@ public class ShooterMath {
     }
 
     public static double getMinMotorVel(Pose2d robotPose) {
-        return getDistance2D(robotPose) * Constants.motorVeltoDistance;
+        return getDistance2D(robotPose) * Constants.cMotorVeltoDistance;
     }
 
     public static double getProjectileExitVel(double motorVel) {
-        return motorVel * Constants.motorVeltoExitVel;
+        return motorVel * Constants.cMotorVeltoExitVel;
     }
 
     //TODO pick up right here
@@ -45,10 +45,10 @@ public class ShooterMath {
     }
 
     public static double getXDiff(Pose2d robotPose) {
-        return Constants.speakerTargetPos.getX() - robotPose.getX();
+        return Constants.cSpeakerTargetPos.getX() - robotPose.getX();
     }
 
     public static double getYDiff(Pose2d robotPose) {
-        return Constants.speakerTargetPos.getY() - robotPose.getY();
+        return Constants.cSpeakerTargetPos.getY() - robotPose.getY();
     }
 }

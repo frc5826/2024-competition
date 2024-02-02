@@ -5,15 +5,25 @@ import edu.wpi.first.math.geometry.Translation2d;
 import java.util.List;
 
 /**
- * A collection of all the functions required to make the elevator work properly
+ * A collection of all the mathematical functions required to make the elevator work properly
  */
 public class ElevatorMath {
     private final double minLength;
     private final double maxLength;
     private final Translation2d elevatorOrigin;
     private final List<ElevatorBoundary> elevatorBoundaries;
+    private Translation2d currentTarget;
 
-    public ElevatorMath(double minLength, double maxLength, Translation2d elevatorOrigin, List<ElevatorBoundary> elevatorBoundaries){
+    /**
+     * Creates a new instance of ElevatorMath with defined elevator constants
+     * @param currentTarget the target the robot should initialize to. This can and should be changed with commands
+     * @param minLength minimum elevator extension
+     * @param maxLength maximum elevator extension
+     * @param elevatorOrigin origin of the elevator relative to the robot origin
+     * @param elevatorBoundaries list of boundaries the elevator can't extend outside
+     */
+    public ElevatorMath(Translation2d currentTarget, double minLength, double maxLength, Translation2d elevatorOrigin, List<ElevatorBoundary> elevatorBoundaries){
+        this.currentTarget = currentTarget;
         this.minLength = minLength;
         this.maxLength = maxLength;
         this.elevatorOrigin = elevatorOrigin;
