@@ -11,10 +11,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.TargetSpeakerCommand;
-import frc.robot.commands.TeleopDriveCommand;
+import frc.robot.commands.*;
 import frc.robot.commands.autos.AutoRings;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -52,6 +49,8 @@ public class RobotContainer
 
     private final TargetSpeakerCommand targetSpeakerCommand = new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem);
 
+    private final PickupRingTest pickupRingTest = new PickupRingTest(visionSubsystem, swerveSubsystem, localizationSubsystem);
+
     
     
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -71,7 +70,7 @@ public class RobotContainer
 
         new Trigger(xbox::getXButton).whileTrue(targetSpeakerCommand);
 
-        new Trigger(xbox::getBButton).whileTrue(new AutoRings(localizationSubsystem,swerveSubsystem,new Pose2d(2,0,new Rotation2d(0))));
+        new Trigger(xbox::getBButton).whileTrue(pickupRingTest);
 
         //all subject to changed keybinds
         new Trigger(()-> xbox.getPOV() == 0).whileTrue(
