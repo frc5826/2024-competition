@@ -4,6 +4,8 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -32,11 +34,12 @@ public class AutoRings extends Command {
 
     @Override
     public void execute() {
-
+        localizationSubsystem.setRotationTarget(ringPose.relativeTo(localizationSubsystem.getCurrentPose()).getRotation());
     }
 
     @Override
     public void end(boolean interrupted) {
+        localizationSubsystem.removeRotationTarget();
         CommandScheduler.getInstance().cancel(buildCommand);
     }
 
@@ -44,7 +47,7 @@ public class AutoRings extends Command {
     public boolean isFinished() {
         PathConstraints constraints = new PathConstraints(
                 2.0,
-                2.0,
+                1.0,
                 3.14159,
                 3.14159);
             Pose2d currentPose = localizationSubsystem.getCurrentPose();

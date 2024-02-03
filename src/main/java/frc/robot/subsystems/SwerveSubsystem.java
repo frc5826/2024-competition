@@ -24,7 +24,7 @@ import java.io.File;
 public class SwerveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
 
-    public double maximumSpeed = 1.5;
+    public double maximumSpeed = 3.6;
 
     public double maximumAngularVel = 3;
 
@@ -87,6 +87,10 @@ public class SwerveSubsystem extends SubsystemBase {
     public void driveRobotOriented(ChassisSpeeds velocity)
     {
         swerveDrive.drive(velocity);
+    }
+
+    public void drivePathPlanner(ChassisSpeeds vel) {
+        swerveDrive.drive(vel, true, new Translation2d(0, 0));
     }
 
     public ChassisSpeeds getTargetSpeeds(double xInput, double yInput, double headingX, double headingY)

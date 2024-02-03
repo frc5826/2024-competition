@@ -68,16 +68,22 @@ public class RobotContainer
                     localizationSubsystem.reset();
                 }));
 
-        new Trigger(xbox::getYButtonPressed).onTrue(
-                new InstantCommand((swerveSubsystem::zeroOdometry)));
+        //new Trigger(xbox::getYButton).whileTrue(new AutoRings(localizationSubsystem, swerveSubsystem, new Pose2d(2, 0, Rotation2d.fromRadians(0))));
+
+        new Trigger(xbox::getYButton).whileTrue(localizationSubsystem.buildPath(new Pose2d(2, 0, Rotation2d.fromRadians(Math.PI))));
 
         new Trigger(xbox::getXButton).whileTrue(targetSpeakerCommand);
 
         new Trigger(xbox::getBButton).whileTrue(pickupRingTest);
 
         //all subject to changed keybinds
-        new Trigger(()-> xbox.getPOV() == 0).whileTrue(
-                localizationSubsystem.buildPath(Constants.cSpeakerPark));
+        new Trigger(()-> xbox.getPOV() == 0).onTrue(
+                new InstantCommand(() ->
+                {
+                    swerveSubsystem.zeroGyro();
+                    swerveSubsystem.zeroOdometry();
+                    localizationSubsystem.reset();
+                }));
 
         new Trigger(()-> xbox.getPOV() == 90).whileTrue(
                 localizationSubsystem.buildPath(Constants.cAmpPark));

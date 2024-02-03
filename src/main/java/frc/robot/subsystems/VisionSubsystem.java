@@ -34,11 +34,11 @@ public class VisionSubsystem extends SubsystemBase
                 new RobotCamera(new Translation3d(.37,-.08,.23), new Rotation3d(0,-Math.PI / 6,0), "beta-studio", true),
                 new RobotCamera(new Translation3d(.37,.08,.23), new Rotation3d(0,0,0), "beta-3000", false),
                 new RobotCamera(new Translation3d(-.37,.15,.23), new Rotation3d(0,-Math.PI / 6,-Math.PI), "gamma-studio", true),
-                new RobotCamera(new Translation3d(-.37,-.15,.23), new Rotation3d(0,0,-Math.PI), "gamma-3000", false),
+                new RobotCamera(new Translation3d(-.37,-.15,.23), new Rotation3d(0,0,-Math.PI), "gamma-3000", false)
 //                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-3000", false),
 //                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-studio", true),
                 //new RobotCamera(new Translation3d(0, .34, .23), new Rotation3d(0, 0, -Math.PI / 2), "alpha-studio", false),
-                new RobotCamera(new Translation3d(0, -.34, .23), new Rotation3d(0, 0, Math.PI / 2), "alpha-3000", false)
+                //new RobotCamera(new Translation3d(0, -.34, .23), new Rotation3d(0, 0, Math.PI / 2), "alpha-3000", false)
         );
 
         emptyRing = new RingResult(cameras.get(0), 0, 0, 0);
@@ -79,7 +79,9 @@ public class VisionSubsystem extends SubsystemBase
                 PhotonPipelineResult result = camera.getCamera().getLatestResult();
                 if (result.hasTargets()) {
                     for (PhotonTrackedTarget target : result.getTargets()) {
-                        targets.add(new RingResult(camera, target.getYaw(), target.getPitch(), target.getArea()));
+                        if (target.getPitch() < 0) {
+                            targets.add(new RingResult(camera, target.getYaw(), target.getPitch(), target.getArea()));
+                        }
                     }
                 }
             }

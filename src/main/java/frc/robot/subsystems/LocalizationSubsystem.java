@@ -109,7 +109,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         poseEstimator.resetPosition(
                 swerveSubsystem.getGyroRotation(),
                 swerveSubsystem.getModulePositions(),
-                getCurrentPose());
+                new Pose2d(0,0,Rotation2d.fromRadians(0)));
     }
 
     public void setupPathPlanner()
@@ -120,10 +120,10 @@ public class LocalizationSubsystem extends SubsystemBase {
                 swerveSubsystem::getRobotVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 swerveSubsystem::driveRobotOriented, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
                 new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                        new PIDConstants(5.0, 0.0, 0.0),
+                        new PIDConstants(4.0, 0.0, 0.5),
                         // Translation PID constants
                         //swerveSubsystem.getPID(),
-                        new PIDConstants(5.0, 0, 0),
+                        new PIDConstants(4.0, 0, 0),
                         // Rotation PID constants
                         4.5,
                         // Max module speed, in m/s
