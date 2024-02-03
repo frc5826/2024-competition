@@ -31,14 +31,14 @@ public class VisionSubsystem extends SubsystemBase
     /** Creates a new ExampleSubsystem. */
     public VisionSubsystem() {
         cameras = List.of(
-                new RobotCamera(new Translation3d(.37,-.08,.23), new Rotation3d(0,-Math.PI / 6,0), "beta-studio", true),
-                new RobotCamera(new Translation3d(.37,.08,.23), new Rotation3d(0,0,0), "beta-3000", false),
-                new RobotCamera(new Translation3d(-.37,.15,.23), new Rotation3d(0,-Math.PI / 6,-Math.PI), "gamma-studio", true),
-                new RobotCamera(new Translation3d(-.37,-.15,.23), new Rotation3d(0,0,-Math.PI), "gamma-3000", false)
+                new RobotCamera(new Translation3d(.33,-.08,.23), new Rotation3d(0,-Math.PI / 6,0), "beta-studio", true),
+                new RobotCamera(new Translation3d(.33,.08,.23), new Rotation3d(0,0,0), "beta-3000", false),
+                new RobotCamera(new Translation3d(-.34,.22,.23), new Rotation3d(0,-Math.PI / 6,-Math.PI), "gamma-studio", true),
+                new RobotCamera(new Translation3d(-.34,-.22,.23), new Rotation3d(0,0,-Math.PI), "gamma-3000", false),
 //                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-3000", false),
 //                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-studio", true),
-                //new RobotCamera(new Translation3d(0, .34, .23), new Rotation3d(0, 0, -Math.PI / 2), "alpha-studio", false),
-                //new RobotCamera(new Translation3d(0, -.34, .23), new Rotation3d(0, 0, Math.PI / 2), "alpha-3000", false)
+                new RobotCamera(new Translation3d(0, .34, .23), new Rotation3d(0, 0, -Math.PI / 2), "alpha-3000", false),
+                new RobotCamera(new Translation3d(0, -.34, .23), new Rotation3d(0, 0, Math.PI / 2), "alpha-studio", false)
         );
 
         emptyRing = new RingResult(cameras.get(0), 0, 0, 0);
@@ -47,7 +47,7 @@ public class VisionSubsystem extends SubsystemBase
         ShuffleboardTab visionTest = Shuffleboard.getTab("vision test");
         visionTest.addDouble("ring angle", () -> Math.toDegrees(bestRing.getAngleToHeading()));
         visionTest.addDouble("ring distance", () -> bestRing.getDistance());
-        visionTest.addDouble("cam height", () -> bestRing.getCamera().getRobotLocation().getZ());
+        visionTest.addDouble("cam height", () -> bestRing.getCamera().getCameraPostion().getZ());
     }
 
 

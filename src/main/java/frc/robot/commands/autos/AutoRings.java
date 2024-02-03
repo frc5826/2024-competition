@@ -1,5 +1,6 @@
 package frc.robot.commands.autos;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -29,7 +30,8 @@ public class AutoRings extends Command {
     @Override
     public void initialize() {
         buildCommand = localizationSubsystem.buildPath(ringPose);
-        CommandScheduler.getInstance().schedule(buildCommand);
+        //CommandScheduler.getInstance().schedule(buildCommand);
+        buildCommand.schedule();
     }
 
     @Override
@@ -40,7 +42,8 @@ public class AutoRings extends Command {
     @Override
     public void end(boolean interrupted) {
         localizationSubsystem.removeRotationTarget();
-        CommandScheduler.getInstance().cancel(buildCommand);
+        //CommandScheduler.getInstance().cancel(buildCommand);
+        buildCommand.cancel();
     }
 
     @Override

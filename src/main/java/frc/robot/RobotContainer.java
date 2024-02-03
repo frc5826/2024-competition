@@ -70,7 +70,7 @@ public class RobotContainer
 
         //new Trigger(xbox::getYButton).whileTrue(new AutoRings(localizationSubsystem, swerveSubsystem, new Pose2d(2, 0, Rotation2d.fromRadians(0))));
 
-        new Trigger(xbox::getYButton).whileTrue(localizationSubsystem.buildPath(new Pose2d(2, 0, Rotation2d.fromRadians(Math.PI))));
+        new Trigger(xbox::getYButton).whileTrue(new AutoCommandGroup(localizationSubsystem));
 
         new Trigger(xbox::getXButton).whileTrue(targetSpeakerCommand);
 

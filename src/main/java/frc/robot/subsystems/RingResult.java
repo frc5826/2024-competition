@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.math.RingMath;
 
@@ -22,7 +21,7 @@ public class RingResult {
         this.pitch = pitch;
         this.area = area;
 
-        Transform3d camLocation = camera.getRobotLocation();
+        Transform3d camLocation = camera.getCameraPostion();
         double x = Math.cos(camLocation.getRotation().getZ()) * camLocation.getX() - Math.sin(camLocation.getRotation().getZ()) * camLocation.getY();
         double y = camLocation.getX() * Math.sin(camLocation.getRotation().getZ()) + camLocation.getY() * Math.cos(camLocation.getRotation().getZ());
         double d = RingMath.getDistance(pitch + Math.toDegrees(camLocation.getRotation().getX()), camLocation.getZ());

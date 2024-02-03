@@ -18,6 +18,13 @@ public class RobotCamera {
     }
 
     public Transform3d getRobotLocation() {
+        return new Transform3d(
+                -robotLocation.getX(),robotLocation.getY(),robotLocation.getZ(),
+                robotLocation.getRotation()
+        );
+    }
+
+    public Transform3d getCameraPostion() {
         return robotLocation;
     }
 
