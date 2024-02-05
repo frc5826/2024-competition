@@ -2,7 +2,6 @@ package frc.robot.math;
 
 import edu.wpi.first.math.geometry.Translation2d;
 
-import java.awt.geom.Point2D;
 import java.util.List;
 
 /**
@@ -147,43 +146,18 @@ public class ElevatorMath {
         return newPoint;
     }
 
-    public static class ElevatorBoundary {
+    public record ElevatorBoundary(double constraintValue, ElevatorMath.ElevatorBoundary.BoundType boundType, ElevatorMath.ElevatorBoundary.Axis axis) {
 
-        private final double constraintValue;
-        private final BoundType boundType;
-        private final Axis axis;
+        public enum BoundType {
+                MINIMUM,
+                MAXIMUM
+            }
 
-
-        public ElevatorBoundary(double constraintValue, BoundType boundType, Axis axis){
-
-            this.constraintValue = constraintValue;
-            this.axis = axis;
-            this.boundType = boundType;
-
+            public enum Axis {
+                X,
+                Y
+            }
         }
-
-        public Axis getAxis() {
-            return axis;
-        }
-
-        public BoundType getBoundType() {
-            return boundType;
-        }
-
-        public double getConstraintValue() {
-            return constraintValue;
-        }
-
-        public enum BoundType{
-            MINIMUM,
-            MAXIMUM
-        }
-
-        public enum Axis{
-            X,
-            Y
-        }
-    }
 
     public enum PointType {
         CARTESIAN,
