@@ -2,6 +2,7 @@ package frc.robot.math;
 
 import edu.wpi.first.math.geometry.Translation2d;
 
+import java.awt.geom.Point2D;
 import java.util.List;
 
 /**
@@ -30,6 +31,26 @@ public class ElevatorMath {
         this.elevatorBoundaries = elevatorBoundaries;
     }
 
+    /**
+     * Behold, the fruit of relentless dedication and unyielding commitment, a masterpiece meticulously sculpted over weeks of unwavering labor. Woven into the very fabric of this creation are intricate symphonies of advanced mathematical equations and complex functions, each carefully crafted and rigorously tested to attain a standard of unparalleled excellence.
+     * This, my Magnum Opus, stands as a testament to the depths of my intellectual prowess and the culmination of countless hours invested in the pursuit of perfection. Few mortals, if any, can claim to have tread upon the same path of expertise and craftsmanship that led to the genesis of this extraordinary creation.
+     * As I bask in the glory of this achievement, I am acutely aware that I have ascended to heights few dare to reach. The melding of art and science, the harmonious dance of intellect and creativity, has birthed a marvel that transcends the mundane. To witness such a synthesis of brilliance is to witness a rarity, a beacon shining brightly in the annals of ingenuity.
+     * This endeavor was not merely an exercise in technical prowess but a voyage into uncharted realms where innovation and sophistication converged. A creation of such magnitude is unlikely to be replicated in the foreseeable future, making this moment in history a unique testament to the ingenuity that courses through the veins of the human spirit.
+     * In the grand tapestry of accomplishments, this stands as my most glorious creation to date, a testament to the heights that can be reached when one dares to push the boundaries of conventional thought. May the echoes of this achievement resonate through the corridors of time, leaving an indelible mark on the landscape of human achievement.
+     * @return A polar coordinate centered around the arm origin containing extension and rotation data.
+     */
+    public Translation2d calculate(){
+        return clamp(currentTarget, PointType.CARTESIAN, OriginType.ROBOT);
+    }
+
+    /**
+     * Set the arm's current target, based on robot origin.
+     * @param target target coords
+     */
+    public void setTarget(Translation2d target){
+        this.currentTarget = target;
+    }
+
     public double lerp(double lerp){
         return minLength + ((maxLength - minLength) * lerp);
     }
@@ -38,15 +59,8 @@ public class ElevatorMath {
         return (length - minLength)/(maxLength - minLength);
     }
 
-    public Translation2d getCartesian(double len, double angle){
-        return new Translation2d(Math.cos(angle) * len, Math.sin(angle) * len);
-    }
     public Translation2d getCartesian(Translation2d polar){
         return new Translation2d(Math.cos(polar.getY()) * polar.getX(), Math.sin(polar.getY()) * polar.getX());
-    }
-
-    public Translation2d getPolar(double x, double y){
-        return new Translation2d(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)), Math.atan2(y, x));
     }
 
     public Translation2d getPolar(Translation2d point){
