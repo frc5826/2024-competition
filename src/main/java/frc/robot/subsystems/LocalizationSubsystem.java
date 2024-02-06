@@ -14,6 +14,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -27,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 //Code pulled from - https://github.com/STMARobotics/frc-7028-2023/blob/5916bb426b97f10e17d9dfd5ec6c3b6fda49a7ce/src/main/java/frc/robot/subsystems/PoseEstimatorSubsystem.java
@@ -48,6 +50,9 @@ public class LocalizationSubsystem extends SubsystemBase {
 
     private static final Vector<N3> stateStdDevs = VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(5));
 
+//    private final ParticleFilter particleFilter;
+    private List<Translation2d> ringLocations;
+
     public LocalizationSubsystem(VisionSubsystem visionSubsystem, SwerveSubsystem swerveSubsystem) {
         try {
             fieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
@@ -64,6 +69,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.processed = new HashSet<>();
         this.visionSubsystem = visionSubsystem;
         this.swerveSubsystem = swerveSubsystem;
+//        this.particleFilter = new ParticleFilter(1000);
         //TODO - Is there a better guess at initial pose?
         this.poseEstimator = new SwerveDrivePoseEstimator(swerveSubsystem.getKinematics(), swerveSubsystem.getGyroRotation(), swerveSubsystem.getModulePositions(), new Pose2d(), stateStdDevs, visionMeasurementStdDevs);
 
@@ -110,6 +116,8 @@ public class LocalizationSubsystem extends SubsystemBase {
             System.err.println("Unable to localize. Field Layout not loaded.");
         }
         field.setRobotPose(getCurrentPose());
+//        particleFilter.resample();
+//        ringLocations = particleFilter.getCurrent();
     }
 
     public void reset() {
@@ -195,4 +203,5 @@ public class LocalizationSubsystem extends SubsystemBase {
     public Pose2d getCurrentPose() {
         return poseEstimator.getEstimatedPosition();
     }
+
 }
