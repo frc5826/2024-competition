@@ -8,6 +8,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -25,9 +26,11 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -204,4 +207,36 @@ public class LocalizationSubsystem extends SubsystemBase {
         return poseEstimator.getEstimatedPosition();
     }
 
+    public List<RingResult> getRingResults(List<Pair<PhotonTrackedTarget, RobotCamera>> rings) {
+        List<RingResult> ringResults = new LinkedList<>();
+
+        for (Pair<PhotonTrackedTarget, RobotCamera> ring : rings) {
+            ringResults.add(new RingResult(ring.getSecond(),
+                    ring.getFirst().getYaw(),
+                    ring.getFirst().getPitch(),
+                    ring.getFirst().getArea(),
+                    getCurrentPose()));
+        }
+
+        return ringResults;
+    }
+
+    //also update periodically
+//    public RingResult getBestRing() {
+//        RingResult bestRing = null;
+//
+//        for(RingResult ring : getRings()) {
+//            if (bestRing != null && ring.getDistance() > bestRing.getDistance()) {
+//                bestRing = ring;
+//            } else if (bestRing == null) {
+//                bestRing = ring;
+//            }
+//        }
+//
+//        if (bestRing == null) {
+//            bestRing = emptyRing;
+//        }
+//
+//        return bestRing;
+//    }
 }

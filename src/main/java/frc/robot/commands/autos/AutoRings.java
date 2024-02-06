@@ -16,15 +16,16 @@ import frc.robot.subsystems.SwerveSubsystem;
 
 public class AutoRings extends Command {
     private LocalizationSubsystem localizationSubsystem;
-    private SwerveSubsystem swerveSubsystem;
     private Pose2d ringPose;
+    private double stopDistance;
 
     private Command buildCommand;
-    public AutoRings(LocalizationSubsystem localizationSubsystem, SwerveSubsystem swerveSubsystem, Pose2d ringPose) {
+    public AutoRings(LocalizationSubsystem localizationSubsystem, Pose2d ringPose, double stopDistance) {
         this.localizationSubsystem = localizationSubsystem;
-        this.swerveSubsystem = swerveSubsystem;
 
         this.ringPose = ringPose;
+
+        this.stopDistance = stopDistance;
     }
 
     @Override
@@ -36,7 +37,8 @@ public class AutoRings extends Command {
 
     @Override
     public void execute() {
-        localizationSubsystem.setRotationTarget(ringPose.relativeTo(localizationSubsystem.getCurrentPose()).getRotation());
+        localizationSubsystem.setRotationTarget(ringPose.getTranslation()
+                .minus(localizationSubsystem.getCurrentPose().getTranslation()).getAngle());
     }
 
     @Override
@@ -54,14 +56,7 @@ public class AutoRings extends Command {
                 3.14159,
                 3.14159);
             Pose2d currentPose = localizationSubsystem.getCurrentPose();
-            ChassisSpeeds currentSpeeds = swerveSubsystem.getRobotVelocity();
 
-            double currentVel =
-                    Math.hypot(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
-            double stoppingDistance =
-                    Math.pow(currentVel, 2) / (2 * constraints.getMaxAccelerationMpsSq());
-
-            return currentPose.getTranslation().getDistance(ringPose.getTranslation()) - 1
-                    <= stoppingDistance;
+            return currentPose.getTranslation().getDistance(ringPose.getTranslation()) - stopDistance <= 0;
     }
 }

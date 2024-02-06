@@ -41,16 +41,16 @@ public class PickupRingTest extends Command {
         drivexPID = new PID(0.5, 0, 0, 1, 0, 0.05, () -> localizationSubsystem.getCurrentPose().getX());
         driveyPID = new PID(0.5, 0, 0, 1, 0, 0.05, () -> localizationSubsystem.getCurrentPose().getY());
 
-        bestRing = visionSubsystem.getBestRing();
-
-        if (Double.isNaN(-bestRing.getAngleToHeading())) {
-            finished = true;
-        } else {
-            drivexPID.setGoal(drive().getX());
-            driveyPID.setGoal(drive().getY());
-
-            turnPID.setGoal(ShooterMath.fixSpin(-bestRing.getAngleToHeading() + localizationSubsystem.getCurrentPose().getRotation().getRadians()));
-        }
+//        bestRing = visionSubsystem.getBestRing();
+//
+//        if (Double.isNaN(-bestRing.getAngleToHeading())) {
+//            finished = true;
+//        } else {
+//            drivexPID.setGoal(drive().getX());
+//            driveyPID.setGoal(drive().getY());
+//
+//            turnPID.setGoal(ShooterMath.fixSpin(-bestRing.getAngleToHeading() + localizationSubsystem.getCurrentPose().getRotation().getRadians()));
+//        }
     }
 
     @Override

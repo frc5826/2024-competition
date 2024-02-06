@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.*;
 import frc.robot.math.RingMath;
 
 public class RingResult {
@@ -14,12 +14,17 @@ public class RingResult {
     private double distance;
     private double robotYaw;
 
-    public RingResult(RobotCamera camera, double yaw, double pitch, double area) {
+    private Pose2d robotPose;
+    private Pose2d fieldPose;
+
+    public RingResult(RobotCamera camera, double yaw, double pitch, double area, Pose2d robotPose) {
         this.camera = camera;
 
         this.yaw = yaw;
         this.pitch = pitch;
         this.area = area;
+
+        this.robotPose = robotPose;
 
         Transform3d camLocation = camera.getCameraPostion();
         double x = Math.cos(camLocation.getRotation().getZ()) * camLocation.getX() - Math.sin(camLocation.getRotation().getZ()) * camLocation.getY();
@@ -33,6 +38,12 @@ public class RingResult {
 
         this.robotYaw = robotYawBroken + camLocation.getRotation().getZ();
         this.distance = d;
+
+        fieldPose = robotPose.plus(new Transform2d(new Translation2d(d, Rotation2d.fromRadians(robotYaw)), Rotation2d.fromDegrees(0)));
+    }
+
+    public Pose2d getFieldPose() {
+        return fieldPose;
     }
 
     public RobotCamera getCamera() {
