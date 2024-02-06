@@ -23,7 +23,8 @@ public class Particle {
     }
 
     public Particle fuzz(Random random, double resampleNoise) {
-        double xNoise = random.nextDouble() * resampleNoise;
-        return new Particle(new Translation2d(this.point.getX(), this.point.getY()), this.weight);
+        double xNoise = (random.nextDouble() - 0.5) * resampleNoise;
+        double yNoise = (random.nextDouble() - 0.5) * resampleNoise;
+        return new Particle(new Translation2d(this.point.getX() + xNoise, this.point.getY() + yNoise), this.weight);
     }
 }

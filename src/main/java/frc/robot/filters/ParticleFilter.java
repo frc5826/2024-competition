@@ -45,7 +45,7 @@ public class ParticleFilter {
         this.particles = sampled;
     }
 
-    public List<Pose2d> getCurrent() {
-        return null;
-    }
+//    public List<Translation2d> getCurrent() {
+//        return particles;
+//    }
 }
