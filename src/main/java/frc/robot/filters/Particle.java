@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Particle {
     private final Translation2d point;
-    private final double weight;
+    private double weight;
 
     public Particle(Translation2d point, double weight) {
         this.point = point;
@@ -20,6 +20,10 @@ public class Particle {
 
     public double getWeight() {
         return weight;
+    }
+
+    public void setWeight(double weight){
+        this.weight = weight;
     }
 
     public Particle fuzz(Random random, double resampleNoise) {

@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.filters.Particle;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -89,6 +90,11 @@ public class VisionSubsystem extends SubsystemBase
         }
 
         return targets;
+    }
+
+    //TODO - Change to something real
+    public Double getWeightForParticle(Particle p){
+        return p.getWeight();
     }
 
     @Override

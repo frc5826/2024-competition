@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.filters.ParticleFilter;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import java.io.IOException;
@@ -53,7 +54,7 @@ public class LocalizationSubsystem extends SubsystemBase {
 
     private static final Vector<N3> stateStdDevs = VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(5));
 
-//    private final ParticleFilter particleFilter;
+    private final ParticleFilter particleFilter;
     private List<Translation2d> ringLocations;
 
     public LocalizationSubsystem(VisionSubsystem visionSubsystem, SwerveSubsystem swerveSubsystem) {
@@ -72,7 +73,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.processed = new HashSet<>();
         this.visionSubsystem = visionSubsystem;
         this.swerveSubsystem = swerveSubsystem;
-//        this.particleFilter = new ParticleFilter(1000);
+        this.particleFilter = new ParticleFilter(1000, fieldLayout, 0.9, 1.0, visionSubsystem::getWeightForParticle);
         //TODO - Is there a better guess at initial pose?
         this.poseEstimator = new SwerveDrivePoseEstimator(swerveSubsystem.getKinematics(), swerveSubsystem.getGyroRotation(), swerveSubsystem.getModulePositions(), new Pose2d(), stateStdDevs, visionMeasurementStdDevs);
 
@@ -119,8 +120,8 @@ public class LocalizationSubsystem extends SubsystemBase {
             System.err.println("Unable to localize. Field Layout not loaded.");
         }
         field.setRobotPose(getCurrentPose());
-//        particleFilter.resample();
-//        ringLocations = particleFilter.getCurrent();
+        particleFilter.resample();
+      //  ringLocations = particleFilter.getCurrent();
     }
 
     public void reset() {

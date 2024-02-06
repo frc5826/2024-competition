@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
 public class ParticleFilter {
 
@@ -16,8 +17,10 @@ public class ParticleFilter {
     private double resamplePct;
     private final AprilTagFieldLayout field;
     private double resampleNoise;
+    private Function<Particle, Double> weightProvider;
 
-    public ParticleFilter(int numParticles, AprilTagFieldLayout field, double resamplePct, double resampleNoise) {
+    public ParticleFilter(int numParticles, AprilTagFieldLayout field, double resamplePct, double resampleNoise, Function<Particle, Double> weightProvider) {
+        this.weightProvider = weightProvider;
         this.resampleNoise = resampleNoise;
         this.field = field;
         this.resamplePct = resamplePct;
@@ -30,6 +33,10 @@ public class ParticleFilter {
     }
 
     public void resample() {
+        for(int i = 0; i < this.particles.size(); i++){
+            Particle p = this.particles.get(i);
+            p.setWeight(weightProvider.apply(p));
+        }
         List<Particle> sampled = new ArrayList<>();
         RandomCollection<Particle> randomCollection =  new RandomCollection<Particle>(random);
         for(int i = 0; i < this.particles.size(); i++){
@@ -45,7 +52,7 @@ public class ParticleFilter {
         this.particles = sampled;
     }
 
-//    public List<Translation2d> getCurrent() {
-//        return particles;
-//    }
+    public List<Translation2d> getCurrent() {
+        return particles;
+   }
 }
