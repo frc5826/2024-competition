@@ -88,8 +88,7 @@ public class RobotContainer
         new Trigger(()-> xbox.getPOV() == 90).whileTrue(
                 localizationSubsystem.buildPath(Constants.cAmpPark));
 
-        new Trigger(()-> xbox.getPOV() == 180).whileTrue(
-                localizationSubsystem.buildPath(Constants.cLeftStagePark));
+        new Trigger(()-> xbox.getPOV() == 180).whileTrue(new AutoRings(localizationSubsystem, Constants.cTopCloseRing1, 1.1));
 
         new Trigger(()-> xbox.getPOV() == 270).whileTrue(
                 localizationSubsystem.buildPath(Constants.cRightStagePark));
