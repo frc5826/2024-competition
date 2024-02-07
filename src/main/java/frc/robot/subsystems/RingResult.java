@@ -15,7 +15,7 @@ public class RingResult {
     private double robotYaw;
 
     private Pose2d robotPose;
-    private Pose2d fieldPose;
+    private Translation2d fieldPose;
 
     public RingResult(RobotCamera camera, double yaw, double pitch, double area, Pose2d robotPose) {
         this.camera = camera;
@@ -29,7 +29,7 @@ public class RingResult {
         Transform3d camLocation = camera.getCameraPostion();
         double x = Math.cos(camLocation.getRotation().getZ()) * camLocation.getX() - Math.sin(camLocation.getRotation().getZ()) * camLocation.getY();
         double y = camLocation.getX() * Math.sin(camLocation.getRotation().getZ()) + camLocation.getY() * Math.cos(camLocation.getRotation().getZ());
-        double d = RingMath.getDistance(pitch + Math.toDegrees(camLocation.getRotation().getX()), camLocation.getZ());
+        double d = RingMath.getDistance(pitch + Math.toDegrees(camLocation.getRotation().getY()), camLocation.getZ());
         double A = Math.hypot(x, y);
         double B = RingMath.getB(d, yaw);
         double c = RingMath.getcangle(x, y, yaw);
@@ -39,10 +39,15 @@ public class RingResult {
         this.robotYaw = robotYawBroken + camLocation.getRotation().getZ();
         this.distance = d;
 
-        fieldPose = robotPose.plus(new Transform2d(new Translation2d(d, Rotation2d.fromRadians(robotYaw)), Rotation2d.fromDegrees(0)));
+        fieldPose = robotPose.getTranslation().plus(new Translation2d(d, Rotation2d.fromRadians(-robotYaw + robotPose.getRotation().getRadians())));
     }
 
-    public Pose2d getFieldPose() {
+    private RingResult() {
+        fieldPose = new Translation2d();
+        distance = Double.POSITIVE_INFINITY;
+    }
+
+    public Translation2d getFieldPose() {
         return fieldPose;
     }
 
@@ -66,5 +71,9 @@ public class RingResult {
 
     public double getDistance() {
         return distance;
+    }
+
+    public static RingResult getEmpty() {
+        return new RingResult();
     }
 }

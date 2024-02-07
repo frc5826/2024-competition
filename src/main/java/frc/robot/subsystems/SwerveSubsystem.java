@@ -12,6 +12,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import swervelib.SwerveDrive;
 import swervelib.math.SwerveMath;
 import swervelib.parser.SwerveControllerConfiguration;
@@ -24,7 +25,7 @@ import java.io.File;
 public class SwerveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
 
-    public double maximumSpeed = 3.6;
+    public double maximumSpeed = Constants.maxVelocity;
 
     public double maximumAngularVel = 3;
 

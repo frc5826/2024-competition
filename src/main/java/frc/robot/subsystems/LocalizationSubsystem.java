@@ -25,9 +25,11 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import java.io.IOException;
+import java.text.CompactNumberFormat;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,6 +53,10 @@ public class LocalizationSubsystem extends SubsystemBase {
     private static final Vector<N3> visionMeasurementStdDevs = VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(10));
 
     private static final Vector<N3> stateStdDevs = VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(5));
+
+    private List<RingResult> ringResults;
+
+    private RingResult bestFrontRing = RingResult.getEmpty();
 
     public LocalizationSubsystem(VisionSubsystem visionSubsystem, SwerveSubsystem swerveSubsystem) {
         try {
@@ -114,6 +120,10 @@ public class LocalizationSubsystem extends SubsystemBase {
             System.err.println("Unable to localize. Field Layout not loaded.");
         }
         field.setRobotPose(getCurrentPose());
+        field.getObject("rings").setPose(new Pose2d(bestFrontRing.getFieldPose(), Rotation2d.fromDegrees(0)));
+
+        ringResults = getRingResults(visionSubsystem.getRings());
+        bestFrontRing = getBestPickupRing();
     }
 
     public void reset() {
@@ -131,12 +141,12 @@ public class LocalizationSubsystem extends SubsystemBase {
                 swerveSubsystem::getRobotVelocity, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 swerveSubsystem::driveRobotOriented, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
                 new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                        new PIDConstants(4.0, 0.0, 0.5),
+                        Constants.cDrivePID,
                         // Translation PID constants
                         //swerveSubsystem.getPID(),
-                        new PIDConstants(4.0, 0, 0),
+                        Constants.cTurnPID,
                         // Rotation PID constants
-                        4.5,
+                        Constants.maxVelocity,
                         // Max module speed, in m/s
                         swerveSubsystem.getDriveBaseRadius(),
                         // Drive base radius in meters. Distance from robot center to furthest module.
@@ -194,6 +204,11 @@ public class LocalizationSubsystem extends SubsystemBase {
         robot3DPose.addDouble("pitch", ()-> Math.toDegrees(robotPos.getRotation().getY()));
         robot3DPose.addDouble("yaw", ()-> Math.toDegrees(robotPos.getRotation().getZ()));
 
+        ShuffleboardTab testTab = Shuffleboard.getTab("test tab");
+
+        testTab.addDouble("ring distance", () -> bestFrontRing.getDistance());
+        testTab.addDouble("ring yaw", () -> Math.toDegrees(bestFrontRing.getAngleToHeading()));
+        testTab.addDoubleArray("ring field pose", () -> new double[]{bestFrontRing.getFieldPose().getX(), bestFrontRing.getFieldPose().getY()});
     }
 
     public Pose2d getCurrentPose() {
@@ -212,6 +227,19 @@ public class LocalizationSubsystem extends SubsystemBase {
         }
 
         return ringResults;
+    }
+
+    public RingResult getBestPickupRing() {
+        RingResult ring = RingResult.getEmpty();
+
+        for (RingResult ringResult : ringResults) {
+            if (ringResult.getCamera().equals(visionSubsystem.getFrontCamera()) &&
+                    ringResult.getDistance() < ring.getDistance()) {
+                ring = ringResult;
+            }
+        }
+
+        return ring;
     }
 
     //also update periodically

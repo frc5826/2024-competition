@@ -5,17 +5,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.*;
-import frc.robot.commands.Autos;
 import frc.robot.commands.TargetSpeakerCommand;
 import frc.robot.commands.TeleopDriveCommand;
-import frc.robot.commands.autos.AutoRings;
+import frc.robot.commands.PathWithStopDistance;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -88,10 +85,12 @@ public class RobotContainer
         new Trigger(()-> xbox.getPOV() == 90).whileTrue(
                 localizationSubsystem.buildPath(Constants.cAmpPark));
 
-        new Trigger(()-> xbox.getPOV() == 180).whileTrue(new AutoRings(localizationSubsystem, Constants.cTopCloseRing1, 1.1));
+        new Trigger(()-> xbox.getPOV() == 180).whileTrue(new PathWithStopDistance(localizationSubsystem, Constants.cTopCloseRing1, 1.1));
 
         new Trigger(()-> xbox.getPOV() == 270).whileTrue(
                 localizationSubsystem.buildPath(Constants.cRightStagePark));
+
+        new Trigger(()-> xbox.getLeftBumper()).whileTrue(new PickupRing(localizationSubsystem, swerveSubsystem));
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }
@@ -113,9 +112,8 @@ public class RobotContainer
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand()
-    {
-        // An example command will be run in autonomous
-        return Autos.exampleAuto(exampleSubsystem);
-    }
+//    public Command getAutonomousCommand()
+//    {
+//
+//    }
 }

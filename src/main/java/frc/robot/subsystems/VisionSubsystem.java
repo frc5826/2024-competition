@@ -26,14 +26,15 @@ public class VisionSubsystem extends SubsystemBase
 
     private final List<RobotCamera> cameras;
 
-    private RingResult bestRing;
-    private RingResult emptyRing;
+    private RobotCamera frontCamera;
 
     /** Creates a new ExampleSubsystem. */
     public VisionSubsystem() {
+        frontCamera = new RobotCamera(new Translation3d(.33,.08,.23), new Rotation3d(0,-Math.PI / 18,0), "beta-3000", false);
+
         cameras = List.of(
                 new RobotCamera(new Translation3d(.33,-.08,.23), new Rotation3d(0,Math.PI / 6,0), "beta-studio", true),
-                new RobotCamera(new Translation3d(.33,.08,.23), new Rotation3d(0,0,0), "beta-3000", false),
+                frontCamera,
                 new RobotCamera(new Translation3d(-.34,.22,.23), new Rotation3d(0,-Math.PI / 6,Math.PI), "gamma-studio", true),
                 new RobotCamera(new Translation3d(-.34,-.22,.23), new Rotation3d(0,0,-Math.PI), "gamma-3000", false),
 //                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-3000", false),
@@ -42,13 +43,6 @@ public class VisionSubsystem extends SubsystemBase
                 new RobotCamera(new Translation3d(0, -.34, .23), new Rotation3d(0, 0, Math.PI / 2), "alpha-studio", false)
         );
 
-        //emptyRing = new RingResult(cameras.get(0), 0, 0, 0);
-        bestRing = emptyRing;
-
-        ShuffleboardTab visionTest = Shuffleboard.getTab("vision test");
-//        visionTest.addDouble("ring angle", () -> Math.toDegrees(bestRing.getAngleToHeading()));
-//        visionTest.addDouble("ring distance", () -> bestRing.getDistance());
-//        visionTest.addDouble("cam height", () -> bestRing.getCamera().getCameraPostion().getZ());
     }
 
 
@@ -80,7 +74,7 @@ public class VisionSubsystem extends SubsystemBase
                 PhotonPipelineResult result = camera.getCamera().getLatestResult();
                 if (result.hasTargets()) {
                     for (PhotonTrackedTarget target : result.getTargets()) {
-                        if (target.getPitch() < 0) {
+                        if (target.getPitch() + Math.toDegrees(camera.getCameraPostion().getRotation().getY()) < 0) {
                             targets.add(new Pair<>(target, camera));
                         }
                     }
@@ -89,6 +83,10 @@ public class VisionSubsystem extends SubsystemBase
         }
 
         return targets;
+    }
+
+    public RobotCamera getFrontCamera() {
+        return frontCamera;
     }
 
     @Override

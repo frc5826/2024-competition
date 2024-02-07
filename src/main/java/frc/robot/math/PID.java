@@ -1,6 +1,8 @@
 package frc.robot.math;
 
 
+import com.pathplanner.lib.util.PIDConstants;
+
 import java.util.function.DoubleSupplier;
 
 public class PID {
@@ -20,6 +22,16 @@ public class PID {
         this.P = P;
         this.I = I;
         this.D = D;
+        this.max_output = max;
+        this.min_output = min;
+        this.deadband = deadband;
+        this.actualSupplier = actualSupplier;
+    }
+
+    public PID(PIDConstants pid, double max, double min, double deadband, DoubleSupplier actualSupplier){
+        this.P = pid.kP;
+        this.I = pid.kI;
+        this.D = pid.kD;
         this.max_output = max;
         this.min_output = min;
         this.deadband = deadband;

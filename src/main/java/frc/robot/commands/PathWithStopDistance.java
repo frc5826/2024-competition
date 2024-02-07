@@ -1,26 +1,17 @@
-package frc.robot.commands.autos;
+package frc.robot.commands;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants;
 import frc.robot.subsystems.LocalizationSubsystem;
-import frc.robot.subsystems.SwerveSubsystem;
 
-public class AutoRings extends Command {
+public class PathWithStopDistance extends Command {
     private LocalizationSubsystem localizationSubsystem;
     private Pose2d ringPose;
     private double stopDistance;
 
     private Command buildCommand;
-    public AutoRings(LocalizationSubsystem localizationSubsystem, Pose2d ringPose, double stopDistance) {
+    public PathWithStopDistance(LocalizationSubsystem localizationSubsystem, Pose2d ringPose, double stopDistance) {
         this.localizationSubsystem = localizationSubsystem;
 
         this.ringPose = ringPose;

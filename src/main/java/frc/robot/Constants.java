@@ -5,6 +5,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.util.PIDConstants;
 import edu.wpi.first.math.geometry.*;
 import frc.robot.math.BetterArrayList;
 import frc.robot.math.ElevatorMath;
@@ -75,6 +76,11 @@ public final class Constants
     public static final double cSpeakerTargetHeight = 0;
     public static final double cMotorVeltoDistance = 100;
     public static final double cMotorVeltoExitVel = 1;
+
+    public static final PIDConstants cTurnPID = new PIDConstants(4.0, 0, 0);
+    public static final PIDConstants cDrivePID = new PIDConstants(4.0, 0, 0.5);
+
+    public static final double maxVelocity = 3.6; //doesn't make robot faster
 
 
 }
