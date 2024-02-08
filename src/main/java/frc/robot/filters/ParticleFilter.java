@@ -3,11 +3,13 @@ package frc.robot.filters;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import org.christopherfrantz.dbscan.DBSCANClusterer;
+import org.christopherfrantz.dbscan.DBSCANClusteringException;
+import org.christopherfrantz.dbscan.DistanceMetric;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ParticleFilter {
 
@@ -53,6 +55,41 @@ public class ParticleFilter {
     }
 
     public List<Translation2d> getCurrent() {
-        return particles;
+        return particles.stream().map(Particle::getPoint).toList();
+   }
+
+   public List<Translation2d> getCentroids(double epsilon, int minPoints) {
+       System.out.println("Start centroids");
+        List<Translation2d> output = new LinkedList<>();
+        try {
+            DBSCANClusterer<Translation2d> clusterer =
+                    new DBSCANClusterer<>(
+                            getCurrent(),
+                            minPoints,
+                            epsilon,
+                            new DistanceMetricTranslation2Ds()
+                    );
+            List<ArrayList<Translation2d>> clusters = clusterer.performClustering();
+            for(ArrayList<Translation2d> clump : clusters){
+                DoubleSummaryStatistics xStats = clump.stream().map(Translation2d::getX).collect(Collectors.summarizingDouble(d -> d));
+                double x = xStats.getAverage();
+
+                DoubleSummaryStatistics yStats = clump.stream().map(Translation2d::getY).collect(Collectors.summarizingDouble(d -> d));
+                double y = yStats.getAverage();
+                output.add(new Translation2d(x, y));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       System.out.println("End centroids: " + output);
+        return output;
+   }
+
+   private static class DistanceMetricTranslation2Ds implements DistanceMetric<Translation2d> {
+
+       @Override
+       public double calculateDistance(Translation2d translation2d, Translation2d v1) throws DBSCANClusteringException {
+           return translation2d.getDistance(v1);
+       }
    }
 }

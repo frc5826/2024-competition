@@ -24,18 +24,18 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.filters.Particle;
 import frc.robot.filters.ParticleFilter;
+import org.christopherfrantz.dbscan.DBSCANClusterer;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import java.io.IOException;
 import java.text.CompactNumberFormat;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 //Code pulled from - https://github.com/STMARobotics/frc-7028-2023/blob/5916bb426b97f10e17d9dfd5ec6c3b6fda49a7ce/src/main/java/frc/robot/subsystems/PoseEstimatorSubsystem.java
 public class LocalizationSubsystem extends SubsystemBase {
@@ -60,7 +60,9 @@ public class LocalizationSubsystem extends SubsystemBase {
 
     private RingResult bestFrontRing = RingResult.getEmpty();
     private final ParticleFilter particleFilter;
-    private List<Translation2d> ringLocations;
+
+    private final Random random = new Random();
+    private int particleTicks;
 
     public LocalizationSubsystem(VisionSubsystem visionSubsystem, SwerveSubsystem swerveSubsystem) {
         try {
@@ -78,7 +80,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.processed = new HashSet<>();
         this.visionSubsystem = visionSubsystem;
         this.swerveSubsystem = swerveSubsystem;
-        this.particleFilter = new ParticleFilter(1000, fieldLayout, 0.9, 1.0, visionSubsystem::getWeightForParticle);
+        this.particleFilter = new ParticleFilter(1000, fieldLayout, 0.9, 0.75, this::getWeightForParticle);
         //TODO - Is there a better guess at initial pose?
         this.poseEstimator = new SwerveDrivePoseEstimator(swerveSubsystem.getKinematics(), swerveSubsystem.getGyroRotation(), swerveSubsystem.getModulePositions(), new Pose2d(), stateStdDevs, visionMeasurementStdDevs);
 
@@ -125,12 +127,28 @@ public class LocalizationSubsystem extends SubsystemBase {
             System.err.println("Unable to localize. Field Layout not loaded.");
         }
         field.setRobotPose(getCurrentPose());
-        field.getObject("rings").setPose(new Pose2d(bestFrontRing.getFieldPose(), Rotation2d.fromDegrees(0)));
-
+//        field.getObject("rings").setPose(new Pose2d(bestFrontRing.getFieldPose(), Rotation2d.fromDegrees(0)));
         ringResults = getRingResults(visionSubsystem.getRings());
         bestFrontRing = getBestPickupRing();
         particleFilter.resample();
-      //  ringLocations = particleFilter.getCurrent();
+
+
+        List<Translation2d> points = particleFilter.getCurrent();
+        if (particleTicks == 10) {
+            particleTicks = 0;
+            for (int i = 0; i < 100; i++) {
+                Translation2d point = points.get(random.nextInt(points.size()));
+                FieldObject2d fo = field.getObject("point-" + i);
+                fo.setPose(new Pose2d(point, new Rotation2d()));
+            }
+//            for (Translation2d center : particleFilter.getCentroids(0.5, 100)){
+//                FieldObject2d fo = field.getObject("point-" + center.getX());
+//                fo.setPose(new Pose2d(center, new Rotation2d()));
+//            }
+        }
+        else {
+            particleTicks++;
+        }
     }
 
     public void reset() {
@@ -267,4 +285,21 @@ public class LocalizationSubsystem extends SubsystemBase {
 //
 //        return bestRing;
 //    }
+    public Double getWeightForParticle(Particle p){
+        if (ringResults.isEmpty()){
+            return 0.1;
+        }
+        double bestDistance = Double.POSITIVE_INFINITY;
+        for(RingResult r : ringResults){
+           double distance = p.getPoint().getDistance(r.getFieldPose());
+           if(distance < bestDistance){
+               bestDistance = distance;
+           }
+        }
+        if (bestDistance == 0){
+            return 1.0;
+        }
+        return 1/bestDistance;
+
+    }
 }

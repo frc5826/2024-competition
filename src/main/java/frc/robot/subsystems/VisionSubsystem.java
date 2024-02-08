@@ -91,9 +91,7 @@ public class VisionSubsystem extends SubsystemBase
     }
 
     //TODO - Change to something real
-    public Double getWeightForParticle(Particle p){
-        return p.getWeight();
-    }
+
 
     @Override
     public void periodic()
