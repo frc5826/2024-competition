@@ -16,7 +16,7 @@ public class TargetSpeakerCommand extends Command {
     private final SwerveSubsystem swerveSubsystem;
     private final LocalizationSubsystem localizationSubsystem;
 
-    private final PID turnPID = new PID(1.5, 0, 0.1, 3, 0, 0.04, this::getAngleDiff);
+    private final PID turnPID = new PID(Constants.cTurnPID, 6, 0, 0.02, this::getAngleDiff);
 
     public TargetSpeakerCommand(SwerveSubsystem swerveSubsystem, LocalizationSubsystem localizationSubsystem) {
         this.localizationSubsystem = localizationSubsystem;
@@ -42,4 +42,8 @@ public class TargetSpeakerCommand extends Command {
                         ShooterMath.getAngleToSpeaker(localizationSubsystem.getCurrentPose()));
     }
 
+    @Override
+    public boolean isFinished() {
+        return Math.abs(getAngleDiff()) < 0.04;
+    }
 }

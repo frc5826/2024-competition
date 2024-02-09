@@ -5,6 +5,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -22,6 +23,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 import java.io.File;
+import java.util.ArrayList;
 
 
 /**
@@ -67,7 +69,7 @@ public class RobotContainer
 
         //new Trigger(xbox::getYButton).whileTrue(new AutoRings(localizationSubsystem, swerveSubsystem, new Pose2d(2, 0, Rotation2d.fromRadians(0))));
 
-        new Trigger(xbox::getYButton).whileTrue(new AutoCommandGroup(localizationSubsystem));
+        new Trigger(xbox::getYButton).whileTrue(new AutoCommandGroup(localizationSubsystem, swerveSubsystem, Constants.cTopCloseRing1, Constants.cBotCloseRing3));
 
         new Trigger(xbox::getXButton).whileTrue(targetSpeakerCommand);
 
@@ -91,6 +93,7 @@ public class RobotContainer
                 localizationSubsystem.buildPath(Constants.cRightStagePark));
 
         new Trigger(()-> xbox.getLeftBumper()).whileTrue(new PickupRing(localizationSubsystem, swerveSubsystem));
+
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }

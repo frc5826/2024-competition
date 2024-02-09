@@ -59,7 +59,7 @@ public class LocalizationSubsystem extends SubsystemBase {
     private List<RingResult> ringResults;
 
     private RingResult bestFrontRing = RingResult.getEmpty();
-    private final ParticleFilter particleFilter;
+//    private final ParticleFilter particleFilter;
 
     private final Random random = new Random();
     private int particleTicks;
@@ -80,7 +80,7 @@ public class LocalizationSubsystem extends SubsystemBase {
         this.processed = new HashSet<>();
         this.visionSubsystem = visionSubsystem;
         this.swerveSubsystem = swerveSubsystem;
-        this.particleFilter = new ParticleFilter(1000, fieldLayout, 0.9, 0.75, this::getWeightForParticle);
+//        this.particleFilter = new ParticleFilter(1000, fieldLayout, 0.9, 0.75, this::getWeightForParticle);
         //TODO - Is there a better guess at initial pose?
         this.poseEstimator = new SwerveDrivePoseEstimator(swerveSubsystem.getKinematics(), swerveSubsystem.getGyroRotation(), swerveSubsystem.getModulePositions(), new Pose2d(), stateStdDevs, visionMeasurementStdDevs);
 
@@ -127,28 +127,28 @@ public class LocalizationSubsystem extends SubsystemBase {
             System.err.println("Unable to localize. Field Layout not loaded.");
         }
         field.setRobotPose(getCurrentPose());
-//        field.getObject("rings").setPose(new Pose2d(bestFrontRing.getFieldPose(), Rotation2d.fromDegrees(0)));
+        field.getObject("rings").setPose(new Pose2d(bestFrontRing.getFieldPose(), Rotation2d.fromDegrees(0)));
         ringResults = getRingResults(visionSubsystem.getRings());
         bestFrontRing = getBestPickupRing();
-        particleFilter.resample();
+//        particleFilter.resample();
 
 
-        List<Translation2d> points = particleFilter.getCurrent();
-        if (particleTicks == 10) {
-            particleTicks = 0;
-            for (int i = 0; i < 100; i++) {
-                Translation2d point = points.get(random.nextInt(points.size()));
-                FieldObject2d fo = field.getObject("point-" + i);
-                fo.setPose(new Pose2d(point, new Rotation2d()));
-            }
+//        List<Translation2d> points = particleFilter.getCurrent();
+//        if (particleTicks == 10) {
+//            particleTicks = 0;
+//            for (int i = 0; i < 100; i++) {
+//                Translation2d point = points.get(random.nextInt(points.size()));
+//                FieldObject2d fo = field.getObject("point-" + i);
+//                fo.setPose(new Pose2d(point, new Rotation2d()));
+//            }
 //            for (Translation2d center : particleFilter.getCentroids(0.5, 100)){
 //                FieldObject2d fo = field.getObject("point-" + center.getX());
 //                fo.setPose(new Pose2d(center, new Rotation2d()));
 //            }
-        }
-        else {
-            particleTicks++;
-        }
+//        }
+//        else {
+//            particleTicks++;
+//        }
     }
 
     public void reset() {

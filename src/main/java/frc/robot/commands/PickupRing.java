@@ -1,10 +1,10 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.math.PID;
-import frc.robot.subsystems.IntakeElevatorSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.RingResult;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -23,6 +23,10 @@ public class PickupRing extends Command {
 
     private double epsilon = .15;
 
+    private double stopDistance = 0.5;
+
+    private boolean die;
+
     public PickupRing(LocalizationSubsystem localizationSubsystem, SwerveSubsystem swerveSubsystem) {
         this.localizationSubsystem = localizationSubsystem;
         this.swerveSubsystem = swerveSubsystem;
@@ -32,7 +36,12 @@ public class PickupRing extends Command {
 
     @Override
     public void initialize() {
+        die = false;
         ringTracking = localizationSubsystem.getBestPickupRing();
+        if (ringTracking.getFieldPose().equals(new Translation2d(0, 0))) {
+            die = true;
+        }
+
         turnPID.setGoal(0);
         drivePID.setGoal(0);
     }
@@ -55,7 +64,12 @@ public class PickupRing extends Command {
     }
 
     private double ringDistance() {
-        return ringTracking.getDistance();
+        //return ringTracking.getDistance();
+        return ringTracking.getFieldPose().getDistance(localizationSubsystem.getCurrentPose().getTranslation()) - stopDistance;
     }
 
+    @Override
+    public boolean isFinished() {
+        return ringDistance() < 0.05 || die;
+    }
 }

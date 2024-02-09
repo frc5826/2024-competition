@@ -23,11 +23,12 @@ public class PathWithStopDistance extends Command {
     public void initialize() {
         buildCommand = localizationSubsystem.buildPath(ringPose);
         //CommandScheduler.getInstance().schedule(buildCommand);
-        buildCommand.schedule();
+        buildCommand.initialize();
     }
 
     @Override
     public void execute() {
+        buildCommand.execute();
         localizationSubsystem.setRotationTarget(ringPose.getTranslation()
                 .minus(localizationSubsystem.getCurrentPose().getTranslation()).getAngle());
     }
@@ -36,7 +37,7 @@ public class PathWithStopDistance extends Command {
     public void end(boolean interrupted) {
         localizationSubsystem.removeRotationTarget();
         //CommandScheduler.getInstance().cancel(buildCommand);
-        buildCommand.cancel();
+        buildCommand.end(interrupted);
     }
 
     @Override
