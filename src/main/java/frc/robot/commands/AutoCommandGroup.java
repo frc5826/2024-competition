@@ -26,9 +26,10 @@ public class AutoCommandGroup extends SequentialCommandGroup {
 
         for(Pose2d ring : rings) {
             addCommands(
-                    new PathWithStopDistance(localizationSubsystem, ring, 1),
+                    new PathWithStopDistance(localizationSubsystem, ring, 1.25)
+                            .onlyIf(() -> ring.getTranslation().getDistance(localizationSubsystem.getCurrentPose().getTranslation()) > 2),
+                    new TurnToCommand(localizationSubsystem, swerveSubsystem, ring),
                     new PickupRing(localizationSubsystem, swerveSubsystem).finallyDo( () -> {
-                        //TODO: next time add a command after to just turn to the position
                         if (localizationSubsystem.getBestPickupRing().getFieldPose().equals(new Translation2d(0, 0))) {
                             holdingRing = false; }
                         else {holdingRing = true;} }

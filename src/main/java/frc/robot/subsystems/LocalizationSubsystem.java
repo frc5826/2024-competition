@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.filters.Particle;
@@ -193,8 +194,8 @@ public class LocalizationSubsystem extends SubsystemBase {
         PathConstraints constraints = new PathConstraints(
                 2.0,
                 2.0,
-                3.14159,
-                3.14159);
+                2 * Math.PI,
+                2 * Math.PI);
 
         Command path = AutoBuilder.pathfindToPose(targetPose, constraints);
 
@@ -221,6 +222,10 @@ public class LocalizationSubsystem extends SubsystemBase {
         ShuffleboardLayout robot3DPose = tab.getLayout("robot 3d pose", BuiltInLayouts.kList)
                 .withPosition(7, 0)
                 .withSize(2, 4);
+
+        tab.add(CommandScheduler.getInstance())
+                .withSize(2, 1)
+                .withPosition(0,3);
 
         robot3DPose.addDouble("x", ()-> robotPos.getX());
         robot3DPose.addDouble("y", ()-> robotPos.getY());

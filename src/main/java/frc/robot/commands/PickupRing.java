@@ -70,6 +70,6 @@ public class PickupRing extends Command {
 
     @Override
     public boolean isFinished() {
-        return ringDistance() < 0.05 || die;
+        return ringDistance() < 0.1 || die;
     }
 }

@@ -47,7 +47,7 @@ public class RobotContainer
     private final LocalizationSubsystem localizationSubsystem = new LocalizationSubsystem(visionSubsystem, swerveSubsystem);
 
     private final TeleopDriveCommand teleopDriveCommand = new TeleopDriveCommand(
-            swerveSubsystem, ()->-xbox.getLeftY(), ()->-xbox.getLeftX(), ()->-xbox.getRightX());
+            swerveSubsystem, localizationSubsystem,() ->-xbox.getLeftY(), ()->-xbox.getLeftX(), ()->-xbox.getRightX(), () -> xbox.getXButton());
 
     private final TargetSpeakerCommand targetSpeakerCommand = new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem);
 
@@ -69,9 +69,9 @@ public class RobotContainer
 
         //new Trigger(xbox::getYButton).whileTrue(new AutoRings(localizationSubsystem, swerveSubsystem, new Pose2d(2, 0, Rotation2d.fromRadians(0))));
 
-        new Trigger(xbox::getYButton).whileTrue(new AutoCommandGroup(localizationSubsystem, swerveSubsystem, Constants.cTopCloseRing1, Constants.cBotCloseRing3));
+        new Trigger(xbox::getYButton).whileTrue(new AutoCommandGroup(localizationSubsystem, swerveSubsystem, Constants.cTopCloseRing1, Constants.cBotCloseRing3, Constants.cFarRing7));
 
-        new Trigger(xbox::getXButton).whileTrue(targetSpeakerCommand);
+        //new Trigger(xbox::getXButton).whileTrue(targetSpeakerCommand);
 
         new Trigger(xbox::getBButton).whileTrue(pickupRingTest);
 
@@ -93,6 +93,8 @@ public class RobotContainer
                 localizationSubsystem.buildPath(Constants.cRightStagePark));
 
         new Trigger(()-> xbox.getLeftBumper()).whileTrue(new PickupRing(localizationSubsystem, swerveSubsystem));
+
+        new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, Constants.cBotCloseRing3));
 
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);

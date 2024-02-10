@@ -44,6 +44,6 @@ public class TargetSpeakerCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(getAngleDiff()) < 0.04;
+        return Math.abs(getAngleDiff()) < 0.08;
     }
 }
