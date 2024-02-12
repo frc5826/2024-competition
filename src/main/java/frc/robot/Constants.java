@@ -7,6 +7,8 @@ package frc.robot;
 
 import com.pathplanner.lib.util.PIDConstants;
 import edu.wpi.first.math.geometry.*;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.math.BetterArrayList;
 import frc.robot.math.ElevatorMath;
 
@@ -20,44 +22,58 @@ import frc.robot.math.ElevatorMath;
  */
 public final class Constants
 {
-    //TODO ask Schaefer for arm lengths
-    public static final double cElevatorMinLength = -1;
-    public static final double cElevatorMaxLength = -1;
-    public static final Translation2d cStartingTarget = new Translation2d(0, 0);
-    public static final Translation2d cElevatorOrigin = new Translation2d(-1, -1);
 
-    //TODO add real boundaries, example here so whoever is unfortunate enough to work on this knows how to construct the list
-    //TODO - Try using List.of versus extending arraylist.
-    public static final BetterArrayList<ElevatorMath.ElevatorBoundary> cElevatorBoundaries = new BetterArrayList<ElevatorMath.ElevatorBoundary>()
-            .append(new ElevatorMath.ElevatorBoundary(50, ElevatorMath.ElevatorBoundary.BoundType.MAXIMUM, ElevatorMath.ElevatorBoundary.Axis.X))
-            .append(new ElevatorMath.ElevatorBoundary(50, ElevatorMath.ElevatorBoundary.BoundType.MINIMUM, ElevatorMath.ElevatorBoundary.Axis.Y));
+    public static final double cArmMinLength = 0.43;
+    public static final double cArmMaxLength = 1;
+    public static final Translation2d cArmOrigin = new Translation2d(0, 0);
+    public static final BetterArrayList<ElevatorMath.ElevatorBoundary> cElevatorBoundaries = new BetterArrayList<>();
 
-    //TODO find IDs
-    public static final int cRotateMotor1ID = -1;
-    public static final int cRotateMotor2ID = -1;
-    public static final int cExtensionMotorID = -1;
-    public static final int cRotateEncoderID = -1;
-    public static final int cExtensionEncoderID = -1;
+    //TODO FIX BEFORE RUNNING
+    public static final Translation2d cArmInit = new Translation2d(1, 1);
 
-    //TODO tune PIDs
-    public static final double cRotateP = -1;
-    public static final double cRotateI = -1;
-    public static final double cRotateD = -1;
+    public static final Joystick joystick = new Joystick(0);
+
+    public static final Trigger button3 = new Trigger(() -> joystick.getRawButton(3));
+    public static final Trigger button4 = new Trigger(() -> joystick.getRawButton(4));
+    public static final Trigger button5 = new Trigger(() -> joystick.getRawButton(5));
+    public static final Trigger button6 = new Trigger(() -> joystick.getRawButton(6));
+    public static final Trigger button7 = new Trigger(() -> joystick.getRawButton(7));
+    public static final Trigger button8 = new Trigger(() -> joystick.getRawButton(8));
+    public static final Trigger trigger = new Trigger(joystick::getTrigger);
+
+    public static final int rotateMotor1ID = 1;
+    public static final int rotateMotor2ID = 2;
+    public static final int extendMotorID = 3;
+    public static final int ankleMotorID = 4;
+
+    public static final int shooterMotor1ID = 5;
+    public static final int shooterMotor2ID = 6;
+    public static final int shooterControlMotorID = 7;
+
+    public static final int rotateEncoderID = 0;
+    public static final int extendEncoderID = 1;
+    public static final int ankleEncoderID = 2;
+
+    public static final double cRotateP = 5.5;
+    public static final double cRotateI = 0.2;
+    public static final double cRotateD = 0.2;
+    public static final double cRotateMax = 1;
     public static final double cRotateMin = -1;
-    public static final double cRotateMax = -1;
-    public static final double cRotateDeadband = -1;
+    public static final double cRotateDeadband = 0;
+    public static final double cExtendP = 2;
+    public static final double cExtendI = 0.2;
+    public static final double cExtendD = 0.1;
+    public static final double cExtendMax = 1;
+    public static final double cExtendMin = -1;
+    public static final double cExtendDeadband = 0;
 
-    public static final double cExtensionP = -1;
-    public static final double cExtensionI = -1;
-    public static final double cExtensionD = -1;
-    public static final double cExtensionMin = 0;
-    public static final double cExtensionMax = 1;
-    public static final double cExtensionDeadband = -1;
+    public static final double cAnkleP = 6;
+    public static final double cAnkleI = 0;
+    public static final double cAnkleD = 0;
+    public static final double cAnkleMax = 1;
+    public static final double cAnkleMin = -1;
+    public static final double cAnkleDeadband = 0;
 
-    public static final int cMaxArmEncoderRotation = -1;
-    public static final int cMinArmEncoderRotation = -1;
-    public static final int cMaxArmEncoderExtension = -1;
-    public static final int cMinArmEncoderExtension = -1;
     public static final double cDriveDeadband = 0.15;
     public static final double cTurnDeadband = 0.15;
 

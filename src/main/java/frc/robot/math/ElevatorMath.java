@@ -146,7 +146,7 @@ public class ElevatorMath {
         return newPoint;
     }
 
-    public record ElevatorBoundary(double constraintValue, ElevatorMath.ElevatorBoundary.BoundType boundType, ElevatorMath.ElevatorBoundary.Axis axis) {
+    public record ElevatorBoundary(double constraintValue, BoundType boundType, Axis axis) {
 
         public enum BoundType {
                 MINIMUM,

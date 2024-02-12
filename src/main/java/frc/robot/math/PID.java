@@ -49,6 +49,7 @@ public class PID {
     }
 
     public void setGoal(double setpoint){
+        this.integral = 0;
         this.setpoint = setpoint;
     }
 
