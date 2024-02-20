@@ -14,16 +14,15 @@ import frc.robot.commands.*;
 import frc.robot.commands.TargetSpeakerCommand;
 import frc.robot.commands.TeleopDriveCommand;
 import frc.robot.commands.PathWithStopDistance;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.LocalizationSubsystem;
-import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import static frc.robot.Constants.*;
 
 
 /**
@@ -36,6 +35,8 @@ public class RobotContainer
 {
 
     private final XboxController xbox = new XboxController(1);
+
+    private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
     private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
@@ -96,6 +97,9 @@ public class RobotContainer
 
         new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, Constants.cBotCloseRing3));
 
+        //new Trigger(() -> joystick.getRawButton(2)).whileTrue(new RotateToAngleCommand(Math.toRadians(90), elevatorSubsystem));
+
+        new Trigger(joystick::getTrigger).whileTrue(new RotateAnkleCommand(Math.toRadians(10), elevatorSubsystem));
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }

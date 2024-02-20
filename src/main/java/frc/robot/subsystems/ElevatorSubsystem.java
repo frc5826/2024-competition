@@ -41,9 +41,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         extendMotor.setIdleMode(CANSparkBase.IdleMode.kBrake);
         ankleMotor.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
-        rotateMotor1.setInverted(true);
-        rotateMotor2.setInverted(true);
-        extendMotor.setInverted(true);
+        rotateMotor1.setInverted(false);
+        rotateMotor2.setInverted(false);
+        extendMotor.setInverted(false);
         ankleMotor.setInverted(true);
 
         rotateEncoder = new DutyCycleEncoder(rotateEncoderID);
@@ -77,11 +77,11 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        super.periodic();
+//        super.periodic();
         rotatePID.setGoal(desiredArmRotations);
         extendPID.setGoal(desiredExtensionRotations);
         anklePID.setGoal(desiredAnkleRotations);
-
+//
         setRotateSpeed(Mth.clamp(rotatePID.calculate(), -0.8, 0.8));
         setExtendSpeed(Mth.clamp(extendPID.calculate(), -0.8, 0.1));
         setAnkleSpeed(Mth.clamp(anklePID.calculate(), -0.8, 0.8));
@@ -92,32 +92,30 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void setDesiredExtension(double desiredExtensionMeters){
-        //14cm = 0.454 to -0.84 (-1.294)
-        //23.25cm = 0.454 to -1.73 (-2.184)
-        //31.5cm = 0.454 to -2.16 (-2.614)
-
-        desiredExtensionRotations = (-9.2686 * desiredExtensionMeters) + 0.3799;
+        double desiredExtensionClamped = Mth.clamp(desiredExtensionMeters, 0, 0.5);
+        desiredExtensionRotations = (-9.4316 * desiredExtensionClamped) + 0.01;
 
     }
 
     public void setExtensionHome(){
-        desiredExtensionRotations = 0.546;
+        desiredExtensionRotations = 0.01;
     }
 
     public void setDesiredArmAngle(double armAngleRAD){
-        desiredArmRotations = (0.1502 * armAngleRAD) + 0.6114;
+        double clampedAngle = Mth.clamp(armAngleRAD, 0, Math.toRadians(110));
+        desiredArmRotations = (0.161 * clampedAngle) + 0.143;
     }
 
     public void setArmHome(){
-        desiredArmRotations = 0.61;
+        desiredArmRotations = 0.1439;
     }
 
     public void setDesiredAnkleAngle(double ankleAngleRAD){
-        desiredAnkleRotations = (0.1562 * ankleAngleRAD) + 0.5773;
+        desiredAnkleRotations = (0.1536 * ankleAngleRAD) + 0.5808;
     }
 
     public void setAnkleHome(){
-        desiredAnkleRotations = 0.5773;
+        setDesiredAnkleAngle(Math.toRadians(90));
     }
 
     public void setRotateSpeed(double speed){

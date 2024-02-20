@@ -41,21 +41,21 @@ public final class Constants
     public static final Trigger button8 = new Trigger(() -> joystick.getRawButton(8));
     public static final Trigger trigger = new Trigger(joystick::getTrigger);
 
-    public static final int rotateMotor1ID = 1;
-    public static final int rotateMotor2ID = 2;
-    public static final int extendMotorID = 3;
-    public static final int ankleMotorID = 4;
+    public static final int rotateMotor1ID = 10;
+    public static final int rotateMotor2ID = 11;
+    public static final int extendMotorID = 14;
+    public static final int ankleMotorID = 12;
 
-    public static final int shooterMotor1ID = 5;
-    public static final int shooterMotor2ID = 6;
-    public static final int shooterControlMotorID = 7;
+    public static final int shooterMotor1ID = 15;
+    public static final int shooterMotor2ID = 16;
+    public static final int shooterControlMotorID = 30;
 
     public static final int rotateEncoderID = 0;
     public static final int extendEncoderID = 1;
     public static final int ankleEncoderID = 2;
 
     public static final double cRotateP = 5.5;
-    public static final double cRotateI = 0.2;
+    public static final double cRotateI = 1;
     public static final double cRotateD = 0.2;
     public static final double cRotateMax = 1;
     public static final double cRotateMin = -1;
@@ -67,8 +67,8 @@ public final class Constants
     public static final double cExtendMin = -1;
     public static final double cExtendDeadband = 0;
 
-    public static final double cAnkleP = 6;
-    public static final double cAnkleI = 0;
+    public static final double cAnkleP = 4;
+    public static final double cAnkleI = 0.1;
     public static final double cAnkleD = 0;
     public static final double cAnkleMax = 1;
     public static final double cAnkleMin = -1;
