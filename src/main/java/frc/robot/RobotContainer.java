@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static frc.robot.Constants.*;
 
@@ -97,9 +98,7 @@ public class RobotContainer
 
         new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, Constants.cBotCloseRing3));
 
-        //new Trigger(() -> joystick.getRawButton(2)).whileTrue(new RotateToAngleCommand(Math.toRadians(90), elevatorSubsystem));
-
-        new Trigger(joystick::getTrigger).whileTrue(new RotateAnkleCommand(Math.toRadians(10), elevatorSubsystem));
+        new Trigger(joystick::getTrigger).onTrue(new IntakeSequenceCommandGroup(elevatorSubsystem));
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }

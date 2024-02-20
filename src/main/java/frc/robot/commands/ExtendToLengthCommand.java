@@ -38,7 +38,7 @@ public class ExtendToLengthCommand extends Command {
     @Override
     public boolean isFinished() {
         return Math.abs(elevatorSubsystem.getExtension() - elevatorSubsystem.getDesiredExtensionRotations())
-                < 0.1;
+                < 0.05;
     }
 
     @Override

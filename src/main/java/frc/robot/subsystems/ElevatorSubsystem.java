@@ -84,7 +84,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 //
         setRotateSpeed(Mth.clamp(rotatePID.calculate(), -0.8, 0.8));
         setExtendSpeed(Mth.clamp(extendPID.calculate(), -0.8, 0.1));
-        setAnkleSpeed(Mth.clamp(anklePID.calculate(), -0.8, 0.8));
+        setAnkleSpeed(Mth.clamp(anklePID.calculate(), -0.5, 0.5));
     }
 
     public void setDesiredPosition(Translation2d target){
@@ -93,12 +93,12 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void setDesiredExtension(double desiredExtensionMeters){
         double desiredExtensionClamped = Mth.clamp(desiredExtensionMeters, 0, 0.5);
-        desiredExtensionRotations = (-9.4316 * desiredExtensionClamped) + 0.01;
+        desiredExtensionRotations = (-9.4316 * desiredExtensionClamped) + 0.32;
 
     }
 
     public void setExtensionHome(){
-        desiredExtensionRotations = 0.01;
+        setDesiredExtension(0);
     }
 
     public void setDesiredArmAngle(double armAngleRAD){
