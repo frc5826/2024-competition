@@ -5,22 +5,22 @@ import frc.robot.subsystems.ElevatorSubsystem;
 
 import java.util.Optional;
 
-public class RotateAnkleCommand extends Command {
+public class RotateArmToAngleCommand extends Command {
 
     private Optional<Double> angle;
     private ElevatorSubsystem elevatorSubsystem;
 
-    public RotateAnkleCommand(double angle, ElevatorSubsystem elevatorSubsystem) {
+    public RotateArmToAngleCommand(double angle, ElevatorSubsystem elevatorSubsystem) {
         this.angle = Optional.of(angle);
         this.elevatorSubsystem = elevatorSubsystem;
     }
 
-    public RotateAnkleCommand(Optional<Double> angle, ElevatorSubsystem elevatorSubsystem) {
+    public RotateArmToAngleCommand(Optional<Double> angle, ElevatorSubsystem elevatorSubsystem) {
         this.angle = angle;
         this.elevatorSubsystem = elevatorSubsystem;
     }
 
-    public RotateAnkleCommand(ElevatorSubsystem elevatorSubsystem) {
+    public RotateArmToAngleCommand(ElevatorSubsystem elevatorSubsystem) {
         this.angle = Optional.empty();
         this.elevatorSubsystem = elevatorSubsystem;
     }
@@ -29,15 +29,15 @@ public class RotateAnkleCommand extends Command {
     public void initialize() {
         super.initialize();
         if (angle.isPresent()) {
-            elevatorSubsystem.setDesiredAnkleAngle(angle.get());
+            elevatorSubsystem.setDesiredArmAngle(angle.get());
         } else {
-            elevatorSubsystem.setAnkleHome();
+            elevatorSubsystem.setArmHome();
         }
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(elevatorSubsystem.getAnkle() - elevatorSubsystem.getDesiredAnkleRotations())
+        return Math.abs(elevatorSubsystem.getRotation() - elevatorSubsystem.getDesiredArmRotations())
                 < 0.1;
     }
 

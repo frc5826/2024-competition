@@ -151,4 +151,15 @@ public class ElevatorSubsystem extends SubsystemBase {
         return ankleEncoder.getAbsolutePosition();
     }
 
+    public double getDesiredArmRotations() {
+        return desiredArmRotations;
+    }
+
+    public double getDesiredExtensionRotations() {
+        return desiredExtensionRotations;
+    }
+
+    public double getDesiredAnkleRotations() {
+        return desiredAnkleRotations;
+    }
 }
