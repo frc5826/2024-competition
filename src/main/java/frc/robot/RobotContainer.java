@@ -6,7 +6,9 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -60,43 +62,60 @@ public class RobotContainer
     public RobotContainer()
     {
 
-        new Trigger(xbox::getAButtonPressed)
-                .onTrue(new InstantCommand(() ->
-                {
-                    //Need to be run in this order
-                    swerveSubsystem.zeroGyro();
-                    localizationSubsystem.reset();
-                }));
+        //Button panel bindings //TODO put arm presets n stuff here
+        panelButtons[0].onTrue(null);
+        panelButtons[1].onTrue(null);
+        panelButtons[2].onTrue(null);
+        panelButtons[3].onTrue(null);
+        panelButtons[4].onTrue(null);
+        panelButtons[5].onTrue(null);
+
+        //Xbox button bindings
+
+        new Trigger(xbox::getAButton).whileTrue(new PickupRing(localizationSubsystem, swerveSubsystem));
+
+        new Trigger(xbox::getXButton).whileTrue(localizationSubsystem.buildPath(cPickupPark));
+
+        new Trigger(xbox::getYButton).whileTrue(new PathWithStopDistance(localizationSubsystem, cSpeakerPose, 2.5));
+
+        new Trigger(xbox::getBButton).whileTrue(localizationSubsystem.buildPath(cAmpPark));
+
+        new Trigger(() -> xbox.getPOV() == 0).or(() -> xbox.getPOV() == 180).whileTrue(localizationSubsystem.buildPath(cCenterStagePark));
+
+        new Trigger(() -> xbox.getPOV() == 90).whileTrue(localizationSubsystem.buildPath(cRightStagePark));
+
+        new Trigger(() -> xbox.getPOV() == 270).whileTrue(localizationSubsystem.buildPath(cLeftStagePark));
+
+        //TODO find way to zero gyro that doesnt reset pose
+//        new Trigger(xbox::getAButtonPressed)
+//                .onTrue(new InstantCommand(() ->
+//                {
+//                    //Need to be run in this order
+//                    swerveSubsystem.zeroGyro();
+//                    localizationSubsystem.reset();
+//                }));
+//        new Trigger(()-> xbox.getPOV() == 0).onTrue(
+//                new InstantCommand(() ->
+//                {
+//                    swerveSubsystem.zeroGyro();
+//                    swerveSubsystem.zeroOdometry();
+//                    localizationSubsystem.reset();
+//                }));
 
         //new Trigger(xbox::getYButton).whileTrue(new AutoRings(localizationSubsystem, swerveSubsystem, new Pose2d(2, 0, Rotation2d.fromRadians(0))));
-
-        new Trigger(xbox::getYButton).whileTrue(new AutoCommandGroup(localizationSubsystem, swerveSubsystem, Constants.cTopCloseRing1, Constants.cBotCloseRing3, Constants.cFarRing7));
-
+        //test auto
+        //new Trigger(xbox::getYButton).whileTrue(new AutoCommandGroup(localizationSubsystem, swerveSubsystem, Constants.cTopCloseRing1, Constants.cBotCloseRing3, Constants.cFarRing7));
         //new Trigger(xbox::getXButton).whileTrue(targetSpeakerCommand);
-
-        new Trigger(xbox::getBButton).whileTrue(pickupRingTest);
-
+        //new Trigger(xbox::getBButton).whileTrue(pickupRingTest);
         //all subject to changed keybinds
-        new Trigger(()-> xbox.getPOV() == 0).onTrue(
-                new InstantCommand(() ->
-                {
-                    swerveSubsystem.zeroGyro();
-                    swerveSubsystem.zeroOdometry();
-                    localizationSubsystem.reset();
-                }));
-
-        new Trigger(()-> xbox.getPOV() == 90).whileTrue(
-                localizationSubsystem.buildPath(Constants.cAmpPark));
-
-        new Trigger(()-> xbox.getPOV() == 180).whileTrue(new PathWithStopDistance(localizationSubsystem, Constants.cTopCloseRing1, 1.1));
-
-        new Trigger(()-> xbox.getPOV() == 270).whileTrue(
-                localizationSubsystem.buildPath(Constants.cRightStagePark));
-
-        new Trigger(()-> xbox.getLeftBumper()).whileTrue(new PickupRing(localizationSubsystem, swerveSubsystem));
-
-        new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, Constants.cBotCloseRing3));
-
+        //new Trigger(()-> xbox.getPOV() == 90).whileTrue(
+        //        localizationSubsystem.buildPath(Constants.cAmpPark));
+        //new Trigger(()-> xbox.getPOV() == 180).whileTrue(new PathWithStopDistance(localizationSubsystem, Constants.cTopCloseRing1, 1.1));
+        //new Trigger(()-> xbox.getPOV() == 270).whileTrue(
+        //        localizationSubsystem.buildPath(Constants.cRightStagePark));
+        //pickup ring
+        //new Trigger(()-> xbox.getLeftBumper()).whileTrue(new PickupRing(localizationSubsystem, swerveSubsystem));
+        //new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, Constants.cBotCloseRing3));
         //new Trigger(() -> joystick.getRawButton(2)).whileTrue(new RotateToAngleCommand(Math.toRadians(90), elevatorSubsystem));
 
         new Trigger(joystick::getTrigger).whileTrue(new RotateAnkleCommand(Math.toRadians(10), elevatorSubsystem));

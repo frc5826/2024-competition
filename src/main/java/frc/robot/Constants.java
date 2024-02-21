@@ -78,6 +78,8 @@ public final class Constants
     public static final double cTurnDeadband = 0.15;
 
     public static final Pose2d cSpeakerPark = new Pose2d(1.75, 5.54, Rotation2d.fromDegrees(180));
+    public static final Pose2d cSpeakerPose = new Pose2d(0, 5.55, Rotation2d.fromDegrees(180));
+    public static final Pose2d cPickupPark = new Pose2d(15.25, 1.2, Rotation2d.fromDegrees(-60));
     public static final Pose2d cAmpPark = new Pose2d(1.84, 7.5, Rotation2d.fromDegrees(90));
 
     public static final Pose2d cLeftStagePark = new Pose2d(4.5, 5, Rotation2d.fromDegrees(300));
@@ -98,6 +100,19 @@ public final class Constants
     public static final PIDConstants cDrivePID = new PIDConstants(4.0, 0, 0.5);
 
     public static final double maxVelocity = 3.6; //doesn't make robot faster
+
+
+    public static final Joystick buttonPanel = new Joystick(2);
+    public static final Trigger[] panelButtons;
+
+    static {
+        panelButtons = new Trigger[12];
+
+        for(int i = 0; i < panelButtons.length; i++) {
+            int finalI = i+1;
+            panelButtons[i] = new Trigger(() -> buttonPanel.getRawButton(finalI));
+        }
+    }
 
 
 }
