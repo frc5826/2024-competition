@@ -38,7 +38,7 @@ public class RotateAnkleCommand extends Command {
     @Override
     public boolean isFinished() {
         return Math.abs(elevatorSubsystem.getAnkle() - elevatorSubsystem.getDesiredAnkleRotations())
-                < 0.1;
+                < 0.01;
     }
 
     @Override

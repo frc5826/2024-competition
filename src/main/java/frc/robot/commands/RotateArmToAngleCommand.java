@@ -38,7 +38,7 @@ public class RotateArmToAngleCommand extends Command {
     @Override
     public boolean isFinished() {
         return Math.abs(elevatorSubsystem.getRotation() - elevatorSubsystem.getDesiredArmRotations())
-                < 0.1;
+                < 0.01;
     }
 
     @Override

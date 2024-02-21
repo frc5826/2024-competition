@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static frc.robot.Constants.*;
 
@@ -119,6 +120,27 @@ public class RobotContainer
         //new Trigger(() -> joystick.getRawButton(2)).whileTrue(new RotateToAngleCommand(Math.toRadians(90), elevatorSubsystem));
 
         new Trigger(joystick::getTrigger).whileTrue(new RotateAnkleCommand(Math.toRadians(10), elevatorSubsystem));
+        new Trigger(()-> xbox.getPOV() == 0).onTrue(
+                new InstantCommand(() ->
+                {
+                    swerveSubsystem.zeroGyro();
+                    swerveSubsystem.zeroOdometry();
+                    localizationSubsystem.reset();
+                }));
+
+        new Trigger(()-> xbox.getPOV() == 90).whileTrue(
+                localizationSubsystem.buildPath(Constants.cAmpPark));
+
+        new Trigger(()-> xbox.getPOV() == 180).whileTrue(new PathWithStopDistance(localizationSubsystem, Constants.cTopCloseRing1, 1.1));
+
+        new Trigger(()-> xbox.getPOV() == 270).whileTrue(
+                localizationSubsystem.buildPath(Constants.cRightStagePark));
+
+        new Trigger(()-> xbox.getLeftBumper()).whileTrue(new PickupRing(localizationSubsystem, swerveSubsystem));
+
+        new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, Constants.cBotCloseRing3));
+
+        new Trigger(joystick::getTrigger).onTrue(new IntakeSequenceCommandGroup(elevatorSubsystem));
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }
