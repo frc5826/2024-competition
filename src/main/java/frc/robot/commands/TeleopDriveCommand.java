@@ -25,6 +25,8 @@ public class TeleopDriveCommand extends Command {
     private final DoubleSupplier angleVel;
     private final BooleanSupplier xboxXButton;
 
+    //TODO
+    private final PID targetTurnPID = new PID(1, 0, 0, 6, 0, 0.05, this::getAngleDiff);
     private final PID turnPID = new PID(Constants.cTurnPID, 6, 0, 0.05, this::getAngleDiff);
 
     public TeleopDriveCommand(SwerveSubsystem swerveSubsystem, LocalizationSubsystem localizationSubsystem,
