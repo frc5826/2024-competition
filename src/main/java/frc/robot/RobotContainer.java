@@ -68,7 +68,7 @@ public class RobotContainer
         panelButtons[7].onTrue(null);
         panelButtons[8].onTrue(null);
         panelButtons[9].onTrue(null);
-        panelButtons[10].onTrue(null);
+        panelButtons[10].onTrue(new HomeSequenceCommandGroup(legSubsystem));
         panelButtons[11].onTrue(null);
 
         //Xbox button bindings
@@ -87,7 +87,7 @@ public class RobotContainer
 
         new Trigger(() -> xbox.getPOV() == 270).whileTrue(localizationSubsystem.buildPath(cLeftStagePark));
 
-        //TODO find way to zero gyro that doesnt reset pose
+        //TODO find way to zero gyro that doesn't reset pose TODO destroy
 //        new Trigger(xbox::getAButtonPressed)
 //                .onTrue(new InstantCommand(() ->
 //                {
