@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.math.ElevatorMath;
 import frc.robot.math.Mth;
 import frc.robot.math.PID;
 
@@ -16,9 +15,7 @@ import static frc.robot.Constants.*;
 
 public class LegSubsystem extends SubsystemBase {
 
-    ElevatorMath elevatorMath;
-
-    private CANSparkMax rotateMotor1, rotateMotor2, extendMotor, ankleMotor;
+    private CANSparkMax rotateMotor, rotateMotorSecondary, extendMotor, ankleMotor;
 
     private DutyCycleEncoder rotateEncoder, extendEncoder, ankleEncoder;
 
@@ -29,22 +26,27 @@ public class LegSubsystem extends SubsystemBase {
     public LegSubsystem() {
         ShuffleboardTab tab = Shuffleboard.getTab("ARM");
 
-        elevatorMath = new ElevatorMath(cArmInit, cArmMinLength, cArmMaxLength, cArmOrigin, cElevatorBoundaries);
-
-        rotateMotor1 = new CANSparkMax(rotateMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
-        rotateMotor2 = new CANSparkMax(rotateMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
+        rotateMotor = new CANSparkMax(rotateMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
+        rotateMotorSecondary = new CANSparkMax(rotateMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
         extendMotor = new CANSparkMax(extendMotorID, CANSparkLowLevel.MotorType.kBrushless);
         ankleMotor = new CANSparkMax(ankleMotorID, CANSparkLowLevel.MotorType.kBrushless);
 
-        rotateMotor1.setIdleMode(CANSparkBase.IdleMode.kBrake);
-        rotateMotor2.setIdleMode(CANSparkBase.IdleMode.kBrake);
+        rotateMotor.setIdleMode(CANSparkBase.IdleMode.kBrake);
+        rotateMotorSecondary.setIdleMode(CANSparkBase.IdleMode.kBrake);
         extendMotor.setIdleMode(CANSparkBase.IdleMode.kBrake);
         ankleMotor.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
-        rotateMotor1.setInverted(false);
-        rotateMotor2.setInverted(false);
+        rotateMotor.setInverted(false);
+        rotateMotorSecondary.setInverted(false);
         extendMotor.setInverted(false);
         ankleMotor.setInverted(true);
+
+        rotateMotor.setSmartCurrentLimit(40);
+        rotateMotorSecondary.setSmartCurrentLimit(40);
+        extendMotor.setSmartCurrentLimit(40);
+        ankleMotor.setSmartCurrentLimit(40);
+
+        rotateMotorSecondary.follow(rotateMotor);
 
         rotateEncoder = new DutyCycleEncoder(rotateEncoderID);
         extendEncoder = new DutyCycleEncoder(extendEncoderID);
@@ -77,19 +79,16 @@ public class LegSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-//        super.periodic();
+        super.periodic();
         rotatePID.setGoal(desiredArmRotations);
         extendPID.setGoal(desiredExtensionRotations);
         anklePID.setGoal(desiredAnkleRotations);
-//
+
         setRotateSpeed(Mth.clamp(rotatePID.calculate(), -0.8, 0.8));
         setExtendSpeed(Mth.clamp(extendPID.calculate(), -0.8, 0.1));
         setAnkleSpeed(Mth.clamp(anklePID.calculate(), -0.2, 0.3));
     }
 
-    public void setDesiredPosition(Translation2d target){
-        elevatorMath.setTarget(target);
-    }
 
     public void setDesiredExtension(double desiredExtensionMeters){
         double desiredExtensionClamped = Mth.clamp(desiredExtensionMeters, 0, 0.5);
@@ -119,8 +118,7 @@ public class LegSubsystem extends SubsystemBase {
     }
 
     public void setRotateSpeed(double speed){
-        rotateMotor1.set(speed);
-        rotateMotor2.set(speed);
+        rotateMotor.set(speed);
     }
 
     public void setExtendSpeed(double speed){
