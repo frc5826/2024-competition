@@ -1,27 +1,27 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.LegSubsystem;
 
 import java.util.Optional;
 
 public class ExtendToLengthCommand extends Command {
 
-    private ElevatorSubsystem elevatorSubsystem;
+    private LegSubsystem legSubsystem;
     private Optional<Double> extensionMeters;
 
-    public ExtendToLengthCommand(double extensionMeters, ElevatorSubsystem elevatorSubsystem) {
-        this.elevatorSubsystem = elevatorSubsystem;
+    public ExtendToLengthCommand(double extensionMeters, LegSubsystem legSubsystem) {
+        this.legSubsystem = legSubsystem;
         this.extensionMeters = Optional.of(extensionMeters);
     }
 
-    public ExtendToLengthCommand(Optional<Double> extensionMeters, ElevatorSubsystem elevatorSubsystem) {
-        this.elevatorSubsystem = elevatorSubsystem;
+    public ExtendToLengthCommand(Optional<Double> extensionMeters, LegSubsystem legSubsystem) {
+        this.legSubsystem = legSubsystem;
         this.extensionMeters = extensionMeters;
     }
 
-    public ExtendToLengthCommand(ElevatorSubsystem elevatorSubsystem) {
-        this.elevatorSubsystem = elevatorSubsystem;
+    public ExtendToLengthCommand(LegSubsystem legSubsystem) {
+        this.legSubsystem = legSubsystem;
         this.extensionMeters = Optional.empty();
     }
 
@@ -29,15 +29,15 @@ public class ExtendToLengthCommand extends Command {
     public void initialize() {
         super.initialize();
         if (extensionMeters.isPresent()){
-            elevatorSubsystem.setDesiredExtension(extensionMeters.get());
+            legSubsystem.setDesiredExtension(extensionMeters.get());
         } else {
-            elevatorSubsystem.setExtensionHome();
+            legSubsystem.setExtensionHome();
         }
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(elevatorSubsystem.getExtension() - elevatorSubsystem.getDesiredExtensionRotations())
+        return Math.abs(legSubsystem.getExtension() - legSubsystem.getDesiredExtensionRotations())
                 < 0.05;
     }
 

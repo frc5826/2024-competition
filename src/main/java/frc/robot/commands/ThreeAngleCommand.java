@@ -1,20 +1,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.LegSubsystem;
 
 import java.util.Optional;
 
 public class ThreeAngleCommand extends Command {
 
-    private ElevatorSubsystem elevatorSubsystem;
+    private LegSubsystem legSubsystem;
 
     private Optional<Double> armAngle;
     private Optional<Double> armLength;
     private Optional<Double> ankleAngle;
 
-    public ThreeAngleCommand(ElevatorSubsystem elevatorSubsystem, Optional<Double> armAngle, Optional<Double> armLength, Optional<Double> ankleAngle) {
-        this.elevatorSubsystem = elevatorSubsystem;
+    public ThreeAngleCommand(LegSubsystem legSubsystem, Optional<Double> armAngle, Optional<Double> armLength, Optional<Double> ankleAngle) {
+        this.legSubsystem = legSubsystem;
         this.armAngle = armAngle;
         this.armLength = armLength;
         this.ankleAngle = ankleAngle;
@@ -23,8 +23,8 @@ public class ThreeAngleCommand extends Command {
     @Override
     public void initialize() {
         super.initialize();
-        armAngle.ifPresent(aDouble -> elevatorSubsystem.setDesiredArmAngle(aDouble));
-        armLength.ifPresent(aDouble -> elevatorSubsystem.setDesiredExtension(aDouble));
-        ankleAngle.ifPresent(aDouble -> elevatorSubsystem.setDesiredAnkleAngle(aDouble));
+        armAngle.ifPresent(aDouble -> legSubsystem.setDesiredArmAngle(aDouble));
+        armLength.ifPresent(aDouble -> legSubsystem.setDesiredExtension(aDouble));
+        ankleAngle.ifPresent(aDouble -> legSubsystem.setDesiredAnkleAngle(aDouble));
     }
 }

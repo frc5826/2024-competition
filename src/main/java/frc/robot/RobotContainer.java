@@ -5,12 +5,7 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.CANSparkMax;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -19,13 +14,10 @@ import frc.robot.commands.TargetSpeakerCommand;
 import frc.robot.commands.TeleopDriveCommand;
 import frc.robot.commands.PathWithStopDistance;
 import frc.robot.subsystems.*;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Optional;
 
 import static frc.robot.Constants.*;
 
@@ -41,7 +33,7 @@ public class RobotContainer
 
     private final XboxController xbox = new XboxController(1);
 
-    private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    private final LegSubsystem legSubsystem = new LegSubsystem();
 
     private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
@@ -72,6 +64,12 @@ public class RobotContainer
         panelButtons[3].onTrue(null);
         panelButtons[4].onTrue(null);
         panelButtons[5].onTrue(null);
+        panelButtons[6].onTrue(null);
+        panelButtons[7].onTrue(null);
+        panelButtons[8].onTrue(null);
+        panelButtons[9].onTrue(null);
+        panelButtons[10].onTrue(null);
+        panelButtons[11].onTrue(null);
 
         //Xbox button bindings
 
@@ -121,7 +119,7 @@ public class RobotContainer
         //new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, Constants.cBotCloseRing3));
         //new Trigger(() -> joystick.getRawButton(2)).whileTrue(new RotateToAngleCommand(Math.toRadians(90), elevatorSubsystem));
 
-        new Trigger(joystick::getTrigger).whileTrue(new RotateAnkleCommand(Math.toRadians(10), elevatorSubsystem));
+        new Trigger(joystick::getTrigger).whileTrue(new RotateAnkleCommand(Math.toRadians(10), legSubsystem));
         new Trigger(()-> xbox.getPOV() == 0).onTrue(
                 new InstantCommand(() ->
                 {
@@ -142,8 +140,8 @@ public class RobotContainer
 
         new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, Constants.cBotCloseRing3));
 
-        new Trigger(joystick::getTrigger).onTrue(new IntakeSequenceCommandGroup(elevatorSubsystem));
-        new Trigger(() -> joystick.getRawButton(2)).onTrue(new HomeSequenceCommandGroup(elevatorSubsystem));
+        new Trigger(joystick::getTrigger).onTrue(new IntakeSequenceCommandGroup(legSubsystem));
+        new Trigger(() -> joystick.getRawButton(2)).onTrue(new HomeSequenceCommandGroup(legSubsystem));
         new Trigger(() -> joystick.getRawButton(3)).whileTrue(new ShooterCommand(shooterSubsystem, -0.5, ShooterCommand.ShooterType.POWER));
         new Trigger(() -> joystick.getRawButton(4)).whileTrue(new ShooterCommand(shooterSubsystem, -0.5, ShooterCommand.ShooterType.CONTROL));
         new Trigger(() -> joystick.getRawButton(5)).whileTrue(new ShooterCommand(shooterSubsystem, 0.5, ShooterCommand.ShooterType.POWER));

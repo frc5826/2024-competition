@@ -14,7 +14,7 @@ import frc.robot.math.PID;
 
 import static frc.robot.Constants.*;
 
-public class ElevatorSubsystem extends SubsystemBase {
+public class LegSubsystem extends SubsystemBase {
 
     ElevatorMath elevatorMath;
 
@@ -26,7 +26,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private double desiredExtensionRotations, desiredArmRotations, desiredAnkleRotations;
 
-    public ElevatorSubsystem() {
+    public LegSubsystem() {
         ShuffleboardTab tab = Shuffleboard.getTab("ARM");
 
         elevatorMath = new ElevatorMath(cArmInit, cArmMinLength, cArmMaxLength, cArmOrigin, cElevatorBoundaries);

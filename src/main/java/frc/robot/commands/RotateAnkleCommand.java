@@ -1,43 +1,43 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.LegSubsystem;
 
 import java.util.Optional;
 
 public class RotateAnkleCommand extends Command {
 
     private Optional<Double> angle;
-    private ElevatorSubsystem elevatorSubsystem;
+    private LegSubsystem legSubsystem;
 
-    public RotateAnkleCommand(double angle, ElevatorSubsystem elevatorSubsystem) {
+    public RotateAnkleCommand(double angle, LegSubsystem legSubsystem) {
         this.angle = Optional.of(angle);
-        this.elevatorSubsystem = elevatorSubsystem;
+        this.legSubsystem = legSubsystem;
     }
 
-    public RotateAnkleCommand(Optional<Double> angle, ElevatorSubsystem elevatorSubsystem) {
+    public RotateAnkleCommand(Optional<Double> angle, LegSubsystem legSubsystem) {
         this.angle = angle;
-        this.elevatorSubsystem = elevatorSubsystem;
+        this.legSubsystem = legSubsystem;
     }
 
-    public RotateAnkleCommand(ElevatorSubsystem elevatorSubsystem) {
+    public RotateAnkleCommand(LegSubsystem legSubsystem) {
         this.angle = Optional.empty();
-        this.elevatorSubsystem = elevatorSubsystem;
+        this.legSubsystem = legSubsystem;
     }
 
     @Override
     public void initialize() {
         super.initialize();
         if (angle.isPresent()) {
-            elevatorSubsystem.setDesiredAnkleAngle(angle.get());
+            legSubsystem.setDesiredAnkleAngle(angle.get());
         } else {
-            elevatorSubsystem.setAnkleHome();
+            legSubsystem.setAnkleHome();
         }
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(elevatorSubsystem.getAnkle() - elevatorSubsystem.getDesiredAnkleRotations())
+        return Math.abs(legSubsystem.getAnkle() - legSubsystem.getDesiredAnkleRotations())
                 < 0.01;
     }
 
