@@ -10,7 +10,6 @@ import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.math.BetterArrayList;
-import frc.robot.math.ElevatorMath;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -23,23 +22,7 @@ import frc.robot.math.ElevatorMath;
 public final class Constants
 {
 
-    public static final double cArmMinLength = 0.43;
-    public static final double cArmMaxLength = 1;
-    public static final Translation2d cArmOrigin = new Translation2d(0, 0);
-    public static final BetterArrayList<ElevatorMath.ElevatorBoundary> cElevatorBoundaries = new BetterArrayList<>();
-
-    //TODO FIX BEFORE RUNNING
-    public static final Translation2d cArmInit = new Translation2d(1, 1);
-
     public static final Joystick joystick = new Joystick(0);
-
-    public static final Trigger button3 = new Trigger(() -> joystick.getRawButton(3));
-    public static final Trigger button4 = new Trigger(() -> joystick.getRawButton(4));
-    public static final Trigger button5 = new Trigger(() -> joystick.getRawButton(5));
-    public static final Trigger button6 = new Trigger(() -> joystick.getRawButton(6));
-    public static final Trigger button7 = new Trigger(() -> joystick.getRawButton(7));
-    public static final Trigger button8 = new Trigger(() -> joystick.getRawButton(8));
-    public static final Trigger trigger = new Trigger(joystick::getTrigger);
 
     public static final int rotateMotor1ID = 10;
     public static final int rotateMotor2ID = 11;
