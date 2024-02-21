@@ -5,6 +5,8 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkLowLevel;
+import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
@@ -55,7 +57,7 @@ public class RobotContainer
 
     private final PickupRingTest pickupRingTest = new PickupRingTest(visionSubsystem, swerveSubsystem, localizationSubsystem);
 
-    
+    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
@@ -99,6 +101,11 @@ public class RobotContainer
         new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, Constants.cBotCloseRing3));
 
         new Trigger(joystick::getTrigger).onTrue(new IntakeSequenceCommandGroup(elevatorSubsystem));
+        new Trigger(() -> joystick.getRawButton(2)).onTrue(new HomeSequenceCommandGroup(elevatorSubsystem));
+        new Trigger(() -> joystick.getRawButton(3)).whileTrue(new ShooterCommand(shooterSubsystem, -0.5, ShooterCommand.ShooterType.POWER));
+        new Trigger(() -> joystick.getRawButton(4)).whileTrue(new ShooterCommand(shooterSubsystem, -0.5, ShooterCommand.ShooterType.CONTROL));
+        new Trigger(() -> joystick.getRawButton(5)).whileTrue(new ShooterCommand(shooterSubsystem, 0.5, ShooterCommand.ShooterType.POWER));
+        new Trigger(() -> joystick.getRawButton(6)).whileTrue(new ShooterCommand(shooterSubsystem, 0.5, ShooterCommand.ShooterType.CONTROL));
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }

@@ -54,6 +54,8 @@ public final class Constants
     public static final int extendEncoderID = 1;
     public static final int ankleEncoderID = 2;
 
+    public static final int beamBreakID = 23;
+
     public static final double cRotateP = 5.5;
     public static final double cRotateI = 1;
     public static final double cRotateD = 0.2;

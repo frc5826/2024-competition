@@ -84,7 +84,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 //
         setRotateSpeed(Mth.clamp(rotatePID.calculate(), -0.8, 0.8));
         setExtendSpeed(Mth.clamp(extendPID.calculate(), -0.8, 0.1));
-        setAnkleSpeed(Mth.clamp(anklePID.calculate(), -0.5, 0.5));
+        setAnkleSpeed(Mth.clamp(anklePID.calculate(), -0.2, 0.3));
     }
 
     public void setDesiredPosition(Translation2d target){
@@ -115,7 +115,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void setAnkleHome(){
-        setDesiredAnkleAngle(Math.toRadians(90));
+        setDesiredAnkleAngle(Math.toRadians(100));
     }
 
     public void setRotateSpeed(double speed){

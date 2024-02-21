@@ -7,20 +7,22 @@ import static frc.robot.Constants.*;
 
 public class ShooterCommand extends Command {
 
-    ShooterSubsystem shooterSubsystem;
-    ShooterType shooterType;
+    private ShooterSubsystem shooterSubsystem;
+    private ShooterType shooterType;
+    private double speed;
 
-    public ShooterCommand(ShooterSubsystem shooterSubsystem, ShooterType shooterType) {
+    public ShooterCommand(ShooterSubsystem shooterSubsystem, double speed ,ShooterType shooterType) {
         this.shooterSubsystem = shooterSubsystem;
         this.shooterType = shooterType;
+        this.speed = speed;
     }
 
     @Override
-    public void execute() {
-        super.execute();
+    public void initialize() {
+        super.initialize();
         switch (shooterType){
-            case POWER -> shooterSubsystem.setShooterSpeed(joystick.getRawAxis(3));
-            case CONTROL -> shooterSubsystem.setShooterControlSpeed(joystick.getRawAxis(3));
+            case POWER -> shooterSubsystem.setShooterSpeed(speed);
+            case CONTROL -> shooterSubsystem.setShooterControlSpeed(speed);
         }
     }
 
