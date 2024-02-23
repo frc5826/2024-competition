@@ -109,12 +109,13 @@ public class LegSubsystem extends SubsystemBase {
         desiredArmRotations = 0.1439;
     }
 
+    //TODO add range
     public void setDesiredAnkleAngle(double ankleAngleRAD){
         desiredAnkleRotations = (0.1536 * ankleAngleRAD) + 0.5808;
     }
 
     public void setAnkleHome(){
-        setDesiredAnkleAngle(Math.toRadians(100));
+        setDesiredAnkleAngle(Math.toRadians(120));
     }
 
     public void setRotateSpeed(double speed){

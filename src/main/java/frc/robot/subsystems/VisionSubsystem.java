@@ -37,11 +37,11 @@ public class VisionSubsystem extends SubsystemBase
                 new RobotCamera(new Translation3d(.33,-.08,.23), new Rotation3d(0,Math.PI / 6,0), "beta-studio", true),
                 frontCamera,
                 new RobotCamera(new Translation3d(-.34,.22,.23), new Rotation3d(0,-Math.PI / 6,Math.PI), "gamma-studio", true),
-                new RobotCamera(new Translation3d(-.34,-.22,.23), new Rotation3d(0,0,-Math.PI), "gamma-3000", false),
+                new RobotCamera(new Translation3d(-.34,-.22,.23), new Rotation3d(0,0,-Math.PI), "gamma-3000", false)
 //                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-3000", false),
 //                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-studio", true),
-                new RobotCamera(new Translation3d(0, .34, .23), new Rotation3d(0, 0, -Math.PI / 2), "alpha-3000", false),
-                new RobotCamera(new Translation3d(0, -.34, .23), new Rotation3d(0, 0, Math.PI / 2), "alpha-studio", false)
+//                new RobotCamera(new Translation3d(0, .34, .23), new Rotation3d(0, 0, -Math.PI / 2), "alpha-3000", false),
+//                new RobotCamera(new Translation3d(0, -.34, .23), new Rotation3d(0, 0, Math.PI / 2), "alpha-studio", false)
         );
 
     }

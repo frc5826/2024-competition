@@ -27,13 +27,18 @@ public class ShooterCommand extends Command {
     }
 
     @Override
-    public void end(boolean interrupted) {
-        super.end(interrupted);
-        switch (shooterType){
-            case POWER -> shooterSubsystem.setShooterSpeed(0);
-            case CONTROL -> shooterSubsystem.setShooterControlSpeed(0);
-        }
+    public boolean isFinished() {
+        return true;
     }
+
+    //    @Override
+//    public void end(boolean interrupted) {
+//        super.end(interrupted);
+//        switch (shooterType){
+//            case POWER -> shooterSubsystem.setShooterSpeed(0);
+//            case CONTROL -> shooterSubsystem.setShooterControlSpeed(0);
+//        }
+//    }
 
     public enum ShooterType{
         POWER,

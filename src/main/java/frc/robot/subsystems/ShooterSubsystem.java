@@ -31,10 +31,11 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterMotor1.setInverted(false);
         shooterMotor2.setInverted(true);
 
-
         shooterControlMotor = new WPI_TalonSRX(shooterControlMotorID);
 
         shooterControlMotor.setNeutralMode(NeutralMode.Brake);
+        shooterControlMotor.setInverted(true);
+
 
         beamBreak = new DigitalInput(beamBreakID);
 
@@ -44,6 +45,18 @@ public class ShooterSubsystem extends SubsystemBase {
     public void setShooterSpeed(double speed){
         shooterMotor1.set(speed);
         shooterMotor2.set(speed);
+    }
+
+    public CANSparkMax getShooterMotor1() {
+        return shooterMotor1;
+    }
+
+    public CANSparkMax getShooterMotor2() {
+        return shooterMotor2;
+    }
+
+    public WPI_TalonSRX getShooterControlMotor() {
+        return shooterControlMotor;
     }
 
     public void setShooterControlSpeed(double speed){

@@ -58,18 +58,18 @@ public class RobotContainer
     {
 
         //Button panel bindings //TODO put arm presets n stuff here
-        panelButtons[0].onTrue(null);
-        panelButtons[1].onTrue(null);
-        panelButtons[2].onTrue(null);
-        panelButtons[3].onTrue(null);
-        panelButtons[4].onTrue(null);
-        panelButtons[5].onTrue(null);
-        panelButtons[6].onTrue(null);
-        panelButtons[7].onTrue(null);
-        panelButtons[8].onTrue(null);
-        panelButtons[9].onTrue(null);
+        panelButtons[0].onTrue(new NoteHookCommand(shooterSubsystem));
+//        panelButtons[1].onTrue(null);
+        panelButtons[2].onTrue(new NoteLoadCommand(shooterSubsystem));
+//        panelButtons[3].onTrue(null);
+//        panelButtons[4].onTrue(null);
+//        panelButtons[5].onTrue(null);
+//        panelButtons[6].onTrue(null);
+//        panelButtons[7].onTrue(null);
+//        panelButtons[8].onTrue(null);
+        panelButtons[9].onTrue(new NoteShootCommandGroup(shooterSubsystem));
         panelButtons[10].onTrue(new HomeSequenceCommandGroup(legSubsystem));
-        panelButtons[11].onTrue(null);
+        panelButtons[11].onTrue(new NotePickupFullCommandGroup(legSubsystem, shooterSubsystem));
 
         //Xbox button bindings
 
@@ -119,7 +119,6 @@ public class RobotContainer
         //new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, Constants.cBotCloseRing3));
         //new Trigger(() -> joystick.getRawButton(2)).whileTrue(new RotateToAngleCommand(Math.toRadians(90), elevatorSubsystem));
 
-        new Trigger(joystick::getTrigger).whileTrue(new RotateAnkleCommand(Math.toRadians(10), legSubsystem));
         new Trigger(()-> xbox.getPOV() == 0).onTrue(
                 new InstantCommand(() ->
                 {
@@ -140,12 +139,8 @@ public class RobotContainer
 
         new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, Constants.cBotCloseRing3));
 
-        new Trigger(joystick::getTrigger).onTrue(new IntakeSequenceCommandGroup(legSubsystem));
-        new Trigger(() -> joystick.getRawButton(2)).onTrue(new HomeSequenceCommandGroup(legSubsystem));
-        new Trigger(() -> joystick.getRawButton(3)).whileTrue(new ShooterCommand(shooterSubsystem, -0.5, ShooterCommand.ShooterType.POWER));
-        new Trigger(() -> joystick.getRawButton(4)).whileTrue(new ShooterCommand(shooterSubsystem, -0.5, ShooterCommand.ShooterType.CONTROL));
-        new Trigger(() -> joystick.getRawButton(5)).whileTrue(new ShooterCommand(shooterSubsystem, 0.5, ShooterCommand.ShooterType.POWER));
-        new Trigger(() -> joystick.getRawButton(6)).whileTrue(new ShooterCommand(shooterSubsystem, 0.5, ShooterCommand.ShooterType.CONTROL));
+        new Trigger(() -> joystick.getRawButton(7)).whileTrue(new IntakeTestCommand(shooterSubsystem, 1));
+        new Trigger(() -> joystick.getRawButton(8)).whileTrue(new IntakeTestCommand(shooterSubsystem, -1));
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }

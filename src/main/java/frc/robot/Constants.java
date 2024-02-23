@@ -37,7 +37,7 @@ public final class Constants
     public static final int extendEncoderID = 1;
     public static final int ankleEncoderID = 2;
 
-    public static final int beamBreakID = 23;
+    public static final int beamBreakID = 3;
 
     public static final double cRotateP = 5.5;
     public static final double cRotateI = 1;
@@ -87,7 +87,7 @@ public final class Constants
     public static final double maxVelocity = 3.6; //doesn't make robot faster
 
 
-    public static final Joystick buttonPanel = new Joystick(2);
+    public static final Joystick buttonPanel = new Joystick(0);
     public static final Trigger[] panelButtons;
 
     static {
