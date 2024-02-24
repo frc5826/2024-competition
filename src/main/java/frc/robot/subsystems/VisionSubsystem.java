@@ -31,13 +31,13 @@ public class VisionSubsystem extends SubsystemBase
 
     /** Creates a new ExampleSubsystem. */
     public VisionSubsystem() {
-        frontCamera = new RobotCamera(new Translation3d(.33,.08,.23), new Rotation3d(0,-Math.PI / 18,0), "beta-3000", false);
+        frontCamera = new RobotCamera(new Translation3d(.3225,-.2525,.225), new Rotation3d(0,0,0), "beta-3000", false);
 
         cameras = List.of(
-                new RobotCamera(new Translation3d(.33,-.08,.23), new Rotation3d(0,Math.PI / 6,0), "beta-studio", true),
+                new RobotCamera(new Translation3d(.2425, -.3075,.27), new Rotation3d(Math.PI,Math.PI / 12,0), "beta-studio", true),
                 frontCamera,
-                new RobotCamera(new Translation3d(-.34,.22,.23), new Rotation3d(0,-Math.PI / 6,Math.PI), "gamma-studio", true),
-                new RobotCamera(new Translation3d(-.34,-.22,.23), new Rotation3d(0,0,-Math.PI), "gamma-3000", false)
+                new RobotCamera(new Translation3d(.3025,.2575,.27), new Rotation3d(Math.PI,Math.PI / 12, Math.PI), "gamma-studio", true),
+                new RobotCamera(new Translation3d(-.3225,.3075,.225), new Rotation3d(0,0,Math.PI), "gamma-3000", false)
 //                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-3000", false),
 //                new RobotCamera(new Translation3d(0,0,0), new Rotation3d(0,0,0), "delta-studio", true),
 //                new RobotCamera(new Translation3d(0, .34, .23), new Rotation3d(0, 0, -Math.PI / 2), "alpha-3000", false),

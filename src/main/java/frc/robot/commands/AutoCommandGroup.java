@@ -32,7 +32,7 @@ public class AutoCommandGroup extends SequentialCommandGroup {
             Pose2d ring = rings[i];
             if (ring != Constants.nothingPose) {
                 addCommands(
-                        new PathWithStopDistance(localizationSubsystem, ring, 1.25)
+                        new PathWithStopDistance(localizationSubsystem, ring, 1.25, false)
                                 .onlyIf(() -> ring.getTranslation().getDistance(localizationSubsystem.getCurrentPose().getTranslation()) > 2),
                         new TurnToCommand(localizationSubsystem, swerveSubsystem, ring),
                         new PickupRing(localizationSubsystem, swerveSubsystem).finallyDo( () -> {
