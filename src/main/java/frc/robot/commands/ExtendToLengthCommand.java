@@ -1,27 +1,27 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.LegSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 
 import java.util.Optional;
 
 public class ExtendToLengthCommand extends Command {
 
-    private LegSubsystem legSubsystem;
+    private ArmSubsystem armSubsystem;
     private Optional<Double> extensionMeters;
 
-    public ExtendToLengthCommand(double extensionMeters, LegSubsystem legSubsystem) {
-        this.legSubsystem = legSubsystem;
+    public ExtendToLengthCommand(double extensionMeters, ArmSubsystem armSubsystem) {
+        this.armSubsystem = armSubsystem;
         this.extensionMeters = Optional.of(extensionMeters);
     }
 
-    public ExtendToLengthCommand(Optional<Double> extensionMeters, LegSubsystem legSubsystem) {
-        this.legSubsystem = legSubsystem;
+    public ExtendToLengthCommand(Optional<Double> extensionMeters, ArmSubsystem armSubsystem) {
+        this.armSubsystem = armSubsystem;
         this.extensionMeters = extensionMeters;
     }
 
-    public ExtendToLengthCommand(LegSubsystem legSubsystem) {
-        this.legSubsystem = legSubsystem;
+    public ExtendToLengthCommand(ArmSubsystem armSubsystem) {
+        this.armSubsystem = armSubsystem;
         this.extensionMeters = Optional.empty();
     }
 
@@ -29,15 +29,15 @@ public class ExtendToLengthCommand extends Command {
     public void initialize() {
         super.initialize();
         if (extensionMeters.isPresent()){
-            legSubsystem.setDesiredExtension(extensionMeters.get());
+            armSubsystem.setDesiredExtension(extensionMeters.get());
         } else {
-            legSubsystem.setExtensionHome();
+            armSubsystem.setExtensionHome();
         }
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(legSubsystem.getExtension() - legSubsystem.getDesiredExtensionRotations())
+        return Math.abs(armSubsystem.getExtension() - armSubsystem.getDesiredExtensionRotations())
                 < 0.05;
     }
 

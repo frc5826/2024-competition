@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -43,7 +42,7 @@ public class RobotContainer
 
     private final XboxController xbox = new XboxController(1);
 
-    private final LegSubsystem legSubsystem = new LegSubsystem();
+    private final ArmSubsystem armSubsystem = new ArmSubsystem();
 
     private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
@@ -62,7 +61,7 @@ public class RobotContainer
     private final PickupRingTest pickupRingTest = new PickupRingTest(visionSubsystem, swerveSubsystem, localizationSubsystem);
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    private final EsclatorSubsystem esclatorSubsystem = new EsclatorSubsystem();
+    private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
     private SendableChooser<Pose2d>[] autoOptions;
     private int autoRings = 0;
@@ -71,23 +70,23 @@ public class RobotContainer
     private double endY;
     private double endRotation;
     private final Field2d field = new Field2d();
-    
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
 
         //Button panel bindings //TODO put arm presets n stuff here
-        panelButtons[0].whileTrue(new ClimberCommand(esclatorSubsystem, -0.75));
-        panelButtons[1].onTrue(new RotateArmToAngleCommand(Math.toRadians(110), legSubsystem));
-        panelButtons[2].whileTrue(new ClimberCommand(esclatorSubsystem, 0.75));
+        panelButtons[0].whileTrue(new ClimberCommand(climberSubsystem, -0.75));
+        panelButtons[1].onTrue(new RotateArmToAngleCommand(Math.toRadians(110), armSubsystem));
+        panelButtons[2].whileTrue(new ClimberCommand(climberSubsystem, 0.75));
         panelButtons[3].onTrue(new NoteShootAmpCommandGroup(shooterSubsystem));
 //        panelButtons[4].onTrue(null);
 //        panelButtons[5].onTrue(null);
-        panelButtons[6].onTrue(new NotePickupFullCommandGroup(legSubsystem, shooterSubsystem));
-        panelButtons[7].onTrue(new AimSpeakerCommandGroup(legSubsystem));
+        panelButtons[6].onTrue(new NotePickupFullCommandGroup(armSubsystem, shooterSubsystem));
+        panelButtons[7].onTrue(new AimSpeakerCommandGroup(armSubsystem));
 //        panelButtons[8].onTrue(null);
-        panelButtons[9].onTrue(new AimAmpCommandGroup(legSubsystem));
-        panelButtons[10].onTrue(new HomeSequenceCommandGroup(legSubsystem));
+        panelButtons[9].onTrue(new AimAmpCommandGroup(armSubsystem));
+        panelButtons[10].onTrue(new HomeSequenceCommandGroup(armSubsystem));
         panelButtons[11].onTrue(new NoteShootCommandGroup(shooterSubsystem));
 
         //Xbox button bindings

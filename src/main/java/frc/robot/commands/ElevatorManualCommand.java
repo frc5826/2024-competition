@@ -1,17 +1,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.LegSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 
 import static frc.robot.Constants.*;
 
 public class ElevatorManualCommand extends Command {
 
-    LegSubsystem legSubsystem;
+    ArmSubsystem armSubsystem;
     ArmControlMode armControlMode;
 
-    public ElevatorManualCommand(LegSubsystem legSubsystem, ArmControlMode armControlMode) {
-        this.legSubsystem = legSubsystem;
+    public ElevatorManualCommand(ArmSubsystem armSubsystem, ArmControlMode armControlMode) {
+        this.armSubsystem = armSubsystem;
         this.armControlMode = armControlMode;
     }
 
@@ -19,9 +19,9 @@ public class ElevatorManualCommand extends Command {
     public void execute() {
         super.execute();
         switch (armControlMode){
-            case ROTATE -> legSubsystem.setRotateSpeed(joystick.getRawAxis(3));
-            case EXTEND -> legSubsystem.setExtendSpeed(joystick.getRawAxis(3));
-            case ANKLE -> legSubsystem.setAnkleSpeed(joystick.getRawAxis(3));
+            case ROTATE -> armSubsystem.setRotateSpeed(joystick.getRawAxis(3));
+            case EXTEND -> armSubsystem.setExtendSpeed(joystick.getRawAxis(3));
+            case ANKLE -> armSubsystem.setWristSpeed(joystick.getRawAxis(3));
         }
     }
 
@@ -29,9 +29,9 @@ public class ElevatorManualCommand extends Command {
     public void end(boolean interrupted) {
         super.end(interrupted);
         switch (armControlMode){
-            case ROTATE -> legSubsystem.setRotateSpeed(0);
-            case EXTEND -> legSubsystem.setExtendSpeed(0);
-            case ANKLE -> legSubsystem.setAnkleSpeed(0);
+            case ROTATE -> armSubsystem.setRotateSpeed(0);
+            case EXTEND -> armSubsystem.setExtendSpeed(0);
+            case ANKLE -> armSubsystem.setWristSpeed(0);
         }
     }
 

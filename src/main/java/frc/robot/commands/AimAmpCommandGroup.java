@@ -1,19 +1,18 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.LegSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 
 import java.util.Optional;
 
 public class AimAmpCommandGroup extends SequentialCommandGroup {
 
-    public AimAmpCommandGroup(LegSubsystem legSubsystem) {
+    public AimAmpCommandGroup(ArmSubsystem armSubsystem) {
         addCommands(
-                new RotateArmToAngleCommand(Math.toRadians(15), legSubsystem),
-                new ExtendToLengthCommand(0.18, legSubsystem),
-                new RotateArmToAngleCommand(Math.toRadians(100), legSubsystem),
-                new RotateAnkleCommand(Optional.empty(), legSubsystem)
+                new RotateArmToAngleCommand(Math.toRadians(15), armSubsystem),
+                new ExtendToLengthCommand(0.18, armSubsystem),
+                new RotateArmToAngleCommand(Math.toRadians(100), armSubsystem),
+                new RotateAnkleCommand(Optional.empty(), armSubsystem)
         );
     }
 }

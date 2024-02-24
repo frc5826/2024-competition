@@ -9,7 +9,6 @@ import com.pathplanner.lib.util.PIDConstants;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.math.BetterArrayList;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -52,12 +51,12 @@ public final class Constants
     public static final double cExtendMin = -1;
     public static final double cExtendDeadband = 0;
 
-    public static final double cAnkleP = 4;
-    public static final double cAnkleI = 0.1;
-    public static final double cAnkleD = 0;
-    public static final double cAnkleMax = 1;
-    public static final double cAnkleMin = -1;
-    public static final double cAnkleDeadband = 0;
+    public static final double cWristP = 4;
+    public static final double cWristI = 0.1;
+    public static final double cWristD = 0;
+    public static final double cWristMax = 1;
+    public static final double cWristMin = -1;
+    public static final double cWristDeadband = 0;
 
     public static final double cDriveDeadband = 0.15;
     public static final double cTurnDeadband = 0.15;
