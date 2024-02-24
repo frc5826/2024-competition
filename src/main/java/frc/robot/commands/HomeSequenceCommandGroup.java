@@ -9,6 +9,7 @@ import java.util.Optional;
 public class HomeSequenceCommandGroup extends SequentialCommandGroup {
 
     public HomeSequenceCommandGroup(ArmSubsystem armSubsystem){
+        addRequirements(armSubsystem);
         addCommands(
             new RotateArmToAngleCommand(Math.toRadians(45), armSubsystem),
             new ParallelCommandGroup(
@@ -19,4 +20,8 @@ public class HomeSequenceCommandGroup extends SequentialCommandGroup {
         );
     }
 
+    @Override
+    public InterruptionBehavior getInterruptionBehavior() {
+        return InterruptionBehavior.kCancelSelf;
+    }
 }

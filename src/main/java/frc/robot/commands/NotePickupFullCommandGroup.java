@@ -8,6 +8,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class NotePickupFullCommandGroup extends SequentialCommandGroup {
 
     public NotePickupFullCommandGroup(ArmSubsystem armSubsystem, ShooterSubsystem shooterSubsystem) {
+        addRequirements(armSubsystem, shooterSubsystem);
         addCommands(
                 new IntakeSequenceCommandGroup(armSubsystem),
                 new NoteHookCommand(shooterSubsystem),
@@ -16,5 +17,10 @@ public class NotePickupFullCommandGroup extends SequentialCommandGroup {
                     new NoteLoadCommand(shooterSubsystem)
                 )
         );
+    }
+
+    @Override
+    public InterruptionBehavior getInterruptionBehavior() {
+        return InterruptionBehavior.kCancelSelf;
     }
 }

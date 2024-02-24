@@ -8,11 +8,17 @@ import java.util.Optional;
 public class AimAmpCommandGroup extends SequentialCommandGroup {
 
     public AimAmpCommandGroup(ArmSubsystem armSubsystem) {
+        addRequirements(armSubsystem);
         addCommands(
                 new RotateArmToAngleCommand(Math.toRadians(15), armSubsystem),
                 new ExtendToLengthCommand(0.18, armSubsystem),
                 new RotateArmToAngleCommand(Math.toRadians(100), armSubsystem),
                 new RotateWristCommand(Optional.empty(), armSubsystem)
         );
+    }
+
+    @Override
+    public InterruptionBehavior getInterruptionBehavior() {
+        return InterruptionBehavior.kCancelSelf;
     }
 }

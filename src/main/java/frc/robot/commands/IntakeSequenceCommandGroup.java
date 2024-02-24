@@ -7,6 +7,7 @@ import frc.robot.subsystems.ArmSubsystem;
 public class IntakeSequenceCommandGroup extends SequentialCommandGroup {
 
     public IntakeSequenceCommandGroup(ArmSubsystem armSubsystem) {
+        addRequirements(armSubsystem);
         addCommands(
             new RotateArmToAngleCommand(Math.toRadians(45), armSubsystem),
             new RotateWristCommand(Math.toRadians(-30), armSubsystem),
@@ -16,5 +17,10 @@ public class IntakeSequenceCommandGroup extends SequentialCommandGroup {
             ),
             new RotateArmToAngleCommand(Math.toRadians(5), armSubsystem)
         );
+    }
+
+    @Override
+    public InterruptionBehavior getInterruptionBehavior() {
+        return InterruptionBehavior.kCancelSelf;
     }
 }

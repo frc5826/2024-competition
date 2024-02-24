@@ -8,6 +8,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class NoteShootCommandGroup extends SequentialCommandGroup {
 
     public NoteShootCommandGroup(ShooterSubsystem shooterSubsystem) {
+        addRequirements(shooterSubsystem);
         addCommands(
                 new ShooterCommand(shooterSubsystem, 1, ShooterCommand.ShooterType.POWER),
                 new WaitCommand(1),
@@ -16,5 +17,10 @@ public class NoteShootCommandGroup extends SequentialCommandGroup {
                 new ShooterCommand(shooterSubsystem, 0, ShooterCommand.ShooterType.POWER),
                 new ShooterCommand(shooterSubsystem, 0, ShooterCommand.ShooterType.CONTROL)
         );
+    }
+
+    @Override
+    public InterruptionBehavior getInterruptionBehavior() {
+        return InterruptionBehavior.kCancelSelf;
     }
 }
