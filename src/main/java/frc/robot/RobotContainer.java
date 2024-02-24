@@ -74,9 +74,9 @@ public class RobotContainer
     {
 
         //Button panel bindings //TODO put arm presets n stuff here
-        panelButtons[0].whileTrue(new ClimberCommand(climberSubsystem, -0.75));
+        panelButtons[0].onTrue(new ClimberLowerCommandGroup(climberSubsystem));
         panelButtons[1].onTrue(new RotateArmToAngleCommand(Math.toRadians(110), armSubsystem));
-        panelButtons[2].whileTrue(new ClimberCommand(climberSubsystem, 0.75));
+        panelButtons[2].onTrue(new ClimberRaiseCommandGroup(climberSubsystem));
         panelButtons[3].onTrue(new NoteShootAmpCommandGroup(shooterSubsystem));
 //        panelButtons[4].onTrue(null);
 //        panelButtons[5].onTrue(null);

@@ -29,8 +29,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.filters.Particle;
-import frc.robot.filters.ParticleFilter;
 import org.christopherfrantz.dbscan.DBSCANClusterer;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -290,21 +288,4 @@ public class LocalizationSubsystem extends SubsystemBase {
 //
 //        return bestRing;
 //    }
-    public Double getWeightForParticle(Particle p){
-        if (ringResults.isEmpty()){
-            return 0.1;
-        }
-        double bestDistance = Double.POSITIVE_INFINITY;
-        for(RingResult r : ringResults){
-           double distance = p.getPoint().getDistance(r.getFieldPose());
-           if(distance < bestDistance){
-               bestDistance = distance;
-           }
-        }
-        if (bestDistance == 0){
-            return 1.0;
-        }
-        return 1/bestDistance;
-
-    }
 }
