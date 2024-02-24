@@ -2,30 +2,30 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.LegSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 
 import java.util.Optional;
 
 public class WholeArmCommandGroup extends SequentialCommandGroup {
 
-    public WholeArmCommandGroup(LegSubsystem legSubsystem, Optional<Double> armAngle, Optional<Double> extensionMeters, Optional<Double> ankleAngle, MoveFirst order) {
+    public WholeArmCommandGroup(ArmSubsystem armSubsystem, Optional<Double> armAngle, Optional<Double> extensionMeters, Optional<Double> ankleAngle, MoveFirst order) {
         switch (order){
             case ROTATE:
                 addCommands(
-                    new RotateArmToAngleCommand(armAngle, legSubsystem),
+                    new RotateArmToAngleCommand(armAngle, armSubsystem),
                     new WaitCommand(5),
-                    new ExtendToLengthCommand(extensionMeters, legSubsystem),
+                    new ExtendToLengthCommand(extensionMeters, armSubsystem),
                     new WaitCommand(5),
-                    new RotateAnkleCommand(ankleAngle, legSubsystem)
+                    new RotateAnkleCommand(ankleAngle, armSubsystem)
                 );
                 break;
             case EXTEND:
                 addCommands(
-                    new ExtendToLengthCommand(extensionMeters, legSubsystem),
+                    new ExtendToLengthCommand(extensionMeters, armSubsystem),
                     new WaitCommand(5),
-                    new RotateArmToAngleCommand(armAngle, legSubsystem),
+                    new RotateArmToAngleCommand(armAngle, armSubsystem),
                     new WaitCommand(5),
-                    new RotateAnkleCommand(ankleAngle, legSubsystem)
+                    new RotateAnkleCommand(ankleAngle, armSubsystem)
                 );
                 break;
             case TOP_DOWN:

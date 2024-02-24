@@ -1,19 +1,18 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.LegSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class NotePickupFullCommandGroup extends SequentialCommandGroup {
 
-    public NotePickupFullCommandGroup(LegSubsystem legSubsystem, ShooterSubsystem shooterSubsystem) {
+    public NotePickupFullCommandGroup(ArmSubsystem armSubsystem, ShooterSubsystem shooterSubsystem) {
         addCommands(
-                new IntakeSequenceCommandGroup(legSubsystem),
+                new IntakeSequenceCommandGroup(armSubsystem),
                 new NoteHookCommand(shooterSubsystem),
                 new ParallelCommandGroup(
-                    new HomeSequenceCommandGroup(legSubsystem),
+                    new HomeSequenceCommandGroup(armSubsystem),
                     new NoteLoadCommand(shooterSubsystem)
                 )
         );
