@@ -20,8 +20,8 @@ public class ClimberLowerSideCommand extends Command {
     public void initialize() {
         super.initialize();
         switch (climberSide){
-            case LEFT -> climberSubsystem.setLeftMotorSpeed(-0.6);
-            case RIGHT -> climberSubsystem.setRightMotorSpeed(-0.6);
+            case LEFT -> climberSubsystem.setLeftMotorSpeed(-0.75);
+            case RIGHT -> climberSubsystem.setRightMotorSpeed(-0.75);
         }
     }
 
