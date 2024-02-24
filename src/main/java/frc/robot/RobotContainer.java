@@ -5,19 +5,29 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.*;
 import frc.robot.commands.*;
 import frc.robot.commands.TargetSpeakerCommand;
 import frc.robot.commands.TeleopDriveCommand;
 import frc.robot.commands.PathWithStopDistance;
 import frc.robot.subsystems.*;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import java.io.File;
+import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 import static frc.robot.Constants.*;
 
@@ -52,7 +62,15 @@ public class RobotContainer
     private final PickupRingTest pickupRingTest = new PickupRingTest(visionSubsystem, swerveSubsystem, localizationSubsystem);
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    
+
+    private SendableChooser<Pose2d>[] autoOptions;
+    private int autoRings = 0;
+
+    private double endX;
+    private double endY;
+    private double endRotation;
+    private final Field2d field = new Field2d();
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
@@ -128,31 +146,79 @@ public class RobotContainer
                 }));
 
         new Trigger(()-> xbox.getPOV() == 90).whileTrue(
-                localizationSubsystem.buildPath(Constants.cAmpPark));
+                localizationSubsystem.buildPath(cAmpPark));
 
-        new Trigger(()-> xbox.getPOV() == 180).whileTrue(new PathWithStopDistance(localizationSubsystem, Constants.cTopCloseRing1, 1.1));
+        new Trigger(()-> xbox.getPOV() == 180).whileTrue(new PathWithStopDistance(localizationSubsystem, cTopCloseRing1, 1.1));
 
         new Trigger(()-> xbox.getPOV() == 270).whileTrue(
-                localizationSubsystem.buildPath(Constants.cRightStagePark));
+                localizationSubsystem.buildPath(cRightStagePark));
 
         new Trigger(()-> xbox.getLeftBumper()).whileTrue(new PickupRing(localizationSubsystem, swerveSubsystem));
 
-        new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, Constants.cBotCloseRing3));
+        new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, cBotCloseRing3));
 
         new Trigger(() -> joystick.getRawButton(7)).whileTrue(new IntakeTestCommand(shooterSubsystem, 1));
         new Trigger(() -> joystick.getRawButton(8)).whileTrue(new IntakeTestCommand(shooterSubsystem, -1));
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }
+
+    private void setupAutoTab() {
+        ShuffleboardTab autoTab = Shuffleboard.getTab("auto");
+
+        autoOptions = null;
+
+        autoRings = 0;
+
+        endX = 0;
+        endY = 0;
+        endRotation = 0;
+
+        int widgetX = 0;
+        int widgetY = 0;
+
+        for(int i = 0; i < 8; i++) {
+            autoOptions[i].setDefaultOption("Nothing", nothingPose);
+            autoOptions[i].addOption("Top Close Ring 1", cTopCloseRing1);
+            autoOptions[i].addOption("Mid Close Ring 2", cMidCloseRing2);
+            autoOptions[i].addOption("Bot Close Ring 3", cBotCloseRing3);
+            autoOptions[i].addOption("Top Far Ring 4", cFarRing4);
+            autoOptions[i].addOption("Mid Top Far Ring 5", cFarRing5);
+            autoOptions[i].addOption("Mid Far Ring 6", cFarRing6);
+            autoOptions[i].addOption("Mid Bot Far Ring 7", cFarRing7);
+            autoOptions[i].addOption("Bot Far Ring 8", cFarRing8);
+            //autoOptions[i].addOption("End Location", new Pose2d(endX, endY, Rotation2d.fromDegrees(endRotation)));
+
+            autoTab.add("Auto " + i, autoOptions[i]).withWidget(BuiltInWidgets.kComboBoxChooser)
+                    .withSize(2, 1).withPosition(widgetX, widgetY);
+
+            widgetX += 2;
+            if (widgetX == 8) {
+                widgetY += 1;
+                widgetX = 0;
+            }
+        }
+
+        autoTab.add("End X", 0)
+                .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 16.5))
+                .withSize(2, 1).withPosition(3, 2);
+        autoTab.add("End Y", 0)
+                .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 8.15))
+                .withSize(2, 1).withPosition(3, 3);;
+
+        autoTab.add(field).withSize(3, 2).withPosition(0, 2);
+
+
+    }
     
     
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the
-     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+     * {@link Trigger#Trigger(BooleanSupplier)} constructor with an arbitrary
      * predicate, or via the named factories in {@link
-     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-     * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-     * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+     * CommandGenericHID}'s subclasses for {@link
+     * CommandXboxController Xbox}/{@link CommandPS4Controller
+     * PS4} controllers or {@link CommandJoystick Flight
      * joysticks}.
      */
     
@@ -162,8 +228,22 @@ public class RobotContainer
      *
      * @return the command to run in autonomous
      */
-//    public Command getAutonomousCommand()
-//    {
-//
-//    }
+    public Command getAutonomousCommand()
+    {
+        boolean endPose = false;
+
+        Pose2d endLoc = new Pose2d(endX, endY, Rotation2d.fromDegrees(endRotation));
+
+        for (int i = 0; i < 8; i++) {
+            if (autoOptions[i].getSelected() != nothingPose) {
+                autoRings++;
+            }
+        }
+
+        return new AutoCommandGroup(localizationSubsystem, swerveSubsystem, autoRings, endLoc,
+                autoOptions[0].getSelected(), autoOptions[1].getSelected(),
+                autoOptions[2].getSelected(), autoOptions[3].getSelected(),
+                autoOptions[4].getSelected(), autoOptions[5].getSelected(),
+                autoOptions[6].getSelected(), autoOptions[7].getSelected());
+    }
 }

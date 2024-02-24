@@ -73,7 +73,12 @@ public final class Constants
     public static final Pose2d cTopCloseRing1 = new Pose2d(2.89, 7, Rotation2d.fromDegrees(0));
     public static final Pose2d cMidCloseRing2 = new Pose2d(2.89, 5.55, Rotation2d.fromDegrees(0));
     public static final Pose2d cBotCloseRing3 = new Pose2d(2.89, 4.11, Rotation2d.fromDegrees(0));
+    public static final Pose2d cFarRing4 = new Pose2d(8.28, 7.44, Rotation2d.fromDegrees(0));
+    public static final Pose2d cFarRing5 = new Pose2d(8.28, 5.78, Rotation2d.fromDegrees(0));
+    public static final Pose2d cFarRing6 = new Pose2d(8.28, 4.11, Rotation2d.fromDegrees(0));
     public static final Pose2d cFarRing7 = new Pose2d(8.28, 2.44, Rotation2d.fromDegrees(0));
+    public static final Pose2d cFarRing8 = new Pose2d(8.28, 0.77, Rotation2d.fromDegrees(0));
+    public static final Pose2d nothingPose = new Pose2d(69, 420, Rotation2d.fromDegrees(0));
 
     //TODO set these values :)
     public static final Pose2d cSpeakerTargetPos = new Pose2d(0, 5.55, Rotation2d.fromDegrees(0));

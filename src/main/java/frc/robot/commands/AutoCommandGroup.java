@@ -18,28 +18,37 @@ public class AutoCommandGroup extends SequentialCommandGroup {
 
     private boolean holdingRing;
 
-    public AutoCommandGroup(LocalizationSubsystem localizationSubsystem, SwerveSubsystem swerveSubsystem, Pose2d... rings) {
+    private int ringCount;
+
+    public AutoCommandGroup(LocalizationSubsystem localizationSubsystem, SwerveSubsystem swerveSubsystem, int ringCount, Pose2d endPose, Pose2d... rings) {
         this.localizationSubsystem = localizationSubsystem;
         this.swerveSubsystem = swerveSubsystem;
 
+        this.ringCount = ringCount;
+
         addCommands(new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem));
 
-        for(Pose2d ring : rings) {
-            addCommands(
-                    new PathWithStopDistance(localizationSubsystem, ring, 1.25)
-                            .onlyIf(() -> ring.getTranslation().getDistance(localizationSubsystem.getCurrentPose().getTranslation()) > 2),
-                    new TurnToCommand(localizationSubsystem, swerveSubsystem, ring),
-                    new PickupRing(localizationSubsystem, swerveSubsystem).finallyDo( () -> {
-                        if (localizationSubsystem.getBestPickupRing().getFieldPose().equals(new Translation2d(0, 0))) {
-                            holdingRing = false; }
-                        else {holdingRing = true;} }
-                    ),
-                    Commands.sequence(
-                            localizationSubsystem.buildPath(Constants.cSpeakerPark),
-                            new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem)).onlyIf(() -> holdingRing)
+        for(int i = 0; i < ringCount; i++) {
+            Pose2d ring = rings[i];
+            if (ring != Constants.nothingPose) {
+                addCommands(
+                        new PathWithStopDistance(localizationSubsystem, ring, 1.25)
+                                .onlyIf(() -> ring.getTranslation().getDistance(localizationSubsystem.getCurrentPose().getTranslation()) > 2),
+                        new TurnToCommand(localizationSubsystem, swerveSubsystem, ring),
+                        new PickupRing(localizationSubsystem, swerveSubsystem).finallyDo( () -> {
+                            if (localizationSubsystem.getBestPickupRing().getFieldPose().equals(new Translation2d(0, 0))) {
+                                holdingRing = false; }
+                            else {holdingRing = true;} }
+                        ),
+                        Commands.sequence(
+                                localizationSubsystem.buildPath(Constants.cSpeakerPark),
+                                new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem)).onlyIf(() -> holdingRing)
 
-            );
+                );
+            }
         }
+        //end pose
+        addCommands(localizationSubsystem.buildPath(endPose));
     }
 
 
