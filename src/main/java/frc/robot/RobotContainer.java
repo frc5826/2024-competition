@@ -25,8 +25,10 @@ import frc.robot.commands.PathWithStopDistance;
 import frc.robot.subsystems.*;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 import static frc.robot.Constants.*;
 
@@ -61,12 +63,13 @@ public class RobotContainer
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
-    private SendableChooser<Pose2d>[] autoOptions;
+    private ArrayList<SendableChooser<Pose2d>> autoOptions;
+    //private SendableChooser<Pose2d>[] autoOptions;
     private int autoRings = 0;
 
-    private double endX;
-    private double endY;
-    private double endRotation;
+    private Supplier<Double> endX;
+    private Supplier<Double> endY;
+    private Supplier<Double> endRotation;
     private final Field2d field = new Field2d();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -93,7 +96,7 @@ public class RobotContainer
 
         new Trigger(xbox::getXButton).whileTrue(localizationSubsystem.buildPath(cPickupPark));
 
-        new Trigger(xbox::getYButton).whileTrue(new PathWithStopDistance(localizationSubsystem, cSpeakerPose, 2.5));
+        new Trigger(xbox::getYButton).whileTrue(new PathWithStopDistance(localizationSubsystem, cSpeakerPose, 2.3, true));
 
         new Trigger(xbox::getBButton).whileTrue(localizationSubsystem.buildPath(cAmpPark));
 
@@ -104,7 +107,7 @@ public class RobotContainer
         new Trigger(() -> xbox.getPOV() == 270).whileTrue(localizationSubsystem.buildPath(cLeftStagePark));
 
         //TODO find way to zero gyro that doesn't reset pose TODO destroy
-        new Trigger(xbox::getLeftBumper)
+        new Trigger(xbox::getBackButton).and(xbox::getStartButton).debounce(1)
                 .onTrue(new InstantCommand(() ->
                 {
                     //Need to be run in this order
@@ -134,60 +137,64 @@ public class RobotContainer
         //new Trigger(()-> xbox.getLeftBumper()).whileTrue(new PickupRing(localizationSubsystem, swerveSubsystem));
         //new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, Constants.cBotCloseRing3));
         //new Trigger(() -> joystick.getRawButton(2)).whileTrue(new RotateToAngleCommand(Math.toRadians(90), elevatorSubsystem));
-
-        new Trigger(()-> xbox.getPOV() == 0).onTrue(
-                new InstantCommand(() ->
-                {
-                    swerveSubsystem.zeroGyro();
-                    swerveSubsystem.zeroOdometry();
-                    localizationSubsystem.reset();
-                }));
-
-        new Trigger(()-> xbox.getPOV() == 90).whileTrue(
-                localizationSubsystem.buildPath(cAmpPark));
-
-        new Trigger(()-> xbox.getPOV() == 180).whileTrue(new PathWithStopDistance(localizationSubsystem, cTopCloseRing1, 1.1));
-
-        new Trigger(()-> xbox.getPOV() == 270).whileTrue(
-                localizationSubsystem.buildPath(cRightStagePark));
-
-        new Trigger(()-> xbox.getLeftBumper()).whileTrue(new PickupRing(localizationSubsystem, swerveSubsystem));
-
-        new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, cBotCloseRing3));
+//
+//        new Trigger(()-> xbox.getPOV() == 0).onTrue(
+//                new InstantCommand(() ->
+//                {
+//                    swerveSubsystem.zeroGyro();
+//                    swerveSubsystem.zeroOdometry();
+//                    localizationSubsystem.reset();
+//                }));
+//
+//        new Trigger(()-> xbox.getPOV() == 90).whileTrue(
+//                localizationSubsystem.buildPath(cAmpPark));
+//
+//        new Trigger(()-> xbox.getPOV() == 180).whileTrue(new PathWithStopDistance(localizationSubsystem, cTopCloseRing1, 1.1));
+//
+//        new Trigger(()-> xbox.getPOV() == 270).whileTrue(
+//                localizationSubsystem.buildPath(cRightStagePark));
+//
+//        new Trigger(()-> xbox.getLeftBumper()).whileTrue(new PickupRing(localizationSubsystem, swerveSubsystem));
+//
+//        new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, cBotCloseRing3));
 
 //        new Trigger(() -> joystick.getRawButton(7)).whileTrue(new IntakeTestCommand(shooterSubsystem, 1));
 //        new Trigger(() -> joystick.getRawButton(8)).whileTrue(new IntakeTestCommand(shooterSubsystem, -1));
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
+
+        setupAutoTab();
+    }
+
+    public void updateField() {
+        field.setRobotPose(new Pose2d(endX.get(), endY.get(), Rotation2d.fromDegrees(endRotation.get())));
     }
 
     private void setupAutoTab() {
         ShuffleboardTab autoTab = Shuffleboard.getTab("auto");
 
-        autoOptions = null;
+        autoOptions = new ArrayList<SendableChooser<Pose2d>>();
 
         autoRings = 0;
-
-        endX = 0;
-        endY = 0;
-        endRotation = 0;
 
         int widgetX = 0;
         int widgetY = 0;
 
         for(int i = 0; i < 8; i++) {
-            autoOptions[i].setDefaultOption("Nothing", nothingPose);
-            autoOptions[i].addOption("Top Close Ring 1", cTopCloseRing1);
-            autoOptions[i].addOption("Mid Close Ring 2", cMidCloseRing2);
-            autoOptions[i].addOption("Bot Close Ring 3", cBotCloseRing3);
-            autoOptions[i].addOption("Top Far Ring 4", cFarRing4);
-            autoOptions[i].addOption("Mid Top Far Ring 5", cFarRing5);
-            autoOptions[i].addOption("Mid Far Ring 6", cFarRing6);
-            autoOptions[i].addOption("Mid Bot Far Ring 7", cFarRing7);
-            autoOptions[i].addOption("Bot Far Ring 8", cFarRing8);
+            autoOptions.add(i, new SendableChooser<Pose2d>());
+
+            autoOptions.get(i).setDefaultOption("Nothing", nothingPose);
+            autoOptions.get(i).addOption("Top Close Ring 1", cTopCloseRing1);
+            autoOptions.get(i).addOption("Mid Close Ring 2", cMidCloseRing2);
+            autoOptions.get(i).addOption("Bot Close Ring 3", cBotCloseRing3);
+            autoOptions.get(i).addOption("Top Far Ring 4", cFarRing4);
+            autoOptions.get(i).addOption("Mid Top Far Ring 5", cFarRing5);
+            autoOptions.get(i).addOption("Mid Far Ring 6", cFarRing6);
+            autoOptions.get(i).addOption("Mid Bot Far Ring 7", cFarRing7);
+            autoOptions.get(i).addOption("Bot Far Ring 8", cFarRing8);
             //autoOptions[i].addOption("End Location", new Pose2d(endX, endY, Rotation2d.fromDegrees(endRotation)));
 
-            autoTab.add("Auto " + i, autoOptions[i]).withWidget(BuiltInWidgets.kComboBoxChooser)
+            autoTab.add("Auto " + i, autoOptions.get(i)).withWidget(BuiltInWidgets.kComboBoxChooser)
                     .withSize(2, 1).withPosition(widgetX, widgetY);
 
             widgetX += 2;
@@ -197,16 +204,23 @@ public class RobotContainer
             }
         }
 
-        autoTab.add("End X", 0)
+        var x = autoTab.add("End X", 0)
                 .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 16.5))
                 .withSize(2, 1).withPosition(3, 2);
-        autoTab.add("End Y", 0)
+
+        var y = autoTab.add("End Y", 0)
                 .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 8.15))
-                .withSize(2, 1).withPosition(3, 3);;
+                .withSize(2, 1).withPosition(3, 3);
+
+        var rot = autoTab.add("End Rotation", 0)
+                .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180))
+                .withSize(2, 1).withPosition(5, 2);
+
+        endX = () -> x.getEntry().getDouble(0);
+        endY = () -> y.getEntry().getDouble(0);
+        endRotation = () -> rot.getEntry().getDouble(0);
 
         autoTab.add(field).withSize(3, 2).withPosition(0, 2);
-
-
     }
     
     
@@ -230,18 +244,18 @@ public class RobotContainer
     {
         boolean endPose = false;
 
-        Pose2d endLoc = new Pose2d(endX, endY, Rotation2d.fromDegrees(endRotation));
+        Pose2d endLoc = new Pose2d(endX.get(), endY.get(), Rotation2d.fromDegrees(endRotation.get()));
 
         for (int i = 0; i < 8; i++) {
-            if (autoOptions[i].getSelected() != nothingPose) {
+            if (autoOptions.get(i).getSelected() != nothingPose) {
                 autoRings++;
             }
         }
 
         return new AutoCommandGroup(localizationSubsystem, swerveSubsystem, autoRings, endLoc,
-                autoOptions[0].getSelected(), autoOptions[1].getSelected(),
-                autoOptions[2].getSelected(), autoOptions[3].getSelected(),
-                autoOptions[4].getSelected(), autoOptions[5].getSelected(),
-                autoOptions[6].getSelected(), autoOptions[7].getSelected());
+                autoOptions.get(0).getSelected(), autoOptions.get(1).getSelected(),
+                autoOptions.get(2).getSelected(), autoOptions.get(3).getSelected(),
+                autoOptions.get(4).getSelected(), autoOptions.get(5).getSelected(),
+                autoOptions.get(6).getSelected(), autoOptions.get(7).getSelected());
     }
 }

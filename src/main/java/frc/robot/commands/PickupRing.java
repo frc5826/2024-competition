@@ -26,7 +26,7 @@ public class PickupRing extends Command {
 
     private double epsilon = .15;
 
-    private double stopDistance = 0.5;
+    private double stopDistance = 0.1;
 
     private boolean die;
 

@@ -31,7 +31,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import org.christopherfrantz.dbscan.DBSCANClusterer;
 import org.photonvision.targeting.PhotonTrackedTarget;
-
 import java.io.IOException;
 import java.text.CompactNumberFormat;
 import java.util.*;
