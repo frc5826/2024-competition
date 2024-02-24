@@ -5,22 +5,22 @@ import frc.robot.subsystems.ArmSubsystem;
 
 import java.util.Optional;
 
-public class RotateAnkleCommand extends Command {
+public class RotateWristCommand extends Command {
 
     private Optional<Double> angle;
     private ArmSubsystem armSubsystem;
 
-    public RotateAnkleCommand(double angle, ArmSubsystem armSubsystem) {
+    public RotateWristCommand(double angle, ArmSubsystem armSubsystem) {
         this.angle = Optional.of(angle);
         this.armSubsystem = armSubsystem;
     }
 
-    public RotateAnkleCommand(Optional<Double> angle, ArmSubsystem armSubsystem) {
+    public RotateWristCommand(Optional<Double> angle, ArmSubsystem armSubsystem) {
         this.angle = angle;
         this.armSubsystem = armSubsystem;
     }
 
-    public RotateAnkleCommand(ArmSubsystem armSubsystem) {
+    public RotateWristCommand(ArmSubsystem armSubsystem) {
         this.angle = Optional.empty();
         this.armSubsystem = armSubsystem;
     }

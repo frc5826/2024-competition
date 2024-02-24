@@ -44,8 +44,6 @@ public class RobotContainer
 
     private final ArmSubsystem armSubsystem = new ArmSubsystem();
 
-    private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-
     private final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
     private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem(

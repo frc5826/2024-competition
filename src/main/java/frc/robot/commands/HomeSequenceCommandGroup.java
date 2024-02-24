@@ -12,7 +12,7 @@ public class HomeSequenceCommandGroup extends SequentialCommandGroup {
         addCommands(
             new RotateArmToAngleCommand(Math.toRadians(45), armSubsystem),
             new ParallelCommandGroup(
-                new RotateAnkleCommand(Optional.empty(), armSubsystem),
+                new RotateWristCommand(Optional.empty(), armSubsystem),
                 new ExtendToLengthCommand(Optional.empty(), armSubsystem)
             ),
             new RotateArmToAngleCommand(Optional.empty(), armSubsystem)

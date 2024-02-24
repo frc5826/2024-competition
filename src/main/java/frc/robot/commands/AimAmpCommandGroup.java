@@ -12,7 +12,7 @@ public class AimAmpCommandGroup extends SequentialCommandGroup {
                 new RotateArmToAngleCommand(Math.toRadians(15), armSubsystem),
                 new ExtendToLengthCommand(0.18, armSubsystem),
                 new RotateArmToAngleCommand(Math.toRadians(100), armSubsystem),
-                new RotateAnkleCommand(Optional.empty(), armSubsystem)
+                new RotateWristCommand(Optional.empty(), armSubsystem)
         );
     }
 }
