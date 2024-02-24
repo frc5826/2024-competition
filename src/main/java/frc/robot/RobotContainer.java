@@ -52,24 +52,25 @@ public class RobotContainer
     private final PickupRingTest pickupRingTest = new PickupRingTest(visionSubsystem, swerveSubsystem, localizationSubsystem);
 
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+    private final EsclatorSubsystem esclatorSubsystem = new EsclatorSubsystem();
     
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
     {
 
         //Button panel bindings //TODO put arm presets n stuff here
-        panelButtons[0].onTrue(new NoteHookCommand(shooterSubsystem));
-//        panelButtons[1].onTrue(null);
-        panelButtons[2].onTrue(new NoteLoadCommand(shooterSubsystem));
-//        panelButtons[3].onTrue(null);
+        panelButtons[0].whileTrue(new ClimberCommand(esclatorSubsystem, -0.75));
+        panelButtons[1].onTrue(new RotateArmToAngleCommand(Math.toRadians(110), legSubsystem));
+        panelButtons[2].whileTrue(new ClimberCommand(esclatorSubsystem, 0.75));
+        panelButtons[3].onTrue(new NoteShootAmpCommandGroup(shooterSubsystem));
 //        panelButtons[4].onTrue(null);
 //        panelButtons[5].onTrue(null);
-//        panelButtons[6].onTrue(null);
-//        panelButtons[7].onTrue(null);
+        panelButtons[6].onTrue(new NotePickupFullCommandGroup(legSubsystem, shooterSubsystem));
+        panelButtons[7].onTrue(new AimSpeakerCommandGroup(legSubsystem));
 //        panelButtons[8].onTrue(null);
-        panelButtons[9].onTrue(new NoteShootCommandGroup(shooterSubsystem));
+        panelButtons[9].onTrue(new AimAmpCommandGroup(legSubsystem));
         panelButtons[10].onTrue(new HomeSequenceCommandGroup(legSubsystem));
-        panelButtons[11].onTrue(new NotePickupFullCommandGroup(legSubsystem, shooterSubsystem));
+        panelButtons[11].onTrue(new NoteShootCommandGroup(shooterSubsystem));
 
         //Xbox button bindings
 
@@ -88,13 +89,13 @@ public class RobotContainer
         new Trigger(() -> xbox.getPOV() == 270).whileTrue(localizationSubsystem.buildPath(cLeftStagePark));
 
         //TODO find way to zero gyro that doesn't reset pose TODO destroy
-//        new Trigger(xbox::getAButtonPressed)
-//                .onTrue(new InstantCommand(() ->
-//                {
-//                    //Need to be run in this order
-//                    swerveSubsystem.zeroGyro();
+        new Trigger(xbox::getLeftBumper)
+                .onTrue(new InstantCommand(() ->
+                {
+                    //Need to be run in this order
+                    swerveSubsystem.zeroGyro();
 //                    localizationSubsystem.reset();
-//                }));
+                }));
 //        new Trigger(()-> xbox.getPOV() == 0).onTrue(
 //                new InstantCommand(() ->
 //                {
@@ -139,8 +140,8 @@ public class RobotContainer
 
         new Trigger(()-> xbox.getRightBumper()).whileTrue(new TurnToCommand(localizationSubsystem, swerveSubsystem, Constants.cBotCloseRing3));
 
-        new Trigger(() -> joystick.getRawButton(7)).whileTrue(new IntakeTestCommand(shooterSubsystem, 1));
-        new Trigger(() -> joystick.getRawButton(8)).whileTrue(new IntakeTestCommand(shooterSubsystem, -1));
+//        new Trigger(() -> joystick.getRawButton(7)).whileTrue(new IntakeTestCommand(shooterSubsystem, 1));
+//        new Trigger(() -> joystick.getRawButton(8)).whileTrue(new IntakeTestCommand(shooterSubsystem, -1));
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }
