@@ -84,12 +84,12 @@ public class RobotContainer
         panelButtons[0].onTrue(new ClimberLowerCommandGroup(climberSubsystem));
         panelButtons[1].onTrue(new RotateArmToAngleCommand(Math.toRadians(110), armSubsystem));
         panelButtons[2].onTrue(new ClimberRaiseCommandGroup(climberSubsystem));
-        panelButtons[3].onTrue(new NoteShootAmpCommandGroup(shooterSubsystem));
+//        panelButtons[3].onTrue(null);
 //        panelButtons[4].onTrue(null);
-//        panelButtons[5].onTrue(null);
-        panelButtons[6].onTrue(new NotePickupFullCommandGroup(armSubsystem, shooterSubsystem));
+        panelButtons[5].onTrue(new NotePickupFullCommandGroup(armSubsystem, shooterSubsystem));
+//        panelButtons[6].onTrue(null);
         panelButtons[7].onTrue(new AimSpeakerCommandGroup(armSubsystem));
-//        panelButtons[8].onTrue(null);
+        panelButtons[8].onTrue(new NoteShootAmpCommandGroup(shooterSubsystem));
         panelButtons[9].onTrue(new AimAmpCommandGroup(armSubsystem));
         panelButtons[10].onTrue(new HomeSequenceCommandGroup(armSubsystem));
         panelButtons[11].onTrue(new NoteShootCommandGroup(shooterSubsystem));
