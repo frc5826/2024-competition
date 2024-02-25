@@ -66,11 +66,11 @@ public class TeleopDriveCommand extends Command {
 //            angleV = turnPID.calculate();
 //        }
 
-//        if (xboxLeft.getAsDouble() > 0.5) {
-//            swerveSubsystem.driveRobotOriented(new ChassisSpeeds(-0.4, 0, 0));
-//        } else if(xboxRight.getAsDouble() > 0.5) {
-//            swerveSubsystem.driveRobotOriented(new ChassisSpeeds(0.4, 0, 0));
-//        }
+        if (xboxLeft.getAsDouble() > 0.5) {
+            swerveSubsystem.driveRobotOriented(new ChassisSpeeds(-0.2, 0, 0));
+        } else if(xboxRight.getAsDouble() > 0.5) {
+            swerveSubsystem.driveRobotOriented(new ChassisSpeeds(0.2, 0, 0));
+        }
 
         double bandedx = Math.abs(x0) < cDriveDeadband ? 0 : x0;
         double bandedy = Math.abs(y0) < cDriveDeadband ? 0 : y0;
@@ -81,7 +81,9 @@ public class TeleopDriveCommand extends Command {
                 bandedy * swerveSubsystem.maximumSpeed,
                 bandedAngle * swerveSubsystem.maximumAngularVel);
 
-        swerveSubsystem.driveFieldOriented(speeds);
+        if (xboxLeft.getAsDouble() < 0.5 || xboxRight.getAsDouble() < 0.5) {
+            swerveSubsystem.driveFieldOriented(speeds);
+        }
 
     }
 
