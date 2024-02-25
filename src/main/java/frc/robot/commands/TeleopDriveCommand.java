@@ -55,9 +55,10 @@ public class TeleopDriveCommand extends Command {
         double y0 = y.getAsDouble();
         double angleV = angleVel.getAsDouble();
 
-        if (xboxXButton.getAsBoolean()) {
-            angleV = turnPID.calculate();
-        }
+        //TODO
+//        if (xboxXButton.getAsBoolean()) {
+//            angleV = turnPID.calculate();
+//        }
 
         double bandedx = Math.abs(x0) < cDriveDeadband ? 0 : x0;
         double bandedy = Math.abs(y0) < cDriveDeadband ? 0 : y0;

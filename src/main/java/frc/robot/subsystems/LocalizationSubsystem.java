@@ -268,23 +268,4 @@ public class LocalizationSubsystem extends SubsystemBase {
 
         return ring;
     }
-
-    //also update periodically
-//    public RingResult getBestRing() {
-//        RingResult bestRing = null;
-//
-//        for(RingResult ring : getRings()) {
-//            if (bestRing != null && ring.getDistance() > bestRing.getDistance()) {
-//                bestRing = ring;
-//            } else if (bestRing == null) {
-//                bestRing = ring;
-//            }
-//        }
-//
-//        if (bestRing == null) {
-//            bestRing = emptyRing;
-//        }
-//
-//        return bestRing;
-//    }
 }

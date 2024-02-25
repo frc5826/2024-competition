@@ -9,10 +9,7 @@ import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.RingResult;
 import frc.robot.subsystems.SwerveSubsystem;
 
-//QUINTON WHY DID YOU NAME IT THIS WAY
-//THIS IS THE WORST THING YOU COULD HAVE NAMED THIS COMMAND
-//TODO FIX NAME PLEASE
-public class PickupRing extends Command {
+public class AutoPickupRing extends Command {
 
     private LocalizationSubsystem localizationSubsystem;
     private SwerveSubsystem swerveSubsystem;
@@ -30,7 +27,7 @@ public class PickupRing extends Command {
 
     private boolean die;
 
-    public PickupRing(LocalizationSubsystem localizationSubsystem, SwerveSubsystem swerveSubsystem) {
+    public AutoPickupRing(LocalizationSubsystem localizationSubsystem, SwerveSubsystem swerveSubsystem) {
         this.localizationSubsystem = localizationSubsystem;
         this.swerveSubsystem = swerveSubsystem;
 

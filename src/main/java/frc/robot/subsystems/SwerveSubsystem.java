@@ -27,7 +27,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public double maximumSpeed = Constants.maxVelocity;
 
-    public double maximumAngularVel = 3;
+    public double maximumAngularVel = 5;
 
     public SwerveSubsystem(File directory) {
 

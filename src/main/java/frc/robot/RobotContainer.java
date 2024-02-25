@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.robot.commands.*;
 import frc.robot.commands.TargetSpeakerCommand;
@@ -92,11 +93,11 @@ public class RobotContainer
 
         //Xbox button bindings
 
-        new Trigger(xbox::getAButton).whileTrue(new PickupRing(localizationSubsystem, swerveSubsystem));
+        new Trigger(xbox::getAButton).whileTrue(new AutoPickupRingSequence(armSubsystem, shooterSubsystem, localizationSubsystem, swerveSubsystem));
 
         new Trigger(xbox::getXButton).whileTrue(localizationSubsystem.buildPath(cPickupPark));
 
-        new Trigger(xbox::getYButton).whileTrue(new PathWithStopDistance(localizationSubsystem, cSpeakerPose, 2.3, true));
+        new Trigger(xbox::getYButton).whileTrue(new PathWithStopDistance(localizationSubsystem, cSpeakerPose, 2.15, true));
 
         new Trigger(xbox::getBButton).whileTrue(localizationSubsystem.buildPath(cAmpPark));
 
@@ -105,6 +106,9 @@ public class RobotContainer
         new Trigger(() -> xbox.getPOV() == 90).whileTrue(localizationSubsystem.buildPath(cRightStagePark));
 
         new Trigger(() -> xbox.getPOV() == 270).whileTrue(localizationSubsystem.buildPath(cLeftStagePark));
+
+        //test
+        new Trigger(xbox::getLeftBumper).whileTrue(new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem));
 
         //TODO find way to zero gyro that doesn't reset pose TODO destroy
         new Trigger(xbox::getBackButton).and(xbox::getStartButton).debounce(1)
@@ -252,7 +256,7 @@ public class RobotContainer
             }
         }
 
-        return new AutoCommandGroup(localizationSubsystem, swerveSubsystem, autoRings, endLoc,
+        return new AutoCommandGroup(localizationSubsystem, swerveSubsystem, armSubsystem, shooterSubsystem, autoRings, endLoc,
                 autoOptions.get(0).getSelected(), autoOptions.get(1).getSelected(),
                 autoOptions.get(2).getSelected(), autoOptions.get(3).getSelected(),
                 autoOptions.get(4).getSelected(), autoOptions.get(5).getSelected(),

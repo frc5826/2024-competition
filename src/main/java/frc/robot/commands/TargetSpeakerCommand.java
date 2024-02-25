@@ -39,7 +39,7 @@ public class TargetSpeakerCommand extends Command {
     private double getAngleDiff(){
         return ShooterMath.fixSpin(
                 localizationSubsystem.getCurrentPose().getRotation().getRadians() -
-                        ShooterMath.getAngleToSpeaker(localizationSubsystem.getCurrentPose()));
+                        ShooterMath.getAngleToSpeaker(localizationSubsystem.getCurrentPose()) + Math.PI);
     }
 
     @Override
