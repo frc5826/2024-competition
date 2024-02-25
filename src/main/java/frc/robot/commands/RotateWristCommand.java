@@ -38,7 +38,7 @@ public class RotateWristCommand extends Command {
     @Override
     public boolean isFinished() {
         return Math.abs(armSubsystem.getWrist() - armSubsystem.getDesiredWristRotations())
-                < 0.01;
+                < 0.02;
     }
 
     @Override

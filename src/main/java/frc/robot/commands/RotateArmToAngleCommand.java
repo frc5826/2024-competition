@@ -38,7 +38,7 @@ public class RotateArmToAngleCommand extends Command {
     @Override
     public boolean isFinished() {
         return Math.abs(armSubsystem.getRotation() - armSubsystem.getDesiredArmRotations())
-                < 0.02;
+                < 0.04;
     }
 
     @Override
