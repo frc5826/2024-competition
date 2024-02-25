@@ -91,6 +91,11 @@ public class Robot extends TimedRobot
         {
             autonomousCommand.cancel();
         }
+
+        robotContainer.armSubsystem.setArmHome();
+        robotContainer.armSubsystem.setExtensionHome();
+        robotContainer.armSubsystem.setWristHome();
+
     }
     
     

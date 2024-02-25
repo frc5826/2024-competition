@@ -45,7 +45,7 @@ public class RobotContainer
 
     private final XboxController xbox = new XboxController(1);
 
-    private final ArmSubsystem armSubsystem = new ArmSubsystem();
+    public final ArmSubsystem armSubsystem = new ArmSubsystem();
 
     private final VisionSubsystem visionSubsystem = new VisionSubsystem();
 

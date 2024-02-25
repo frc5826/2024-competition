@@ -22,8 +22,8 @@ public class ClimberSubsystem extends SubsystemBase {
         limitswitch1 = new DigitalInput(4);
         limitswitch2 = new DigitalInput(5);
 
-        motor1.setSmartCurrentLimit(40);
-        motor2.setSmartCurrentLimit(40);
+        motor1.setSmartCurrentLimit(80);
+        motor2.setSmartCurrentLimit(80);
 
         tab.addBoolean("Left Switch", this::getLeftLimitSwitch);
         tab.addBoolean("Right Switch", this::getRightLimitSwitch);
