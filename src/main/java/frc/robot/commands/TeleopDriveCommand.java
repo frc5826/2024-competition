@@ -67,9 +67,9 @@ public class TeleopDriveCommand extends Command {
 //        }
 
         if (xboxLeft.getAsDouble() > 0.5) {
-            swerveSubsystem.driveRobotOriented(new ChassisSpeeds(-0.2, 0, 0));
+            swerveSubsystem.driveRobotOriented(new ChassisSpeeds(-0.4, 0, 0));
         } else if(xboxRight.getAsDouble() > 0.5) {
-            swerveSubsystem.driveRobotOriented(new ChassisSpeeds(0.2, 0, 0));
+            swerveSubsystem.driveRobotOriented(new ChassisSpeeds(0.4, 0, 0));
         }
 
         double bandedx = Math.abs(x0) < cDriveDeadband ? 0 : x0;
@@ -81,7 +81,7 @@ public class TeleopDriveCommand extends Command {
                 bandedy * swerveSubsystem.maximumSpeed,
                 bandedAngle * swerveSubsystem.maximumAngularVel);
 
-        if (xboxLeft.getAsDouble() < 0.5 || xboxRight.getAsDouble() < 0.5) {
+        if (xboxLeft.getAsDouble() < 0.5 && xboxRight.getAsDouble() < 0.5) {
             swerveSubsystem.driveFieldOriented(speeds);
         }
 

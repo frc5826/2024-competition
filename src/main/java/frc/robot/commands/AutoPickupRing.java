@@ -14,16 +14,16 @@ public class AutoPickupRing extends Command {
     private LocalizationSubsystem localizationSubsystem;
     private SwerveSubsystem swerveSubsystem;
 
-    private PID turnPID = new PID(Constants.cTurnPID, 2, 0.01, 0.01, this::ringYaw);
+    private PID turnPID = new PID(Constants.cTurnPID, 2.5, 0.01, 0.01, this::ringYaw);
 
-    private PID drivePID = new PID(Constants.cDrivePID, 1.5, 0.01, 0.01, this::ringDistance);
+    private PID drivePID = new PID(Constants.cDrivePID, 1, 0.01, 0.01, this::ringDistance);
 
     private RingResult ringTracking;
     private double previousRingDistance;
 
     private double epsilon = .15;
 
-    private double stopDistance = 0;
+    private double stopDistance = -.2;
 
     private boolean die;
 

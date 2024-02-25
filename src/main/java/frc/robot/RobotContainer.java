@@ -100,7 +100,7 @@ public class RobotContainer
 
         new Trigger(xbox::getXButton).whileTrue(localizationSubsystem.buildPath(cPickupPark));
 
-        new Trigger(xbox::getLeftBumper).whileTrue(new PathWithStopDistance(localizationSubsystem, cSpeakerPose, 2.15, true));
+        new Trigger(xbox::getLeftBumper).whileTrue(localizationSubsystem.buildPath(cSpeakerPark));
 
         new Trigger(xbox::getRightBumper).whileTrue(localizationSubsystem.buildPath(cAmpPark));
 

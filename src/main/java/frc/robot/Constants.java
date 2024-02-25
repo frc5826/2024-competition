@@ -61,7 +61,7 @@ public final class Constants
     public static final double cDriveDeadband = 0.15;
     public static final double cTurnDeadband = 0.15;
 
-    public static final Pose2d cSpeakerPark = new Pose2d(1.75, 5.54, Rotation2d.fromDegrees(0));
+    public static final Pose2d cSpeakerPark = new Pose2d(1.4, 5.54, Rotation2d.fromDegrees(0));
     public static final Pose2d cSpeakerPose = new Pose2d(0, 5.55, Rotation2d.fromDegrees(180));
     public static final Pose2d cPickupPark = new Pose2d(15.25, 1.2, Rotation2d.fromDegrees(-60));
     public static final Pose2d cAmpPark = new Pose2d(1.84, 7.5, Rotation2d.fromDegrees(-90));
