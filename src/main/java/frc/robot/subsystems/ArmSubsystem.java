@@ -110,7 +110,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     //TODO add range
     public void setDesiredWristAngle(double ankleAngleRAD){
-        desiredWristRotations = (0.1536 * ankleAngleRAD) + 0.5808;
+        desiredWristRotations = (0.1536 * ankleAngleRAD) + 0.4095;
     }
 
     public void setWristHome(){
