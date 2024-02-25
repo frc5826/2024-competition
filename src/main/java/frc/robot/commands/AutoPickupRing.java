@@ -49,6 +49,7 @@ public class AutoPickupRing extends Command {
     @Override
     public void execute() {
         RingResult bestRing = localizationSubsystem.getBestPickupRing();
+        
 
         if (bestRing.getDistance() - previousRingDistance < epsilon) {
             ringTracking = bestRing;

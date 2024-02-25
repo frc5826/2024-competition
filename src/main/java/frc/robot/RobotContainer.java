@@ -96,7 +96,7 @@ public class RobotContainer
 
         //Xbox button bindings
 
-        new Trigger(xbox::getAButton).whileTrue(new AutoPickupRingSequence(armSubsystem, shooterSubsystem, localizationSubsystem, swerveSubsystem));
+        new Trigger(xbox::getAButton).whileTrue(new AutoPickupRing(localizationSubsystem, swerveSubsystem));
 
         new Trigger(xbox::getXButton).whileTrue(localizationSubsystem.buildPath(cPickupPark));
 
@@ -111,7 +111,7 @@ public class RobotContainer
         new Trigger(() -> xbox.getPOV() == 270).whileTrue(localizationSubsystem.buildPath(cLeftStagePark));
 
         //test
-        new Trigger(xbox::getLeftBumper).whileTrue(new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem));
+        new Trigger(xbox::getYButton).whileTrue(new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem));
 
         //TODO find way to zero gyro that doesn't reset pose TODO destroy
         new Trigger(xbox::getBackButton).and(xbox::getStartButton).debounce(1)

@@ -9,7 +9,7 @@ public class NoteShootAmpCommandGroup extends SequentialCommandGroup {
     public NoteShootAmpCommandGroup(ShooterSubsystem shooterSubsystem) {
         addRequirements(shooterSubsystem);
         addCommands(
-                new ShooterCommand(shooterSubsystem, 0.2, ShooterCommand.ShooterType.POWER, true, false),
+                new ShooterCommand(shooterSubsystem, 0.3, ShooterCommand.ShooterType.POWER, true, true),
                 new WaitCommand(1),
                 new ShooterCommand(shooterSubsystem, 1, ShooterCommand.ShooterType.CONTROL),
                 new WaitCommand(1),
