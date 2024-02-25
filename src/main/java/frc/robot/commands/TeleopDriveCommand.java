@@ -24,16 +24,22 @@ public class TeleopDriveCommand extends Command {
     private final DoubleSupplier y;
     private final DoubleSupplier angleVel;
     private final BooleanSupplier xboxXButton;
+    private final DoubleSupplier xboxLeft;
+    private final DoubleSupplier xboxRight;
 
     //TODO
     private final PID targetTurnPID = new PID(1, 0, 0, 6, 0, 0.05, this::getAngleDiff);
     private final PID turnPID = new PID(Constants.cTurnPID, 6, 0, 0.05, this::getAngleDiff);
 
     public TeleopDriveCommand(SwerveSubsystem swerveSubsystem, LocalizationSubsystem localizationSubsystem,
-                              DoubleSupplier x, DoubleSupplier y, DoubleSupplier angleVel, BooleanSupplier xboxXButton) {
+                              DoubleSupplier x, DoubleSupplier y, DoubleSupplier angleVel,
+                              BooleanSupplier xboxXButton, DoubleSupplier xboxLeft, DoubleSupplier xboxRight) {
 
         this.localizationSubsystem = localizationSubsystem;
         this.swerveSubsystem = swerveSubsystem;
+
+        this.xboxLeft = xboxLeft;
+        this.xboxRight = xboxRight;
 
         this.xboxXButton = xboxXButton;
         this.x = x;
@@ -58,6 +64,12 @@ public class TeleopDriveCommand extends Command {
         //TODO
 //        if (xboxXButton.getAsBoolean()) {
 //            angleV = turnPID.calculate();
+//        }
+
+//        if (xboxLeft.getAsDouble() > 0.5) {
+//            swerveSubsystem.driveRobotOriented(new ChassisSpeeds(-0.4, 0, 0));
+//        } else if(xboxRight.getAsDouble() > 0.5) {
+//            swerveSubsystem.driveRobotOriented(new ChassisSpeeds(0.4, 0, 0));
 //        }
 
         double bandedx = Math.abs(x0) < cDriveDeadband ? 0 : x0;

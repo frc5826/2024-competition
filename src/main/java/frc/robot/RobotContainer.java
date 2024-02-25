@@ -55,7 +55,10 @@ public class RobotContainer
     private final LocalizationSubsystem localizationSubsystem = new LocalizationSubsystem(visionSubsystem, swerveSubsystem);
 
     private final TeleopDriveCommand teleopDriveCommand = new TeleopDriveCommand(
-            swerveSubsystem, localizationSubsystem,() ->-xbox.getLeftY(), ()->-xbox.getLeftX(), ()->-xbox.getRightX(), () -> xbox.getXButton());
+            swerveSubsystem, localizationSubsystem,
+            () ->-xbox.getLeftY(), ()->-xbox.getLeftX(),
+            ()->-xbox.getRightX(), () -> xbox.getXButton(),
+            ()-> xbox.getLeftTriggerAxis(), ()-> xbox.getRightTriggerAxis());
 
     private final TargetSpeakerCommand targetSpeakerCommand = new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem);
 

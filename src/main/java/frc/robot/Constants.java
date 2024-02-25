@@ -38,13 +38,13 @@ public final class Constants
 
     public static final int beamBreakID = 3;
 
-    public static final double cRotateP = 4;
+    public static final double cRotateP = 4.5;
     public static final double cRotateI = 1;
     public static final double cRotateD = 0.2;
     public static final double cRotateMax = 1;
     public static final double cRotateMin = -1;
     public static final double cRotateDeadband = 0;
-    public static final double cExtendP = 2;
+    public static final double cExtendP = 2.25;
     public static final double cExtendI = 0.2;
     public static final double cExtendD = 0.1;
     public static final double cExtendMax = 1;
@@ -64,7 +64,7 @@ public final class Constants
     public static final Pose2d cSpeakerPark = new Pose2d(1.75, 5.54, Rotation2d.fromDegrees(0));
     public static final Pose2d cSpeakerPose = new Pose2d(0, 5.55, Rotation2d.fromDegrees(180));
     public static final Pose2d cPickupPark = new Pose2d(15.25, 1.2, Rotation2d.fromDegrees(-60));
-    public static final Pose2d cAmpPark = new Pose2d(1.84, 7.5, Rotation2d.fromDegrees(90));
+    public static final Pose2d cAmpPark = new Pose2d(1.84, 7.5, Rotation2d.fromDegrees(-90));
 
     public static final Pose2d cLeftStagePark = new Pose2d(4.5, 5, Rotation2d.fromDegrees(300));
     public static final Pose2d cCenterStagePark = new Pose2d(5.8, 4.5, Rotation2d.fromDegrees(180));

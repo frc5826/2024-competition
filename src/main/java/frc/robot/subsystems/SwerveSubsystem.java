@@ -81,6 +81,10 @@ public class SwerveSubsystem extends SubsystemBase {
                 swerveDrive.swerveController.config.headingPIDF.d);
     }
 
+    public void stop() {
+        driveFieldOriented(new ChassisSpeeds(0, 0, 0));
+    }
+
     public double getDriveBaseRadius() {
         return swerveDrive.swerveDriveConfiguration.getDriveBaseRadiusMeters();
     }

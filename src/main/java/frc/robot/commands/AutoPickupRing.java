@@ -16,14 +16,14 @@ public class AutoPickupRing extends Command {
 
     private PID turnPID = new PID(Constants.cTurnPID, 2, 0.01, 0.01, this::ringYaw);
 
-    private PID drivePID = new PID(Constants.cDrivePID, 2, 0.01, 0.01, this::ringDistance);
+    private PID drivePID = new PID(Constants.cDrivePID, 1.5, 0.01, 0.01, this::ringDistance);
 
     private RingResult ringTracking;
     private double previousRingDistance;
 
     private double epsilon = .15;
 
-    private double stopDistance = 0.1;
+    private double stopDistance = 0;
 
     private boolean die;
 
@@ -71,5 +71,11 @@ public class AutoPickupRing extends Command {
     @Override
     public boolean isFinished() {
         return ringDistance() < 0.1 || die;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        super.end(interrupted);
+        swerveSubsystem.driveFieldOriented(new ChassisSpeeds(0,0,0));
     }
 }
