@@ -12,7 +12,7 @@ public class AimSpeakerCommandGroup extends SequentialCommandGroup {
         addCommands(
                 new RotateArmToAngleCommand(Math.toRadians(45), armSubsystem),
                 new ExtendToLengthCommand(Optional.empty(), armSubsystem),
-                new RotateWristCommand(Math.toRadians(85), armSubsystem)
+                new RotateWristCommand(Math.toRadians(90), armSubsystem)
         );
     }
 
