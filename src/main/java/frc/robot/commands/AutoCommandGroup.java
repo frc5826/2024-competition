@@ -32,7 +32,10 @@ public class AutoCommandGroup extends SequentialCommandGroup {
 
         this.ringCount = ringCount;
 
-        addCommands(new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem));
+        addCommands(new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem),
+                //new AimSpeakerCommandGroup(armSubsystem),
+                new HomeSequenceCommandGroup(armSubsystem),
+                new NoteShootCommandGroup(shooterSubsystem).deadlineWith());
 
         for(int i = 0; i < ringCount; i++) {
             Pose2d ring = rings[i];
@@ -42,18 +45,12 @@ public class AutoCommandGroup extends SequentialCommandGroup {
                                 .onlyIf(() -> ring.getTranslation().getDistance(localizationSubsystem.getCurrentPose().getTranslation()) > 2),
                         new TurnToCommand(localizationSubsystem, swerveSubsystem, ring),
                         new AutoPickupRingSequence(armSubsystem, shooterSubsystem,
-                                localizationSubsystem, swerveSubsystem).finallyDo( () -> {
-                            if (localizationSubsystem.getBestPickupRing().getFieldPose().equals(new Translation2d(0, 0))) {
-                                holdingRing = false; }
-                            else {holdingRing = true;} }
-                        ),
+                                localizationSubsystem, swerveSubsystem),
                         Commands.sequence(
                                 localizationSubsystem.buildPath(Constants.cSpeakerPark),
-                                new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem)).onlyIf(() -> holdingRing),
-                                new AimSpeakerCommandGroup(armSubsystem),
-                                new NoteShootCommandGroup(shooterSubsystem)
-
-                );
+                                new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem)/*.onlyIf(() -> shooterSubsystem.getHasRing()*/),
+                                //new AimSpeakerCommandGroup(armSubsystem),
+                                new NoteShootCommandGroup(shooterSubsystem));
             }
         }
         //end pose

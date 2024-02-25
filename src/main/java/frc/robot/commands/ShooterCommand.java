@@ -10,18 +10,26 @@ public class ShooterCommand extends Command {
     private ShooterSubsystem shooterSubsystem;
     private ShooterType shooterType;
     private double speed;
+    private boolean top;
+    private boolean bottom;
 
-    public ShooterCommand(ShooterSubsystem shooterSubsystem, double speed ,ShooterType shooterType) {
+    public ShooterCommand(ShooterSubsystem shooterSubsystem, double speed ,ShooterType shooterType, boolean top, boolean bottom) {
         this.shooterSubsystem = shooterSubsystem;
         this.shooterType = shooterType;
         this.speed = speed;
+        this.top = top;
+        this.bottom = bottom;
     }
 
-    @Override
+    public ShooterCommand(ShooterSubsystem shooterSubsystem, double speed ,ShooterType shooterType) {
+        this(shooterSubsystem, speed, shooterType, true, true);
+    }
+
+        @Override
     public void initialize() {
         super.initialize();
         switch (shooterType){
-            case POWER -> shooterSubsystem.setShooterSpeed(speed);
+            case POWER -> shooterSubsystem.setShooterSpeed(speed, top, bottom);
             case CONTROL -> shooterSubsystem.setShooterControlSpeed(speed);
         }
     }

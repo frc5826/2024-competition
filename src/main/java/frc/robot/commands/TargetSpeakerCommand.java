@@ -43,7 +43,12 @@ public class TargetSpeakerCommand extends Command {
     }
 
     @Override
+    public void end(boolean interrupted) {
+        swerveSubsystem.stop();
+    }
+
+    @Override
     public boolean isFinished() {
-        return Math.abs(getAngleDiff()) < 0.08;
+        return Math.abs(getAngleDiff()) < 0.12;
     }
 }

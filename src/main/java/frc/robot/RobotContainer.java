@@ -55,7 +55,10 @@ public class RobotContainer
     private final LocalizationSubsystem localizationSubsystem = new LocalizationSubsystem(visionSubsystem, swerveSubsystem);
 
     private final TeleopDriveCommand teleopDriveCommand = new TeleopDriveCommand(
-            swerveSubsystem, localizationSubsystem,() ->-xbox.getLeftY(), ()->-xbox.getLeftX(), ()->-xbox.getRightX(), () -> xbox.getXButton());
+            swerveSubsystem, localizationSubsystem,
+            () ->-xbox.getLeftY(), ()->-xbox.getLeftX(),
+            ()->-xbox.getRightX(), () -> xbox.getXButton(),
+            ()-> xbox.getLeftTriggerAxis(), ()-> xbox.getRightTriggerAxis());
 
     private final TargetSpeakerCommand targetSpeakerCommand = new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem);
 
@@ -97,9 +100,9 @@ public class RobotContainer
 
         new Trigger(xbox::getXButton).whileTrue(localizationSubsystem.buildPath(cPickupPark));
 
-        new Trigger(xbox::getYButton).whileTrue(new PathWithStopDistance(localizationSubsystem, cSpeakerPose, 2.15, true));
+        new Trigger(xbox::getLeftBumper).whileTrue(new PathWithStopDistance(localizationSubsystem, cSpeakerPose, 2.15, true));
 
-        new Trigger(xbox::getBButton).whileTrue(localizationSubsystem.buildPath(cAmpPark));
+        new Trigger(xbox::getRightBumper).whileTrue(localizationSubsystem.buildPath(cAmpPark));
 
         new Trigger(() -> xbox.getPOV() == 0).or(() -> xbox.getPOV() == 180).whileTrue(localizationSubsystem.buildPath(cCenterStagePark));
 

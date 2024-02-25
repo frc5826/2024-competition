@@ -18,6 +18,8 @@ public class ShooterSubsystem extends SubsystemBase {
     WPI_TalonSRX shooterControlMotor;
     DigitalInput beamBreak;
 
+    private boolean hasRing;
+
     public ShooterSubsystem() {
 
         ShuffleboardTab tab = Shuffleboard.getTab("ARM");
@@ -43,8 +45,16 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setShooterSpeed(double speed){
-        shooterMotor1.set(speed);
-        shooterMotor2.set(speed);
+        setShooterSpeed(speed, true, true);
+    }
+
+    public void setShooterSpeed(double speed, boolean top, boolean bottom){
+        if(top) {
+            shooterMotor1.set(speed);
+        }
+        if(bottom) {
+            shooterMotor2.set(speed);
+        }
     }
 
     public CANSparkMax getShooterMotor1() {
@@ -65,5 +75,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public boolean getBeamBreak(){
         return beamBreak.get();
+    }
+
+    public void setHasRing(boolean doesIt) {
+        hasRing = doesIt;
+    }
+
+    public boolean getHasRing() {
+        return hasRing;
     }
 }

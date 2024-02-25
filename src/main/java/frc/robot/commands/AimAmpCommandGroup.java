@@ -11,7 +11,7 @@ public class AimAmpCommandGroup extends SequentialCommandGroup {
         addRequirements(armSubsystem);
         addCommands(
                 new RotateArmToAngleCommand(Math.toRadians(15), armSubsystem),
-                new ExtendToLengthCommand(0.18, armSubsystem),
+                new ExtendToLengthCommand(0.25, armSubsystem),
                 new RotateArmToAngleCommand(Math.toRadians(100), armSubsystem),
                 new RotateWristCommand(Optional.empty(), armSubsystem)
         );

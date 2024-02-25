@@ -43,6 +43,11 @@ public class TurnToCommand extends Command {
     }
 
     @Override
+    public void end(boolean interrupted) {
+        swerveSubsystem.stop();
+    }
+
+    @Override
     public boolean isFinished() {
         return Math.abs(getTurn()) < 0.15;
     }
