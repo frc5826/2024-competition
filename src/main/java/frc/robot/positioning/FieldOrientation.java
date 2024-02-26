@@ -8,19 +8,21 @@ public class FieldOrientation {
 
     private static final Orientation blueOrientation = new BlueOrientation();
     private static final Orientation redOrientation = new RedOrientation();
+    private static final Orientation unknownOrientation = new UnknownOrientation();
+
 
     public static Orientation getOrientation(){
         Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
         if(alliance.isEmpty()){
-            System.err.println("WARNING - NO ALLIANCE SET FROM DRIVER STATION - SETTING TO BLUE");
-            return blueOrientation;
+            System.err.println("WARNING - NO ALLIANCE SET FROM DRIVER STATION - SETTING TO UNKNOWN");
+            return unknownOrientation;
         } else if (alliance.get().equals(DriverStation.Alliance.Red)) {
             return redOrientation;
         } else if(alliance.get().equals(DriverStation.Alliance.Blue)){
             return blueOrientation;
         } else {
-            System.err.println("WARNING - UNKNOWN ALLIANCE FROM DRIVER STATION (" + alliance.get() + ") - SETTING TO BLUE");
-            return blueOrientation;
+            System.err.println("WARNING - UNKNOWN ALLIANCE FROM DRIVER STATION (" + alliance.get() + ") - SETTING TO UNKNOWN");
+            return unknownOrientation;
         }
     }
 

@@ -40,6 +40,7 @@ public class AutoCommandGroup extends SequentialCommandGroup {
                 new NoteShootCommandGroup(shooterSubsystem).deadlineWith());
                 localizationSubsystem.buildPath(new Pose2d(1.5, 5.57, Rotation2d.fromDegrees(0)));
 
+        //TODO - Relies on getOrientation, which might not be initialized
         for(int i = 0; i < ringCount; i++) {
             Pose2d ring = rings[i];
             if (ring != getOrientation().getNothingPose()) {

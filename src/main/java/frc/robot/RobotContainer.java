@@ -23,6 +23,8 @@ import frc.robot.commands.*;
 import frc.robot.commands.TargetSpeakerCommand;
 import frc.robot.commands.TeleopDriveCommand;
 import frc.robot.commands.PathWithStopDistance;
+import frc.robot.positioning.FieldOrientation;
+import frc.robot.positioning.Orientation;
 import frc.robot.subsystems.*;
 
 import java.io.File;
@@ -99,22 +101,22 @@ public class RobotContainer
         new Trigger(xbox::getAButton).whileTrue(new AutoPickupRing(localizationSubsystem, swerveSubsystem));
 
 //        new Trigger(xbox::getXButton).whileTrue(localizationSubsystem.buildPath(cPickupPark));
-        new Trigger(xbox::getXButton).whileTrue(localizationSubsystem.buildPath(getOrientation().getPickupPark()));
+        new Trigger(xbox::getXButton).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getPickupPark, localizationSubsystem));
 
 //        new Trigger(xbox::getLeftBumper).whileTrue(localizationSubsystem.buildPath(cSpeakerPark));
-        new Trigger(xbox::getLeftBumper).whileTrue(localizationSubsystem.buildPath(getOrientation().getSpeakerPark()));
+        new Trigger(xbox::getLeftBumper).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getPickupPark, localizationSubsystem));
 
 //        new Trigger(xbox::getRightBumper).whileTrue(localizationSubsystem.buildPath(cAmpPark));
-        new Trigger(xbox::getRightBumper).whileTrue(localizationSubsystem.buildPath(getOrientation().getAmpPark()));
+        new Trigger(xbox::getRightBumper).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getPickupPark, localizationSubsystem));
 
 //        new Trigger(() -> xbox.getPOV() == 0).or(() -> xbox.getPOV() == 180).whileTrue(localizationSubsystem.buildPath(cCenterStagePark));
-        new Trigger(() -> xbox.getPOV() == 0).or(() -> xbox.getPOV() == 180).whileTrue(localizationSubsystem.buildPath(getOrientation().getCenterStagePark()));
+        new Trigger(() -> xbox.getPOV() == 0).or(() -> xbox.getPOV() == 180).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getPickupPark, localizationSubsystem));
 
 //        new Trigger(() -> xbox.getPOV() == 90).whileTrue(localizationSubsystem.buildPath(cRightStagePark));
-        new Trigger(() -> xbox.getPOV() == 90).whileTrue(localizationSubsystem.buildPath(getOrientation().getRightStagePark()));
+        new Trigger(() -> xbox.getPOV() == 90).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getPickupPark, localizationSubsystem));
 
 //        new Trigger(() -> xbox.getPOV() == 270).whileTrue(localizationSubsystem.buildPath(cLeftStagePark));
-        new Trigger(() -> xbox.getPOV() == 270).whileTrue(localizationSubsystem.buildPath(getOrientation().getLeftStagePark()));
+        new Trigger(() -> xbox.getPOV() == 270).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getPickupPark, localizationSubsystem));
 
         //test
         new Trigger(xbox::getYButton).whileTrue(new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem));
@@ -183,6 +185,7 @@ public class RobotContainer
         field.setRobotPose(new Pose2d(endX.get(), endY.get(), Rotation2d.fromDegrees(endRotation.get())));
     }
 
+    //TODO - Relies on getOrientation, which might not be initialized
     private void setupAutoTab() {
         ShuffleboardTab autoTab = Shuffleboard.getTab("auto");
 
@@ -262,6 +265,7 @@ public class RobotContainer
      *
      * @return the command to run in autonomous
      */
+    //TODO - Relies on getOrientation, which might not be initialized
     public Command getAutonomousCommand()
     {
         boolean endPose = false;

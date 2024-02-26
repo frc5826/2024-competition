@@ -85,4 +85,9 @@ public class BlueOrientation implements Orientation{
         return new Pose2d(0, 5.55, Rotation2d.fromDegrees(0));
     }
 
+    @Override
+    public boolean isValid() {
+        return true;
+    }
+
 }

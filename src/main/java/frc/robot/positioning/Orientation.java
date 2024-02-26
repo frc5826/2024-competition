@@ -36,4 +36,6 @@ public interface Orientation {
 
     Pose2d getSpeakerTargetPos();
 
+    boolean isValid();
+
 }

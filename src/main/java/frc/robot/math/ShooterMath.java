@@ -46,11 +46,13 @@ public class ShooterMath {
         return angleDifference;
     }
 
+    //TODO - Relies on getOrientation, which might not be initialized
     public static double getXDiff(Pose2d robotPose) {
 //        return Constants.cSpeakerTargetPos.getX() - robotPose.getX();
         return getOrientation().getSpeakerTargetPos().getX() - robotPose.getX();
     }
 
+    //TODO - Relies on getOrientation, which might not be initialized
     public static double getYDiff(Pose2d robotPose) {
 //        return Constants.cSpeakerTargetPos.getY() - robotPose.getY();
         return getOrientation().getSpeakerTargetPos().getY() - robotPose.getY();
