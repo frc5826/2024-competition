@@ -261,7 +261,8 @@ public class LocalizationSubsystem extends SubsystemBase {
                     ring.getFirst().getYaw(),
                     ring.getFirst().getPitch(),
                     ring.getFirst().getArea(),
-                    getCurrentPose()));
+                    getCurrentPose(),
+                    ring.getFirst().getMinAreaRectCorners()));
         }
 
         return ringResults;
