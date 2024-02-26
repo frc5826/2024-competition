@@ -5,6 +5,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 
 public class BlueOrientation implements Orientation{
 
+    protected BlueOrientation() {
+    }
+
     @Override
     public Pose2d getPickupPark() {
         return new Pose2d(15.25, 1.2, Rotation2d.fromDegrees(-60));

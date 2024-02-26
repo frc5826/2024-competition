@@ -4,6 +4,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 
 public class UnknownOrientation implements Orientation {
 
+    protected UnknownOrientation() {
+    }
+
     @Override
     public Pose2d getPickupPark() {
         return null;
