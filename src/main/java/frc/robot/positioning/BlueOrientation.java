@@ -40,7 +40,7 @@ public class BlueOrientation implements Orientation{
 
     @Override
     public Pose2d getNothingPose() {
-        return new Pose2d(69, 420, Rotation2d.fromDegrees(0));
+        return FieldOrientation.NOTHING_POSE;
     }
 
     @Override

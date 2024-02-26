@@ -39,7 +39,7 @@ public class UnknownOrientation implements Orientation {
 
     @Override
     public Pose2d getNothingPose() {
-        return null;
+        return FieldOrientation.NOTHING_POSE;
     }
 
     @Override
