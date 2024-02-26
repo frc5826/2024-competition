@@ -41,7 +41,6 @@ public class PathCommand extends Command {
 
     @Override
     public void execute() {
-        //TODO - Why does PathWithStopDistance have specific logic to deal with the rotation?
         if(pathCommand != null){
             pathCommand.execute();
         }
@@ -49,7 +48,6 @@ public class PathCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        //TODO - Same question as execute()
         localizationSubsystem.removeRotationTarget();
         pathCommand.end(interrupted);
     }
@@ -58,8 +56,6 @@ public class PathCommand extends Command {
     public boolean isFinished() {
         // We want to kill the command if we're not "ready" or the path is complete.
         // In practice, not being "ready" means we don't know our orientation.
-
-        //TODO - PathWithStopDistance doesn't rely on "isFinished". Do we want to copy that here?
         return pathCommand == null || pathCommand.isFinished();
     }
 

@@ -100,6 +100,7 @@ public class RobotContainer
 
         new Trigger(xbox::getAButton).whileTrue(new AutoPickupRing(localizationSubsystem, swerveSubsystem));
 
+        //TODO - Fill in with the right command
 //        new Trigger(xbox::getXButton).whileTrue(localizationSubsystem.buildPath(cPickupPark));
         new Trigger(xbox::getXButton).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getPickupPark, localizationSubsystem));
 
