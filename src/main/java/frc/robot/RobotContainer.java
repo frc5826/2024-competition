@@ -269,7 +269,6 @@ public class RobotContainer
      *
      * @return the command to run in autonomous
      */
-    //TODO - Relies on getOrientation, which might not be initialized
     public Command getAutonomousCommand()
     {
         boolean endPose = false;
