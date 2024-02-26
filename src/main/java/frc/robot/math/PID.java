@@ -72,9 +72,6 @@ public class PID {
         return error;
     }
 
-    //TODO add integral resetter
-    //Like that's ever happening
-
     @Override
     public String toString() {
         return "PID{" +
