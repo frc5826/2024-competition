@@ -10,6 +10,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import static frc.robot.positioning.FieldOrientation.getOrientation;
 
 public class AutoCommandGroup extends SequentialCommandGroup {
 
@@ -41,7 +42,7 @@ public class AutoCommandGroup extends SequentialCommandGroup {
 
         for(int i = 0; i < ringCount; i++) {
             Pose2d ring = rings[i];
-            if (ring != Constants.nothingPose) {
+            if (ring != getOrientation().getNothingPose()) {
                 addCommands(
                         new PathWithStopDistance(localizationSubsystem, ring, 1.5, false)
                                 .onlyIf(() -> ring.getTranslation().getDistance(localizationSubsystem.getCurrentPose().getTranslation()) > 2),
@@ -49,7 +50,8 @@ public class AutoCommandGroup extends SequentialCommandGroup {
                         new AutoPickupRingSequence(armSubsystem, shooterSubsystem,
                                 localizationSubsystem, swerveSubsystem),
                         Commands.sequence(
-                                localizationSubsystem.buildPath(Constants.cSpeakerPark),
+//                                localizationSubsystem.buildPath(Constants.cSpeakerPark),
+                                localizationSubsystem.buildPath(getOrientation().getSpeakerPark()),
                                 new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem)/*.onlyIf(() -> shooterSubsystem.getHasRing()*/),
                                 new AimSpeakerCommandGroup(armSubsystem),
                                 new NoteShootCommandGroup(shooterSubsystem));

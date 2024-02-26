@@ -61,26 +61,27 @@ public final class Constants
     public static final double cDriveDeadband = 0.15;
     public static final double cTurnDeadband = 0.15;
 
-    public static final Pose2d cSpeakerPark = new Pose2d(1.4, 5.54, Rotation2d.fromDegrees(0));
-    public static final Pose2d cSpeakerPose = new Pose2d(0, 5.55, Rotation2d.fromDegrees(180));
-    public static final Pose2d cPickupPark = new Pose2d(15.25, 1.2, Rotation2d.fromDegrees(-60));
-    public static final Pose2d cAmpPark = new Pose2d(1.84, 7.5, Rotation2d.fromDegrees(-90));
-
-    public static final Pose2d cLeftStagePark = new Pose2d(4.5, 5, Rotation2d.fromDegrees(300));
-    public static final Pose2d cCenterStagePark = new Pose2d(5.8, 4.5, Rotation2d.fromDegrees(180));
-    public static final Pose2d cRightStagePark = new Pose2d(4.5, 3.5, Rotation2d.fromDegrees(60));
-    public static final Pose2d cTopCloseRing1 = new Pose2d(2.89, 7, Rotation2d.fromDegrees(0));
-    public static final Pose2d cMidCloseRing2 = new Pose2d(2.89, 5.55, Rotation2d.fromDegrees(0));
-    public static final Pose2d cBotCloseRing3 = new Pose2d(2.89, 4.11, Rotation2d.fromDegrees(0));
-    public static final Pose2d cFarRing4 = new Pose2d(8.28, 7.44, Rotation2d.fromDegrees(0));
-    public static final Pose2d cFarRing5 = new Pose2d(8.28, 5.78, Rotation2d.fromDegrees(0));
-    public static final Pose2d cFarRing6 = new Pose2d(8.28, 4.11, Rotation2d.fromDegrees(0));
-    public static final Pose2d cFarRing7 = new Pose2d(8.28, 2.44, Rotation2d.fromDegrees(0));
-    public static final Pose2d cFarRing8 = new Pose2d(8.28, 0.77, Rotation2d.fromDegrees(0));
-    public static final Pose2d nothingPose = new Pose2d(69, 420, Rotation2d.fromDegrees(0));
-
-    //TODO set these values :)
-    public static final Pose2d cSpeakerTargetPos = new Pose2d(0, 5.55, Rotation2d.fromDegrees(0));
+    //If you want to use these, check out FieldOrientation and RobotContainer for how it's used.
+//    public static final Pose2d cSpeakerPark = new Pose2d(1.4, 5.54, Rotation2d.fromDegrees(0));
+//    public static final Pose2d cSpeakerPose = new Pose2d(0, 5.55, Rotation2d.fromDegrees(180));
+//    public static final Pose2d cPickupPark = new Pose2d(15.25, 1.2, Rotation2d.fromDegrees(-60));
+//    public static final Pose2d cAmpPark = new Pose2d(1.84, 7.5, Rotation2d.fromDegrees(-90));
+//
+//    public static final Pose2d cLeftStagePark = new Pose2d(4.5, 5, Rotation2d.fromDegrees(300));
+//    public static final Pose2d cCenterStagePark = new Pose2d(5.8, 4.5, Rotation2d.fromDegrees(180));
+//    public static final Pose2d cRightStagePark = new Pose2d(4.5, 3.5, Rotation2d.fromDegrees(60));
+//    public static final Pose2d cTopCloseRing1 = new Pose2d(2.89, 7, Rotation2d.fromDegrees(0));
+//    public static final Pose2d cMidCloseRing2 = new Pose2d(2.89, 5.55, Rotation2d.fromDegrees(0));
+//    public static final Pose2d cBotCloseRing3 = new Pose2d(2.89, 4.11, Rotation2d.fromDegrees(0));
+//    public static final Pose2d cFarRing4 = new Pose2d(8.28, 7.44, Rotation2d.fromDegrees(0));
+//    public static final Pose2d cFarRing5 = new Pose2d(8.28, 5.78, Rotation2d.fromDegrees(0));
+//    public static final Pose2d cFarRing6 = new Pose2d(8.28, 4.11, Rotation2d.fromDegrees(0));
+//    public static final Pose2d cFarRing7 = new Pose2d(8.28, 2.44, Rotation2d.fromDegrees(0));
+//    public static final Pose2d cFarRing8 = new Pose2d(8.28, 0.77, Rotation2d.fromDegrees(0));
+//    public static final Pose2d nothingPose = new Pose2d(69, 420, Rotation2d.fromDegrees(0));
+//
+//    //TODO set these values :)
+//    public static final Pose2d cSpeakerTargetPos = new Pose2d(0, 5.55, Rotation2d.fromDegrees(0));
     public static final double cSpeakerTargetHeight = 0;
     public static final double cMotorVeltoDistance = 100;
     public static final double cMotorVeltoExitVel = 1;
