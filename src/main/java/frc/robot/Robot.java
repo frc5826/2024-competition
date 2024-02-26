@@ -71,6 +71,7 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit()
     {
+        robotContainer.getLocalizationSubsystem().setFieldLayout();
         robotContainer.getAutonomousCommand().schedule();
     }
     
@@ -83,6 +84,7 @@ public class Robot extends TimedRobot
     @Override
     public void teleopInit()
     {
+        robotContainer.getLocalizationSubsystem().setFieldLayout();
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove

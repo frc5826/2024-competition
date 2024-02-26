@@ -65,12 +65,7 @@ public class LocalizationSubsystem extends SubsystemBase {
     public LocalizationSubsystem(VisionSubsystem visionSubsystem, SwerveSubsystem swerveSubsystem) {
         try {
             fieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
-            //TODO - Is this the best way to orient the field?
-            Optional<DriverStation.Alliance> allianceOption = DriverStation.getAlliance();
-            if(allianceOption.isPresent()){
-                DriverStation.Alliance alliance = allianceOption.get();
-                fieldLayout.setOrigin(alliance == DriverStation.Alliance.Blue ? AprilTagFieldLayout.OriginPosition.kBlueAllianceWallRightSide : AprilTagFieldLayout.OriginPosition.kRedAllianceWallRightSide);
-            }
+            setFieldLayout();
         } catch (IOException e) {
             fieldLayout = null;
             e.printStackTrace();
@@ -103,7 +98,23 @@ public class LocalizationSubsystem extends SubsystemBase {
         }
     }
 
+    public void setFieldLayout(){
+        //TODO - Is this the best way to orient the field?
+        Optional<DriverStation.Alliance> allianceOption = DriverStation.getAlliance();
+        if(fieldLayout != null && allianceOption.isPresent()){
+            DriverStation.Alliance alliance = allianceOption.get();
+            AprilTagFieldLayout.OriginPosition origin = alliance == DriverStation.Alliance.Blue ? AprilTagFieldLayout.OriginPosition.kBlueAllianceWallRightSide : AprilTagFieldLayout.OriginPosition.kRedAllianceWallRightSide;
+            System.out.println("Alliance Present. Setting origin to: " + origin.name());
+            fieldLayout.setOrigin(origin);
+        }
+        else {
+            System.out.println("No alliance present. Current origin: " + fieldLayout.getOrigin());
+        }
+    }
+
     public void periodic() {
+
+
         if(fieldLayout != null){
             for(AprilTagResult result : visionSubsystem.getAprilTagResults()){
                 if(!processed.contains(result)) {
