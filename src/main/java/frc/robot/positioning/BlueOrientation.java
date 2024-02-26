@@ -82,7 +82,7 @@ public class BlueOrientation implements Orientation{
 
     @Override
     public Pose2d getSpeakerTargetPos() {
-        return new Pose2d(0, 5.55, Rotation2d.fromDegrees(180));
+        return new Pose2d(0, 5.55, Rotation2d.fromDegrees(0));
     }
 
 }
