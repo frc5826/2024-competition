@@ -5,13 +5,9 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
-import static frc.robot.positioning.FieldOrientation.getOrientation;
 
 /**
  * The VM is configured to automatically run this class, and to call the methods corresponding to
@@ -55,7 +51,7 @@ public class Robot extends TimedRobot
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
 
-        robotContainer.setupAutoTab();
+        robotContainer.configureAutoTab();
 
         CommandScheduler.getInstance().run();
     }
