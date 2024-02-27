@@ -14,9 +14,9 @@ public class AutoPickupRing extends Command {
     private LocalizationSubsystem localizationSubsystem;
     private SwerveSubsystem swerveSubsystem;
 
-    private PID turnPID = new PID(Constants.cTurnPID, 2.5, 0.01, 0.01, this::ringYaw);
+    private PID turnPID = new PID(Constants.cTurnPID, 3, 0.01, 0.01, this::ringYaw);
 
-    private PID drivePID = new PID(Constants.cDrivePID, 1, 0.01, 0.01, this::ringDistance);
+    private PID drivePID = new PID(Constants.cDrivePID, 1.25, 0.01, 0.01, this::ringDistance);
 
     private RingResult ringTracking;
     private double previousRingDistance;
@@ -61,7 +61,8 @@ public class AutoPickupRing extends Command {
     }
 
     private double ringYaw() {
-        return ringTracking.getAngleToHeading();
+        System.out.println(ringTracking.getFieldPose().minus(localizationSubsystem.getCurrentPose().getTranslation()).rotateBy(localizationSubsystem.getCurrentPose().getRotation().unaryMinus()).getAngle().getRadians());
+        return ringTracking.getFieldPose().minus(localizationSubsystem.getCurrentPose().getTranslation()).rotateBy(localizationSubsystem.getCurrentPose().getRotation().times(-1)).getAngle().getRadians() * -1;
     }
 
     private double ringDistance() {
