@@ -17,12 +17,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.robot.commands.*;
 import frc.robot.commands.TargetSpeakerCommand;
 import frc.robot.commands.TeleopDriveCommand;
-import frc.robot.commands.PathWithStopDistance;
 import frc.robot.positioning.FieldOrientation;
 import frc.robot.positioning.Orientation;
 import frc.robot.subsystems.*;
@@ -178,6 +176,8 @@ public class RobotContainer
 //        new Trigger(() -> joystick.getRawButton(7)).whileTrue(new IntakeTestCommand(shooterSubsystem, 1));
 //        new Trigger(() -> joystick.getRawButton(8)).whileTrue(new IntakeTestCommand(shooterSubsystem, -1));
 
+        setupEndPose();
+
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }
 
@@ -185,16 +185,39 @@ public class RobotContainer
         field.setRobotPose(new Pose2d(endX.get(), endY.get(), Rotation2d.fromDegrees(endRotation.get())));
     }
 
-    public void setupAutoTab() {
-        if (!autoInitialized && getOrientation().isValid()) {
+    private void setupEndPose() {
 
-            autoInitialized = true;
+        ShuffleboardTab autoTab = Shuffleboard.getTab("auto");
+
+        var x = autoTab.add("End X", 0)
+                .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 16.5))
+                .withSize(2, 1).withPosition(3, 2);
+
+        var y = autoTab.add("End Y", 0)
+                .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 8.15))
+                .withSize(2, 1).withPosition(3, 3);
+
+        var rot = autoTab.add("End Rotation", 0)
+                .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180))
+                .withSize(2, 1).withPosition(5, 2);
+
+        endX = () -> x.getEntry().getDouble(0);
+        endY = () -> y.getEntry().getDouble(0);
+        endRotation = () -> rot.getEntry().getDouble(0);
+
+        autoTab.add(field).withSize(3, 2).withPosition(0, 2);
+    }
+
+    public void configureAutoTab() {
+        if (!autoInitialized && getOrientation().isValid()) {
 
             ShuffleboardTab autoTab = Shuffleboard.getTab("auto");
 
             autoOptions = new ArrayList<SendableChooser<Pose2d>>();
 
             autoRings = 0;
+
+            autoInitialized = true;
 
             int widgetX = 0;
             int widgetY = 0;
@@ -232,23 +255,6 @@ public class RobotContainer
                 }
             }
 
-            var x = autoTab.add("End X", 0)
-                    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 16.5))
-                    .withSize(2, 1).withPosition(3, 2);
-
-            var y = autoTab.add("End Y", 0)
-                    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 8.15))
-                    .withSize(2, 1).withPosition(3, 3);
-
-            var rot = autoTab.add("End Rotation", 0)
-                    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180))
-                    .withSize(2, 1).withPosition(5, 2);
-
-            endX = () -> x.getEntry().getDouble(0);
-            endY = () -> y.getEntry().getDouble(0);
-            endRotation = () -> rot.getEntry().getDouble(0);
-
-            autoTab.add(field).withSize(3, 2).withPosition(0, 2);
         }
     }
     
