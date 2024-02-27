@@ -61,7 +61,7 @@ public class AutoPickupRing extends Command {
     }
 
     private double ringYaw() {
-        System.out.println(ringTracking.getFieldPose().minus(localizationSubsystem.getCurrentPose().getTranslation()).rotateBy(localizationSubsystem.getCurrentPose().getRotation().unaryMinus()).getAngle().getRadians());
+        //System.out.println(ringTracking.getFieldPose().minus(localizationSubsystem.getCurrentPose().getTranslation()).rotateBy(localizationSubsystem.getCurrentPose().getRotation().unaryMinus()).getAngle().getRadians());
         return ringTracking.getFieldPose().minus(localizationSubsystem.getCurrentPose().getTranslation()).rotateBy(localizationSubsystem.getCurrentPose().getRotation().times(-1)).getAngle().getRadians() * -1;
     }
 

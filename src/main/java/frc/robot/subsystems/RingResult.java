@@ -51,7 +51,10 @@ public class RingResult {
         this.robotYaw = robotYawBroken + camLocation.getRotation().getZ();
         this.distance = d;
 
-        fieldPose = robotPose.getTranslation().plus(new Translation2d(d, Rotation2d.fromRadians(-robotYaw + robotPose.getRotation().getRadians())).plus(new Translation2d(.178 - .05, robotPose.getRotation().plus(Rotation2d.fromDegrees(90)))));
+        fieldPose = robotPose.getTranslation()
+                .plus(new Translation2d(d, Rotation2d.fromRadians(-robotYaw + robotPose.getRotation().getRadians()))
+                        .plus(new Translation2d(.178 - .05, robotPose.getRotation()
+                                .plus(Rotation2d.fromDegrees(90)))));
     }
 
     private RingResult() {

@@ -39,13 +39,13 @@ public class AutoCommandGroup extends SequentialCommandGroup {
                     new AimSpeakerCommandGroup(armSubsystem),
                     //new HomeSequenceCommandGroup(armSubsystem),
                     new NoteShootCommandGroup(shooterSubsystem).deadlineWith());
-            localizationSubsystem.buildPath(new Pose2d(1.5, 5.57, Rotation2d.fromDegrees(0)));
+            //localizationSubsystem.buildPath(new Pose2d(1.5, 5.57, Rotation2d.fromDegrees(0)));
 
             for (int i = 0; i < ringCount; i++) {
                 Pose2d ring = rings[i];
                 if (ring != getOrientation().getNothingPose()) {
                     addCommands(
-                            new PathWithStopDistance(localizationSubsystem, ring, 1.5, false)
+                            new PathWithStopDistance(localizationSubsystem, ring, 1.75, false)
                                     .onlyIf(() -> ring.getTranslation().getDistance(localizationSubsystem.getCurrentPose().getTranslation()) > 2),
                             new TurnToCommand(localizationSubsystem, swerveSubsystem, ring),
                             new AutoPickupRingSequence(armSubsystem, shooterSubsystem,
@@ -59,7 +59,8 @@ public class AutoCommandGroup extends SequentialCommandGroup {
                 }
             }
             //end pose
-            addCommands(localizationSubsystem.buildPath(endPose));
+            addCommands(new HomeSequenceCommandGroup(armSubsystem),
+                    localizationSubsystem.buildPath(endPose));
         }
         else {
             System.err.println("ERROR: AUTO FAILED, INVALID ROBOT ORIENTATION\nRobot might be in Narnia for all I know");

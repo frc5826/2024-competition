@@ -32,9 +32,12 @@ public class PathCommand extends Command {
         }
 
         Orientation orientation = orientationSupplier.get();
+        System.out.println("PathCommand: Using " + orientation + " orientation");
 
         if(orientation.isValid()) {
-            pathCommand = localizationSubsystem.buildPath(positionSupplier.apply(orientationSupplier.get()));
+            Pose2d pose = positionSupplier.apply(orientationSupplier.get());
+            System.out.println("PathCommand: Driving to " + pose);
+            pathCommand = localizationSubsystem.buildPath(pose);
             pathCommand.initialize();
         }
     }
