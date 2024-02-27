@@ -101,6 +101,8 @@ public class LocalizationSubsystem extends SubsystemBase {
     }
 
     public void periodic() {
+
+
         if(fieldLayout != null){
             for(AprilTagResult result : visionSubsystem.getAprilTagResults()){
                 if(!processed.contains(result)) {
@@ -247,7 +249,8 @@ public class LocalizationSubsystem extends SubsystemBase {
                     ring.getFirst().getYaw(),
                     ring.getFirst().getPitch(),
                     ring.getFirst().getArea(),
-                    getCurrentPose()));
+                    getCurrentPose(),
+                    ring.getFirst().getMinAreaRectCorners()));
         }
 
         return ringResults;

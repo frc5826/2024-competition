@@ -44,7 +44,7 @@ public final class Constants
     public static final double cRotateMax = 1;
     public static final double cRotateMin = -1;
     public static final double cRotateDeadband = 0;
-    public static final double cExtendP = 2.25;
+    public static final double cExtendP = 3.5;
     public static final double cExtendI = 0.2;
     public static final double cExtendD = 0.1;
     public static final double cExtendMax = 1;

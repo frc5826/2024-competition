@@ -293,4 +293,8 @@ public class RobotContainer
                 autoOptions.get(4).getSelected(), autoOptions.get(5).getSelected(),
                 autoOptions.get(6).getSelected(), autoOptions.get(7).getSelected());
     }
+
+    public LocalizationSubsystem getLocalizationSubsystem(){
+        return localizationSubsystem;
+    }
 }
