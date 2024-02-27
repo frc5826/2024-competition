@@ -10,6 +10,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.LocalizationSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import static frc.robot.positioning.FieldOrientation.getOrientation;
 
 public class AutoCommandGroup extends SequentialCommandGroup {
 
@@ -33,31 +34,35 @@ public class AutoCommandGroup extends SequentialCommandGroup {
 
         this.ringCount = ringCount;
 
-        addCommands(new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem),
-                new AimSpeakerCommandGroup(armSubsystem),
-                //new HomeSequenceCommandGroup(armSubsystem),
-                new NoteShootCommandGroup(shooterSubsystem).deadlineWith());
-                localizationSubsystem.buildPath(new Pose2d(1.5, 5.57, Rotation2d.fromDegrees(0)));
+        if(getOrientation().isValid()) {
+            addCommands(new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem),
+                    new AimSpeakerCommandGroup(armSubsystem),
+                    //new HomeSequenceCommandGroup(armSubsystem),
+                    new NoteShootCommandGroup(shooterSubsystem).deadlineWith());
+            localizationSubsystem.buildPath(new Pose2d(1.5, 5.57, Rotation2d.fromDegrees(0)));
 
-        for(int i = 0; i < ringCount; i++) {
-            Pose2d ring = rings[i];
-            if (ring != Constants.nothingPose) {
-                addCommands(
-                        new PathWithStopDistance(localizationSubsystem, ring, 1.5, false)
-                                .onlyIf(() -> ring.getTranslation().getDistance(localizationSubsystem.getCurrentPose().getTranslation()) > 2),
-                        new TurnToCommand(localizationSubsystem, swerveSubsystem, ring),
-                        new AutoPickupRingSequence(armSubsystem, shooterSubsystem,
-                                localizationSubsystem, swerveSubsystem),
-                        Commands.sequence(
-                                localizationSubsystem.buildPath(Constants.cSpeakerPark),
-                                new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem)/*.onlyIf(() -> shooterSubsystem.getHasRing()*/),
-                                new AimSpeakerCommandGroup(armSubsystem),
-                                new NoteShootCommandGroup(shooterSubsystem));
+            for (int i = 0; i < ringCount; i++) {
+                Pose2d ring = rings[i];
+                if (ring != getOrientation().getNothingPose()) {
+                    addCommands(
+                            new PathWithStopDistance(localizationSubsystem, ring, 1.5, false)
+                                    .onlyIf(() -> ring.getTranslation().getDistance(localizationSubsystem.getCurrentPose().getTranslation()) > 2),
+                            new TurnToCommand(localizationSubsystem, swerveSubsystem, ring),
+                            new AutoPickupRingSequence(armSubsystem, shooterSubsystem,
+                                    localizationSubsystem, swerveSubsystem),
+                            Commands.sequence(
+//                                localizationSubsystem.buildPath(Constants.cSpeakerPark),
+                                    localizationSubsystem.buildPath(getOrientation().getSpeakerPark()),
+                                    new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem)/*.onlyIf(() -> shooterSubsystem.getHasRing()*/),
+                            new AimSpeakerCommandGroup(armSubsystem),
+                            new NoteShootCommandGroup(shooterSubsystem));
+                }
             }
+            //end pose
+            addCommands(localizationSubsystem.buildPath(endPose));
         }
-        //end pose
-        addCommands(localizationSubsystem.buildPath(endPose));
+        else {
+            System.err.println("ERROR: AUTO FAILED, INVALID ROBOT ORIENTATION\nRobot might be in Narnia for all I know");
+        }
     }
-
-
 }

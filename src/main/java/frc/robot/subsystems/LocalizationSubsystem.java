@@ -64,8 +64,10 @@ public class LocalizationSubsystem extends SubsystemBase {
 
     public LocalizationSubsystem(VisionSubsystem visionSubsystem, SwerveSubsystem swerveSubsystem) {
         try {
+            //We're always going to use the "blue wall" as or origin. All positions will be absolute.
+            //We'll use the FieldOrientation class to get us the right position based on our alliance.
             fieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2024Crescendo.m_resourceFile);
-            setFieldLayout();
+            fieldLayout.setOrigin(AprilTagFieldLayout.OriginPosition.kBlueAllianceWallRightSide);
         } catch (IOException e) {
             fieldLayout = null;
             e.printStackTrace();
@@ -95,20 +97,6 @@ public class LocalizationSubsystem extends SubsystemBase {
             return Optional.of(rotationTarget);
         } else {
             return Optional.empty();
-        }
-    }
-
-    public void setFieldLayout(){
-        //TODO - Is this the best way to orient the field?
-        Optional<DriverStation.Alliance> allianceOption = DriverStation.getAlliance();
-        if(fieldLayout != null && allianceOption.isPresent()){
-            DriverStation.Alliance alliance = allianceOption.get();
-            AprilTagFieldLayout.OriginPosition origin = alliance == DriverStation.Alliance.Blue ? AprilTagFieldLayout.OriginPosition.kBlueAllianceWallRightSide : AprilTagFieldLayout.OriginPosition.kRedAllianceWallRightSide;
-            System.out.println("Alliance Present. Setting origin to: " + origin.name());
-            fieldLayout.setOrigin(origin);
-        }
-        else {
-            System.out.println("No alliance present. Current origin: " + fieldLayout.getOrigin());
         }
     }
 

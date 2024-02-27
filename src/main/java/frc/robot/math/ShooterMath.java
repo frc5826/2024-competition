@@ -3,6 +3,8 @@ package frc.robot.math;
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.Constants;
 
+import static frc.robot.positioning.FieldOrientation.getOrientation;
+
 public class ShooterMath {
     public static double getDistance3D(Pose2d robotPose) {
         return Math.sqrt(Math.pow(getDistance2D(robotPose), 2) + Math.pow(Constants.cSpeakerTargetHeight, 2));
@@ -44,11 +46,17 @@ public class ShooterMath {
         return angleDifference;
     }
 
+    //TODO - Relies on getOrientation, which might not be initialized
+    //Safe for now
     public static double getXDiff(Pose2d robotPose) {
-        return Constants.cSpeakerTargetPos.getX() - robotPose.getX();
+//        return Constants.cSpeakerTargetPos.getX() - robotPose.getX();
+        return getOrientation().getSpeakerTargetPos().getX() - robotPose.getX();
     }
 
+    //TODO - Relies on getOrientation, which might not be initialized
+    //Safe for now
     public static double getYDiff(Pose2d robotPose) {
-        return Constants.cSpeakerTargetPos.getY() - robotPose.getY();
+//        return Constants.cSpeakerTargetPos.getY() - robotPose.getY();
+        return getOrientation().getSpeakerTargetPos().getY() - robotPose.getY();
     }
 }

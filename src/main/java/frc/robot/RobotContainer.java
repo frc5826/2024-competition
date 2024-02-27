@@ -23,6 +23,8 @@ import frc.robot.commands.*;
 import frc.robot.commands.TargetSpeakerCommand;
 import frc.robot.commands.TeleopDriveCommand;
 import frc.robot.commands.PathWithStopDistance;
+import frc.robot.positioning.FieldOrientation;
+import frc.robot.positioning.Orientation;
 import frc.robot.subsystems.*;
 
 import java.io.File;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
-
+import static frc.robot.positioning.FieldOrientation.getOrientation;
 import static frc.robot.Constants.*;
 
 
@@ -42,6 +44,8 @@ import static frc.robot.Constants.*;
  */
 public class RobotContainer
 {
+
+    private boolean autoInitialized = false;
 
     private final XboxController xbox = new XboxController(1);
 
@@ -98,17 +102,23 @@ public class RobotContainer
 
         new Trigger(xbox::getAButton).whileTrue(new AutoPickupRing(localizationSubsystem, swerveSubsystem));
 
-        new Trigger(xbox::getXButton).whileTrue(localizationSubsystem.buildPath(cPickupPark));
+//        new Trigger(xbox::getXButton).whileTrue(localizationSubsystem.buildPath(cPickupPark));
+        new Trigger(xbox::getXButton).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getPickupPark, localizationSubsystem));
 
-        new Trigger(xbox::getLeftBumper).whileTrue(localizationSubsystem.buildPath(cSpeakerPark));
+//        new Trigger(xbox::getLeftBumper).whileTrue(localizationSubsystem.buildPath(cSpeakerPark));
+        new Trigger(xbox::getLeftBumper).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getSpeakerPark, localizationSubsystem));
 
-        new Trigger(xbox::getRightBumper).whileTrue(localizationSubsystem.buildPath(cAmpPark));
+//        new Trigger(xbox::getRightBumper).whileTrue(localizationSubsystem.buildPath(cAmpPark));
+        new Trigger(xbox::getRightBumper).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getAmpPark, localizationSubsystem));
 
-        new Trigger(() -> xbox.getPOV() == 0).or(() -> xbox.getPOV() == 180).whileTrue(localizationSubsystem.buildPath(cCenterStagePark));
+//        new Trigger(() -> xbox.getPOV() == 0).or(() -> xbox.getPOV() == 180).whileTrue(localizationSubsystem.buildPath(cCenterStagePark));
+        new Trigger(() -> xbox.getPOV() == 0).or(() -> xbox.getPOV() == 180).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getCenterStagePark, localizationSubsystem));
 
-        new Trigger(() -> xbox.getPOV() == 90).whileTrue(localizationSubsystem.buildPath(cRightStagePark));
+//        new Trigger(() -> xbox.getPOV() == 90).whileTrue(localizationSubsystem.buildPath(cRightStagePark));
+        new Trigger(() -> xbox.getPOV() == 90).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getRightStagePark, localizationSubsystem));
 
-        new Trigger(() -> xbox.getPOV() == 270).whileTrue(localizationSubsystem.buildPath(cLeftStagePark));
+//        new Trigger(() -> xbox.getPOV() == 270).whileTrue(localizationSubsystem.buildPath(cLeftStagePark));
+        new Trigger(() -> xbox.getPOV() == 270).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getLeftStagePark, localizationSubsystem));
 
         //test
         new Trigger(xbox::getYButton).whileTrue(new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem));
@@ -169,65 +179,77 @@ public class RobotContainer
 //        new Trigger(() -> joystick.getRawButton(8)).whileTrue(new IntakeTestCommand(shooterSubsystem, -1));
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
-
-        setupAutoTab();
     }
 
     public void updateField() {
         field.setRobotPose(new Pose2d(endX.get(), endY.get(), Rotation2d.fromDegrees(endRotation.get())));
     }
 
-    private void setupAutoTab() {
-        ShuffleboardTab autoTab = Shuffleboard.getTab("auto");
+    public void setupAutoTab() {
+        if (!autoInitialized && getOrientation().isValid()) {
 
-        autoOptions = new ArrayList<SendableChooser<Pose2d>>();
+            autoInitialized = true;
 
-        autoRings = 0;
+            ShuffleboardTab autoTab = Shuffleboard.getTab("auto");
 
-        int widgetX = 0;
-        int widgetY = 0;
+            autoOptions = new ArrayList<SendableChooser<Pose2d>>();
 
-        for(int i = 0; i < 8; i++) {
-            autoOptions.add(i, new SendableChooser<Pose2d>());
+            autoRings = 0;
 
-            autoOptions.get(i).setDefaultOption("Nothing", nothingPose);
-            autoOptions.get(i).addOption("Top Close Ring 1", cTopCloseRing1);
-            autoOptions.get(i).addOption("Mid Close Ring 2", cMidCloseRing2);
-            autoOptions.get(i).addOption("Bot Close Ring 3", cBotCloseRing3);
-            autoOptions.get(i).addOption("Top Far Ring 4", cFarRing4);
-            autoOptions.get(i).addOption("Mid Top Far Ring 5", cFarRing5);
-            autoOptions.get(i).addOption("Mid Far Ring 6", cFarRing6);
-            autoOptions.get(i).addOption("Mid Bot Far Ring 7", cFarRing7);
-            autoOptions.get(i).addOption("Bot Far Ring 8", cFarRing8);
-            //autoOptions[i].addOption("End Location", new Pose2d(endX, endY, Rotation2d.fromDegrees(endRotation)));
+            int widgetX = 0;
+            int widgetY = 0;
 
-            autoTab.add("Auto " + i, autoOptions.get(i)).withWidget(BuiltInWidgets.kComboBoxChooser)
-                    .withSize(2, 1).withPosition(widgetX, widgetY);
+            for (int i = 0; i < 8; i++) {
+                autoOptions.add(i, new SendableChooser<Pose2d>());
 
-            widgetX += 2;
-            if (widgetX == 8) {
-                widgetY += 1;
-                widgetX = 0;
+//            autoOptions.get(i).setDefaultOption("Nothing", nothingPose);
+                autoOptions.get(i).setDefaultOption("Nothing", getOrientation().getNothingPose());
+//            autoOptions.get(i).addOption("Top Close Ring 1", cTopCloseRing1);
+                autoOptions.get(i).addOption("Top Close Ring 1", getOrientation().getTopCloseRing());
+//            autoOptions.get(i).addOption("Mid Close Ring 2", cMidCloseRing2);
+                autoOptions.get(i).addOption("Mid Close Ring 2", getOrientation().getMidCloseRing());
+//            autoOptions.get(i).addOption("Bot Close Ring 3", cBotCloseRing3);
+                autoOptions.get(i).addOption("Bot Close Ring 3", getOrientation().getBotCloseRing());
+//            autoOptions.get(i).addOption("Top Far Ring 4", cFarRing4);
+                autoOptions.get(i).addOption("Top Far Ring 4", getOrientation().getFarRing4());
+//            autoOptions.get(i).addOption("Mid Top Far Ring 5", cFarRing5);
+                autoOptions.get(i).addOption("Mid Top Far Ring 5", getOrientation().getFarRing5());
+//            autoOptions.get(i).addOption("Mid Far Ring 6", cFarRing6);
+                autoOptions.get(i).addOption("Mid Far Ring 6", getOrientation().getFarRing6());
+//            autoOptions.get(i).addOption("Mid Bot Far Ring 7", cFarRing7);
+                autoOptions.get(i).addOption("Mid Bot Far Ring 7", getOrientation().getFarRing7());
+//            autoOptions.get(i).addOption("Bot Far Ring 8", cFarRing8);
+                autoOptions.get(i).addOption("Bot Far Ring 8", getOrientation().getFarRing8());
+                //autoOptions[i].addOption("End Location", new Pose2d(endX, endY, Rotation2d.fromDegrees(endRotation)));
+
+                autoTab.add("Auto " + i, autoOptions.get(i)).withWidget(BuiltInWidgets.kComboBoxChooser)
+                        .withSize(2, 1).withPosition(widgetX, widgetY);
+
+                widgetX += 2;
+                if (widgetX == 8) {
+                    widgetY += 1;
+                    widgetX = 0;
+                }
             }
+
+            var x = autoTab.add("End X", 0)
+                    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 16.5))
+                    .withSize(2, 1).withPosition(3, 2);
+
+            var y = autoTab.add("End Y", 0)
+                    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 8.15))
+                    .withSize(2, 1).withPosition(3, 3);
+
+            var rot = autoTab.add("End Rotation", 0)
+                    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180))
+                    .withSize(2, 1).withPosition(5, 2);
+
+            endX = () -> x.getEntry().getDouble(0);
+            endY = () -> y.getEntry().getDouble(0);
+            endRotation = () -> rot.getEntry().getDouble(0);
+
+            autoTab.add(field).withSize(3, 2).withPosition(0, 2);
         }
-
-        var x = autoTab.add("End X", 0)
-                .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 16.5))
-                .withSize(2, 1).withPosition(3, 2);
-
-        var y = autoTab.add("End Y", 0)
-                .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 8.15))
-                .withSize(2, 1).withPosition(3, 3);
-
-        var rot = autoTab.add("End Rotation", 0)
-                .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180))
-                .withSize(2, 1).withPosition(5, 2);
-
-        endX = () -> x.getEntry().getDouble(0);
-        endY = () -> y.getEntry().getDouble(0);
-        endRotation = () -> rot.getEntry().getDouble(0);
-
-        autoTab.add(field).withSize(3, 2).withPosition(0, 2);
     }
     
     
@@ -254,7 +276,7 @@ public class RobotContainer
         Pose2d endLoc = new Pose2d(endX.get(), endY.get(), Rotation2d.fromDegrees(endRotation.get()));
 
         for (int i = 0; i < 8; i++) {
-            if (autoOptions.get(i).getSelected() != nothingPose) {
+            if (autoOptions.get(i).getSelected() != getOrientation().getNothingPose()) {
                 autoRings++;
             }
         }
