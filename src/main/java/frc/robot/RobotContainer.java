@@ -6,8 +6,10 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -179,7 +181,8 @@ public class RobotContainer
 
         setupEndPose();
 
-        CameraServer.startAutomaticCapture();
+        //CameraServer.startAutomaticCapture().setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
+        PortForwarder.add(5800, "photon-beta.local", 5800);
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }

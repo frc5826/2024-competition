@@ -6,7 +6,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class NoteLoadCommand extends Command {
 
     private ShooterSubsystem shooterSubsystem;
-    private boolean isEscaped = true;
+    private boolean isEscaped = false;
 
 
     public NoteLoadCommand(ShooterSubsystem shooterSubsystem) {
@@ -16,6 +16,7 @@ public class NoteLoadCommand extends Command {
     @Override
     public void initialize() {
         super.initialize();
+        isEscaped = false;
         shooterSubsystem.setShooterSpeed(-0.2);
         shooterSubsystem.setShooterControlSpeed(-0.3);
     }
