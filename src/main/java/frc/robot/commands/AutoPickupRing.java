@@ -23,7 +23,7 @@ public class AutoPickupRing extends Command {
 
     private double epsilon = .15;
 
-    private double stopDistance = -.2;
+    private double stopDistance = 0;
 
     private boolean die;
 

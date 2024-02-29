@@ -5,6 +5,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -177,6 +178,8 @@ public class RobotContainer
 //        new Trigger(() -> joystick.getRawButton(8)).whileTrue(new IntakeTestCommand(shooterSubsystem, -1));
 
         setupEndPose();
+
+        CameraServer.startAutomaticCapture();
 
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }
