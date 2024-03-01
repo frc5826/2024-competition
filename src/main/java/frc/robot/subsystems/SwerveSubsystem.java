@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.pathplanner.lib.util.PIDConstants;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -108,6 +109,10 @@ public class SwerveSubsystem extends SubsystemBase {
     public void zeroGyro()
     {
         swerveDrive.zeroGyro();
+    }
+
+    public void setGyro(Rotation3d rotation){
+        swerveDrive.setGyro(rotation);
     }
 
     public void resetOdometry(Pose2d initialHolonomicPose)

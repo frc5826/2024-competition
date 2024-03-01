@@ -91,7 +91,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void setDesiredExtension(double desiredExtensionMeters){
         double desiredExtensionClamped = Mth.clamp(desiredExtensionMeters, 0, 0.5);
-        desiredExtensionRotations = (-9.4316 * desiredExtensionClamped) + 0.32;
+        desiredExtensionRotations = (-9.4316 * desiredExtensionClamped) + 0.55;
 
     }
 
@@ -110,7 +110,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     //TODO add range
     public void setDesiredWristAngle(double ankleAngleRAD){
-        desiredWristRotations = (0.1536 * ankleAngleRAD) + 0.4095;
+        desiredWristRotations = (0.1536 * ankleAngleRAD) + 0.576;
     }
 
     public void setWristHome(){

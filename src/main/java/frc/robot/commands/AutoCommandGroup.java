@@ -2,8 +2,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -35,7 +38,11 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         this.ringCount = ringCount;
 
         if(getOrientation().isValid()) {
-            addCommands(new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem),
+            addCommands(
+                    new InstantCommand(() -> {
+                        swerveSubsystem.setGyro(new Rotation3d(0, 0, localizationSubsystem.getCurrentPose().getRotation().getRadians() + (DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? Math.PI : 0 )));
+                    }),
+                    new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem),
                     new AimSpeakerCommandGroup(armSubsystem),
                     //new HomeSequenceCommandGroup(armSubsystem),
                     new NoteShootCommandGroup(shooterSubsystem).deadlineWith());

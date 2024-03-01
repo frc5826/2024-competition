@@ -181,9 +181,6 @@ public class RobotContainer
 
         setupEndPose();
 
-        //CameraServer.startAutomaticCapture().setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
-        PortForwarder.add(5800, "photon-beta.local", 5800);
-
         CommandScheduler.getInstance().setDefaultCommand(swerveSubsystem, teleopDriveCommand);
     }
 
@@ -197,15 +194,18 @@ public class RobotContainer
 
         var x = autoTab.add("End X", 0)
                 .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 16.5))
-                .withSize(2, 1).withPosition(3, 2);
+                .withSize(2, 1).withPosition(3, 2)
+                .withProperties(Map.of("publish_all", true));
 
         var y = autoTab.add("End Y", 0)
                 .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 8.15))
-                .withSize(2, 1).withPosition(3, 3);
+                .withSize(2, 1).withPosition(3, 3)
+                .withProperties(Map.of("publish_all", true));
 
         var rot = autoTab.add("End Rotation", 0)
                 .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -180, "max", 180))
-                .withSize(2, 1).withPosition(5, 2);
+                .withSize(2, 1).withPosition(5, 2)
+                .withProperties(Map.of("publish_all", true));
 
         endX = () -> x.getEntry().getDouble(0);
         endY = () -> y.getEntry().getDouble(0);
