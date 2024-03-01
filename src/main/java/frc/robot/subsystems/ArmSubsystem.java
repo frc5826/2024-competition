@@ -91,7 +91,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void setDesiredExtension(double desiredExtensionMeters){
         double desiredExtensionClamped = Mth.clamp(desiredExtensionMeters, 0, 0.5);
-        desiredExtensionRotations = (-9.4316 * desiredExtensionClamped) + 0.55;
+        desiredExtensionRotations = (-9.4316 * desiredExtensionClamped) + 0.506;
 
     }
 

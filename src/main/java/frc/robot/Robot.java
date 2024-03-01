@@ -33,6 +33,26 @@ public class Robot extends TimedRobot
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
+//        CommandScheduler.getInstance().onCommandExecute(this::onCommandExecute);
+        CommandScheduler.getInstance().onCommandInitialize(this::onCommandInit);
+        CommandScheduler.getInstance().onCommandFinish(this::onCommandFinished);
+        CommandScheduler.getInstance().onCommandInterrupt(this::onCommandInterrupt);
+    }
+
+    private void onCommandExecute(Command c){
+        System.err.println("COMMAND EXECUTE - " + c);
+    }
+
+    private void onCommandInit(Command c){
+        System.err.println("COMMAND INITIALIZE - " + c);
+    }
+
+    private void onCommandFinished(Command c){
+        System.err.println("COMMAND FINISHED - " + c);
+    }
+
+    private void onCommandInterrupt(Command c){
+        System.err.println("COMMAND INTERRUPT - " + c);
     }
     
     
