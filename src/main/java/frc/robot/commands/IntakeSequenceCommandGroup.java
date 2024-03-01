@@ -15,7 +15,7 @@ public class IntakeSequenceCommandGroup extends SequentialCommandGroup {
                 new ExtendToLengthCommand(0.25, armSubsystem),
                 new RotateWristCommand(Math.toRadians(-80), armSubsystem)
             ),
-            new RotateArmToAngleCommand(Math.toRadians(5), armSubsystem)
+            new RotateArmToAngleCommand(Math.toRadians(7), armSubsystem)
         );
     }
 

@@ -22,6 +22,8 @@ public class AutoCommandGroup extends SequentialCommandGroup {
     private ArmSubsystem armSubsystem;
     private ShooterSubsystem shooterSubsystem;
 
+    private Pose2d refRing;
+
     private boolean holdingRing;
 
     private int ringCount;
@@ -41,16 +43,18 @@ public class AutoCommandGroup extends SequentialCommandGroup {
             addCommands(
                     new InstantCommand(() -> {
                         swerveSubsystem.setGyro(new Rotation3d(0, 0, localizationSubsystem.getCurrentPose().getRotation().getRadians() + (DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? Math.PI : 0 )));
+                        System.err.println("Auto Started at: "+localizationSubsystem.getCurrentPose());
                     }),
-                    new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem),
+//                    new TargetSpeakerCommand(swerveSubsystem, localizationSubsystem),
                     new AimSpeakerCommandGroup(armSubsystem),
                     //new HomeSequenceCommandGroup(armSubsystem),
-                    new NoteShootCommandGroup(shooterSubsystem).deadlineWith());
+                    new NoteShootCommandGroup(shooterSubsystem));
             //localizationSubsystem.buildPath(new Pose2d(1.5, 5.57, Rotation2d.fromDegrees(0)));
 
             for (int i = 0; i < ringCount; i++) {
                 Pose2d ring = rings[i];
                 if (ring != getOrientation().getNothingPose()) {
+                    refRing = ring;
                     addCommands(
                             new PathWithStopDistance(localizationSubsystem, ring, 1.75, false)
                                     .onlyIf(() -> ring.getTranslation().getDistance(localizationSubsystem.getCurrentPose().getTranslation()) > 2),
@@ -72,5 +76,10 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         else {
             System.err.println("ERROR: AUTO FAILED, INVALID ROBOT ORIENTATION\nRobot might be in Narnia for all I know");
         }
+    }
+
+    @Override
+    public String toString() {
+        return super.toString()+" - Current position: " + localizationSubsystem.getCurrentPose() + " - First Ring: " + refRing;
     }
 }

@@ -36,7 +36,7 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterControlMotor = new WPI_TalonSRX(shooterControlMotorID);
 
         shooterControlMotor.setNeutralMode(NeutralMode.Brake);
-        shooterControlMotor.setInverted(true);
+        shooterControlMotor.setInverted(false);
 
 
         beamBreak = new DigitalInput(beamBreakID);

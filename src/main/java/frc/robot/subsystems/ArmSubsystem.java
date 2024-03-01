@@ -114,7 +114,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void setWristHome(){
-        setDesiredWristAngle(Math.toRadians(120));
+        setDesiredWristAngle(Math.toRadians(115));
     }
 
     public void setRotateSpeed(double speed){

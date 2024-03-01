@@ -37,6 +37,7 @@ public class Robot extends TimedRobot
         CommandScheduler.getInstance().onCommandInitialize(this::onCommandInit);
         CommandScheduler.getInstance().onCommandFinish(this::onCommandFinished);
         CommandScheduler.getInstance().onCommandInterrupt(this::onCommandInterrupt);
+
     }
 
     private void onCommandExecute(Command c){
