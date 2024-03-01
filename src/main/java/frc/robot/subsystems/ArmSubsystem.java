@@ -53,7 +53,7 @@ public class ArmSubsystem extends SubsystemBase {
 
         rotatePID = new PID(cRotateP, cRotateI, cRotateD, cRotateMax, cRotateMin, cRotateDeadband, this::getRotation);
         extendPID = new PID(cExtendP, cExtendI, cExtendD, cExtendMax, cExtendMin, cExtendDeadband, this::getExtension);
-        wristPID = new PID(cWristP, cWristI, cWristD, cWristMax, cWristMin, cWristDeadband, this::getWrist);
+        wristPID = new PID(cWristP, cWristI, cWristD, cWristMax, cWristMin, cWristDeadband, this::getWristAbsolute);
 
         setExtensionHome();
         setArmHome();

@@ -303,4 +303,5 @@ public class RobotContainer
     public LocalizationSubsystem getLocalizationSubsystem(){
         return localizationSubsystem;
     }
+    public SwerveSubsystem getSwerveSubsystem(){return swerveSubsystem;}
 }

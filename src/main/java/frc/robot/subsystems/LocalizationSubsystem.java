@@ -12,10 +12,7 @@ import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -27,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import org.christopherfrantz.dbscan.DBSCANClusterer;
@@ -34,6 +32,8 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import java.io.IOException;
 import java.text.CompactNumberFormat;
 import java.util.*;
+
+import static frc.robot.positioning.FieldOrientation.getOrientation;
 
 //Code pulled from - https://github.com/STMARobotics/frc-7028-2023/blob/5916bb426b97f10e17d9dfd5ec6c3b6fda49a7ce/src/main/java/frc/robot/subsystems/PoseEstimatorSubsystem.java
 public class LocalizationSubsystem extends SubsystemBase {
@@ -219,7 +219,11 @@ public class LocalizationSubsystem extends SubsystemBase {
                 .withPosition(7, 0)
                 .withSize(2, 4);
 
-        tab.add(CommandScheduler.getInstance())
+        tab.add("Reorient Gyro", new InstantCommand(() -> {
+                    if(getOrientation().isValid()){
+                        swerveSubsystem.setGyro(new Rotation3d(0, 0, getCurrentPose().getRotation().getRadians() + (DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? Math.PI : 0 )));
+                    }
+                }))
                 .withSize(2, 1)
                 .withPosition(0,3);
 

@@ -42,6 +42,7 @@ public class AutoCommandGroup extends SequentialCommandGroup {
         if(getOrientation().isValid()) {
             addCommands(
                     new InstantCommand(() -> {
+                        //TODO is this causing problems?
                         swerveSubsystem.setGyro(new Rotation3d(0, 0, localizationSubsystem.getCurrentPose().getRotation().getRadians() + (DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? Math.PI : 0 )));
                         System.err.println("Auto Started at: "+localizationSubsystem.getCurrentPose());
                     }),
