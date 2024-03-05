@@ -17,7 +17,7 @@ public class NoteLoadCommand extends Command {
     public void initialize() {
         super.initialize();
         isEscaped = false;
-        shooterSubsystem.setShooterSpeed(-0.2);
+        shooterSubsystem.setShooterOutput(-0.2);
         shooterSubsystem.setShooterControlSpeed(-0.3);
     }
 
@@ -26,7 +26,7 @@ public class NoteLoadCommand extends Command {
         super.execute();
         if (shooterSubsystem.getBeamBreak() && !isEscaped){
             isEscaped = true;
-            shooterSubsystem.setShooterSpeed(0);
+            shooterSubsystem.setShooterOutput(0);
             shooterSubsystem.setShooterControlSpeed(0.3);
         }
     }
@@ -39,7 +39,7 @@ public class NoteLoadCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
-        shooterSubsystem.setShooterSpeed(0);
+        shooterSubsystem.setShooterOutput(0);
         shooterSubsystem.setShooterControlSpeed(0);
     }
 }

@@ -3,8 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
-import static frc.robot.Constants.*;
-
 public class ShooterCommand extends Command {
 
     private ShooterSubsystem shooterSubsystem;
@@ -29,7 +27,7 @@ public class ShooterCommand extends Command {
     public void initialize() {
         super.initialize();
         switch (shooterType){
-            case POWER -> shooterSubsystem.setShooterSpeed(speed, top, bottom);
+            case POWER -> shooterSubsystem.setShooterOutput(speed, top, bottom);
             case CONTROL -> shooterSubsystem.setShooterControlSpeed(speed);
         }
     }

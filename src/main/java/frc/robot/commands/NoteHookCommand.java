@@ -14,7 +14,7 @@ public class NoteHookCommand extends Command {
     @Override
     public void initialize() {
         super.initialize();
-        shooterSubsystem.setShooterSpeed(-0.3);
+        shooterSubsystem.setShooterOutput(-0.3);
     }
 
     @Override
@@ -25,6 +25,6 @@ public class NoteHookCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
-        shooterSubsystem.setShooterSpeed(0);
+        shooterSubsystem.setShooterOutput(0);
     }
 }

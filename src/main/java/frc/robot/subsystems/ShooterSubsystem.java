@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
@@ -22,7 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterSubsystem() {
 
-        ShuffleboardTab tab = Shuffleboard.getTab("ARM");
+        ShuffleboardTab tab = Shuffleboard.getTab("SHOOTER");
 
         shooterMotor1 = new CANSparkMax(shooterMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
         shooterMotor2 = new CANSparkMax(shooterMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
@@ -33,6 +34,25 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterMotor1.setInverted(false);
         shooterMotor2.setInverted(true);
 
+        shooterMotor1.getPIDController().setP(6e-5);
+        shooterMotor2.getPIDController().setP(6e-5);
+
+        shooterMotor1.getPIDController().setI(0);
+        shooterMotor2.getPIDController().setI(0);
+
+        shooterMotor1.getPIDController().setD(0);
+        shooterMotor2.getPIDController().setD(0);
+
+        shooterMotor1.getPIDController().setFF(15e-6);
+        shooterMotor2.getPIDController().setFF(15e-6);
+
+        shooterMotor1.getPIDController().setIZone(0);
+        shooterMotor2.getPIDController().setIZone(0);
+
+        shooterMotor1.getPIDController().setOutputRange(-1, 1);
+        shooterMotor2.getPIDController().setOutputRange(-1, 1);
+
+
         shooterControlMotor = new WPI_TalonSRX(shooterControlMotorID);
 
         shooterControlMotor.setNeutralMode(NeutralMode.Brake);
@@ -42,13 +62,24 @@ public class ShooterSubsystem extends SubsystemBase {
         beamBreak = new DigitalInput(beamBreakID);
 
         tab.addBoolean("BeamBreak", this::getBeamBreak).withPosition(0, 2);
+        tab.addNumber("1 Speed", this::getShooterMotor1Speed);
+        tab.addNumber("2 Speed", this::getShooterMotor2Speed);
+        tab.addNumber("1 Input", () -> 0);
+        tab.addNumber("2 Input", () -> 0);
     }
 
-    public void setShooterSpeed(double speed){
-        setShooterSpeed(speed, true, true);
+    @Override
+    public void periodic() {
+        super.periodic();
+        shooterMotor1.getPIDController().setReference(SmartDashboard.getNumber("1 Input", 0), CANSparkBase.ControlType.kVelocity);
+        shooterMotor2.getPIDController().setReference(SmartDashboard.getNumber("2 Input", 0), CANSparkBase.ControlType.kVelocity);
     }
 
-    public void setShooterSpeed(double speed, boolean top, boolean bottom){
+    public void setShooterOutput(double speed){
+        setShooterOutput(speed, true, true);
+    }
+
+    public void setShooterOutput(double speed, boolean top, boolean bottom){
         if(top) {
             shooterMotor1.set(speed);
         }
@@ -57,12 +88,25 @@ public class ShooterSubsystem extends SubsystemBase {
         }
     }
 
+    public void setShooterSpeed(double speed){
+        shooterMotor1.getPIDController().setReference(speed, CANSparkBase.ControlType.kVelocity);
+        shooterMotor2.getPIDController().setReference(speed, CANSparkBase.ControlType.kVelocity);
+    }
+
     public CANSparkMax getShooterMotor1() {
         return shooterMotor1;
     }
 
     public CANSparkMax getShooterMotor2() {
         return shooterMotor2;
+    }
+
+    public double getShooterMotor1Speed(){
+        return shooterMotor1.getEncoder().getVelocity();
+    }
+
+    public double getShooterMotor2Speed(){
+        return shooterMotor2.getEncoder().getVelocity();
     }
 
     public WPI_TalonSRX getShooterControlMotor() {
