@@ -6,14 +6,17 @@ import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import java.util.Map;
 
 import static frc.robot.Constants.*;
 
 public class ShooterSubsystem extends SubsystemBase {
+
+    SimpleWidget inp1, inp2;
 
     CANSparkMax shooterMotor1, shooterMotor2;
     WPI_TalonSRX shooterControlMotor;
@@ -34,17 +37,20 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterMotor1.setInverted(false);
         shooterMotor2.setInverted(true);
 
-        shooterMotor1.getPIDController().setP(6e-5);
-        shooterMotor2.getPIDController().setP(6e-5);
+        shooterMotor1.restoreFactoryDefaults();
+        shooterMotor2.restoreFactoryDefaults();
 
-        shooterMotor1.getPIDController().setI(0);
-        shooterMotor2.getPIDController().setI(0);
+        shooterMotor1.getPIDController().setP(24e-5);
+        shooterMotor2.getPIDController().setP(24e-5);
 
-        shooterMotor1.getPIDController().setD(0);
-        shooterMotor2.getPIDController().setD(0);
+        shooterMotor1.getPIDController().setI(1e-6);
+        shooterMotor2.getPIDController().setI(1e-6);
 
-        shooterMotor1.getPIDController().setFF(15e-6);
-        shooterMotor2.getPIDController().setFF(15e-6);
+        shooterMotor1.getPIDController().setD(4e-6);
+        shooterMotor2.getPIDController().setD(4e-6);
+
+        shooterMotor1.getPIDController().setFF(30e-6);
+        shooterMotor2.getPIDController().setFF(30e-6);
 
         shooterMotor1.getPIDController().setIZone(0);
         shooterMotor2.getPIDController().setIZone(0);
@@ -64,15 +70,15 @@ public class ShooterSubsystem extends SubsystemBase {
         tab.addBoolean("BeamBreak", this::getBeamBreak).withPosition(0, 2);
         tab.addNumber("1 Speed", this::getShooterMotor1Speed);
         tab.addNumber("2 Speed", this::getShooterMotor2Speed);
-        tab.addNumber("1 Input", () -> 0);
-        tab.addNumber("2 Input", () -> 0);
+        inp1 = tab.add("1 Input", 0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -5700, "max", 5700)).withProperties(Map.of("publish_all", true));
+        inp2 = tab.add("2 Input", 0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -5700, "max", 5700)).withProperties(Map.of("publish_all", true));
     }
 
     @Override
     public void periodic() {
         super.periodic();
-        shooterMotor1.getPIDController().setReference(SmartDashboard.getNumber("1 Input", 0), CANSparkBase.ControlType.kVelocity);
-        shooterMotor2.getPIDController().setReference(SmartDashboard.getNumber("2 Input", 0), CANSparkBase.ControlType.kVelocity);
+        shooterMotor1.getPIDController().setReference(inp1.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
+        shooterMotor2.getPIDController().setReference(inp2.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
     }
 
     public void setShooterOutput(double speed){

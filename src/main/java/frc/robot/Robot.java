@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.ShooterSubsystem;
 
 import static frc.robot.positioning.FieldOrientation.getOrientation;
 
@@ -38,7 +39,8 @@ public class Robot extends TimedRobot
         SignalLogger.enableAutoLogging(false);
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
-        robotContainer = new RobotContainer();
+        //robotContainer = new RobotContainer();
+        ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 //        CommandScheduler.getInstance().onCommandExecute(this::onCommandExecute);
         CommandScheduler.getInstance().onCommandInitialize(this::onCommandInit);
         CommandScheduler.getInstance().onCommandFinish(this::onCommandFinished);
@@ -78,7 +80,7 @@ public class Robot extends TimedRobot
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
 
-        robotContainer.configureAutoTab();
+//        robotContainer.configureAutoTab();
 
         CommandScheduler.getInstance().run();
     }
@@ -89,17 +91,17 @@ public class Robot extends TimedRobot
     public void disabledInit() {}
     
     
-    @Override
-    public void disabledPeriodic() {
-        robotContainer.updateField();
-    }
+//    @Override
+//    public void disabledPeriodic() {
+//        robotContainer.updateField();
+//    }
     
     
     /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
     @Override
     public void autonomousInit()
     {
-        robotContainer.getAutonomousCommand().schedule();
+//        robotContainer.getAutonomousCommand().schedule();
     }
     
     
@@ -120,9 +122,9 @@ public class Robot extends TimedRobot
             autonomousCommand.cancel();
         }
 
-        robotContainer.armSubsystem.setArmHome();
-        robotContainer.armSubsystem.setExtensionHome();
-        robotContainer.armSubsystem.setWristHome();
+//        robotContainer.armSubsystem.setArmHome();
+//        robotContainer.armSubsystem.setExtensionHome();
+//        robotContainer.armSubsystem.setWristHome();
 
     }
     
