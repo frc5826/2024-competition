@@ -5,6 +5,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.PIDConstants;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj.Joystick;
@@ -91,6 +92,11 @@ public final class Constants
 
     public static final double maxVelocity = 3.6; //doesn't make robot faster
 
+    public static final PathConstraints pathConstraints = new PathConstraints(
+            2.0, //TODO max this then tune PID
+            2.0,
+            2 * Math.PI,
+            2 * Math.PI);
 
     public static final Joystick buttonPanel = new Joystick(2);
     public static final Trigger[] panelButtons;

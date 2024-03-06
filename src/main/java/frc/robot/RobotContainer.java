@@ -111,6 +111,7 @@ public class RobotContainer
 
 //        new Trigger(xbox::getRightBumper).whileTrue(localizationSubsystem.buildPath(cAmpPark));
         new Trigger(xbox::getRightBumper).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getAmpPark, localizationSubsystem));
+//        new Trigger(xbox::getRightBumper).whileTrue(new PathThenFollowCommand(FieldOrientation::getOrientation, )) //TODO
 
 //        new Trigger(() -> xbox.getPOV() == 0).or(() -> xbox.getPOV() == 180).whileTrue(localizationSubsystem.buildPath(cCenterStagePark));
         new Trigger(() -> xbox.getPOV() == 0).or(() -> xbox.getPOV() == 180).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getCenterStagePark, localizationSubsystem));

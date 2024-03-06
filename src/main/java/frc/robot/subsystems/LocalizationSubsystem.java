@@ -2,7 +2,9 @@ package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
@@ -30,6 +32,7 @@ import frc.robot.Constants;
 import org.christopherfrantz.dbscan.DBSCANClusterer;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.text.CompactNumberFormat;
 import java.util.*;
 
@@ -187,15 +190,18 @@ public class LocalizationSubsystem extends SubsystemBase {
     }
 
     public Command buildPath(Pose2d targetPose) {
-        PathConstraints constraints = new PathConstraints(
-                2.0,
-                2.0,
-                2 * Math.PI,
-                2 * Math.PI);
-
-        Command path = AutoBuilder.pathfindToPose(targetPose, constraints);
+        Command path = AutoBuilder.pathfindToPose(targetPose, Constants.pathConstraints);
 
         return path;
+    }
+
+    public Command buildPathThenFollow(Pose2d endPose, Pose2d startPose) {
+        List<Translation2d> points = PathPlannerPath.bezierFromPoses(startPose, endPose);
+
+        PathPlannerPath path = new PathPlannerPath(points , Constants.pathConstraints, new GoalEndState(0, endPose.getRotation(), true));
+        path.preventFlipping = true;
+
+        return AutoBuilder.pathfindThenFollowPath(path, Constants.pathConstraints);
     }
 
     private void setupShuffleboard(Field2d field) {
