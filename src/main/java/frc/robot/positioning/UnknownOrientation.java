@@ -23,6 +23,9 @@ public class UnknownOrientation implements Orientation {
     }
 
     @Override
+    public Pose2d getAmpParkStart(){return null;}
+
+    @Override
     public Pose2d getCenterStagePark() {
         return null;
     }

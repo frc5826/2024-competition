@@ -10,6 +10,8 @@ public interface Orientation {
 
     Pose2d getAmpPark();
 
+    Pose2d getAmpParkStart();
+
     Pose2d getCenterStagePark();
 
     Pose2d getRightStagePark();

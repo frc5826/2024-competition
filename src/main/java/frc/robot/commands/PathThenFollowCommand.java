@@ -20,12 +20,11 @@ public class PathThenFollowCommand extends Command {
 
     private Command pathCommand;
 
-    public PathThenFollowCommand(Command pathCommand, Function<Orientation, Pose2d> startPositionSupplier, Function<Orientation, Pose2d> endPositionSupplier, Supplier<Orientation> orientationSupplier, LocalizationSubsystem localizationSubsystem) {
+    public PathThenFollowCommand(Function<Orientation, Pose2d> startPositionSupplier, Function<Orientation, Pose2d> endPositionSupplier, Supplier<Orientation> orientationSupplier, LocalizationSubsystem localizationSubsystem) {
         this.localizationSubsystem = localizationSubsystem;
         this.orientationSupplier = orientationSupplier;
         this.endPositionSupplier = endPositionSupplier;
         this.startPositionSupplier = startPositionSupplier;
-        this.pathCommand = pathCommand;
     }
 
     @Override

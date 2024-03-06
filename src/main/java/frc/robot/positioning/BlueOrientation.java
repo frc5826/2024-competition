@@ -20,8 +20,11 @@ public class BlueOrientation implements Orientation{
 
     @Override
     public Pose2d getAmpPark() {
-        return new Pose2d(1.84, 7.5, Rotation2d.fromDegrees(-90));
+        return new Pose2d(1.84, 7.5, Rotation2d.fromDegrees(90));
     }
+
+    @Override
+    public Pose2d getAmpParkStart(){ return new Pose2d(1.84, 6.75, Rotation2d.fromDegrees(90));}
 
     @Override
     public Pose2d getCenterStagePark() {

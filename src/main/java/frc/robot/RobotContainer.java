@@ -110,8 +110,9 @@ public class RobotContainer
         new Trigger(xbox::getLeftBumper).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getSpeakerPark, localizationSubsystem));
 
 //        new Trigger(xbox::getRightBumper).whileTrue(localizationSubsystem.buildPath(cAmpPark));
-        new Trigger(xbox::getRightBumper).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getAmpPark, localizationSubsystem));
-//        new Trigger(xbox::getRightBumper).whileTrue(new PathThenFollowCommand(FieldOrientation::getOrientation, )) //TODO
+//        new Trigger(xbox::getRightBumper).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getAmpPark, localizationSubsystem));
+        new Trigger(xbox::getRightBumper).whileTrue(new PathThenFollowCommand(Orientation::getAmpParkStart, Orientation::getAmpPark,
+                FieldOrientation::getOrientation, localizationSubsystem)); //TODO test this and also if it works do similar stuff for the stage ones
 
 //        new Trigger(() -> xbox.getPOV() == 0).or(() -> xbox.getPOV() == 180).whileTrue(localizationSubsystem.buildPath(cCenterStagePark));
         new Trigger(() -> xbox.getPOV() == 0).or(() -> xbox.getPOV() == 180).whileTrue(new PathCommand(FieldOrientation::getOrientation, Orientation::getCenterStagePark, localizationSubsystem));
