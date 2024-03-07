@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
+//import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,7 +17,7 @@ import static frc.robot.Constants.*;
 
 public class ShooterSubsystem extends SubsystemBase {
 
-    SimpleWidget inp1, inp2;
+    SimpleWidget inp1, inp2, bothInput;
 
     CANSparkMax shooterMotor1, shooterMotor2;
     WPI_TalonSRX shooterControlMotor;
@@ -35,7 +36,7 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterMotor2.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
         shooterMotor1.setInverted(false);
-        shooterMotor2.setInverted(true);
+        shooterMotor2.setInverted(false);
 
         shooterMotor1.restoreFactoryDefaults();
         shooterMotor2.restoreFactoryDefaults();
@@ -72,13 +73,20 @@ public class ShooterSubsystem extends SubsystemBase {
         tab.addNumber("2 Speed", this::getShooterMotor2Speed);
         inp1 = tab.add("1 Input", 0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -5700, "max", 5700)).withProperties(Map.of("publish_all", true));
         inp2 = tab.add("2 Input", 0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -5700, "max", 5700)).withProperties(Map.of("publish_all", true));
+        bothInput = tab.add("both", 0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -5700, "max", 5700)).withProperties(Map.of("publish_all", true));
     }
 
     @Override
     public void periodic() {
         super.periodic();
-        shooterMotor1.getPIDController().setReference(inp1.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
-        shooterMotor2.getPIDController().setReference(inp2.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
+        if (bothInput.getEntry().getDouble(0) == 0) {
+            shooterMotor1.getPIDController().setReference(inp1.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
+            shooterMotor2.getPIDController().setReference(inp2.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
+        } else {
+            shooterMotor1.getPIDController().setReference(-bothInput.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
+            shooterMotor2.getPIDController().setReference(bothInput.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
+        }
+
     }
 
     public void setShooterOutput(double speed){
