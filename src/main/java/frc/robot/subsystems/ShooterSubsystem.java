@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
 //import com.revrobotics.ControlType;
+import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,14 +33,14 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterMotor1 = new CANSparkMax(shooterMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
         shooterMotor2 = new CANSparkMax(shooterMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
 
+        shooterMotor1.restoreFactoryDefaults();
+        shooterMotor2.restoreFactoryDefaults();
+
         shooterMotor1.setIdleMode(CANSparkBase.IdleMode.kBrake);
         shooterMotor2.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
         shooterMotor1.setInverted(false);
         shooterMotor2.setInverted(false);
-
-        shooterMotor1.restoreFactoryDefaults();
-        shooterMotor2.restoreFactoryDefaults();
 
         shooterMotor1.getPIDController().setP(24e-5);
         shooterMotor2.getPIDController().setP(24e-5);
@@ -79,12 +80,31 @@ public class ShooterSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         super.periodic();
-        if (bothInput.getEntry().getDouble(0) == 0) {
-            shooterMotor1.getPIDController().setReference(inp1.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
-            shooterMotor2.getPIDController().setReference(inp2.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
+//        if (bothInput.getEntry().getDouble(0) == 0) {
+//            shooterMotor1.getPIDController().setReference(inp1.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
+//            shooterMotor2.getPIDController().setReference(inp2.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
+//        } else {
+//            shooterMotor1.getPIDController().setReference(-bothInput.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
+//            shooterMotor2.getPIDController().setReference(bothInput.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
+//        }
+
+        if (panelButtons[11].getAsBoolean()) {
+            shooterMotor1.getPIDController().setReference(-5700, CANSparkBase.ControlType.kVelocity);
+            shooterMotor2.getPIDController().setReference(5700, CANSparkBase.ControlType.kVelocity);
+        } else if (panelButtons[10].getAsBoolean()){
+            shooterMotor1.getPIDController().setReference(5700, CANSparkBase.ControlType.kVelocity);
+            shooterMotor2.getPIDController().setReference(-5700, CANSparkBase.ControlType.kVelocity);
         } else {
-            shooterMotor1.getPIDController().setReference(-bothInput.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
-            shooterMotor2.getPIDController().setReference(bothInput.getEntry().getDouble(0), CANSparkBase.ControlType.kVelocity);
+            shooterMotor1.getPIDController().setReference(0, CANSparkBase.ControlType.kVelocity);
+            shooterMotor2.getPIDController().setReference(0, CANSparkBase.ControlType.kVelocity);
+        }
+
+        if (panelButtons[6].getAsBoolean()) {
+            shooterControlMotor.set(1);
+        } else if (panelButtons[3].getAsBoolean()) {
+            shooterControlMotor.set(-1);
+        } else {
+            shooterControlMotor.set(0);
         }
 
     }
