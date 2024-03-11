@@ -1,15 +1,9 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.CANSparkBase;
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.*;
 //import com.revrobotics.ControlType;
-import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.*;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.Map;
@@ -20,8 +14,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     SimpleWidget inp1, inp2, bothInput;
 
-    CANSparkMax shooterMotor1, shooterMotor2;
-    WPI_TalonSRX shooterControlMotor;
+    CANSparkMax shooterMotorTop, shooterMotorBottom, shooterControlMotor;
     DigitalInput beamBreak;
 
     private boolean hasRing;
@@ -30,42 +23,40 @@ public class ShooterSubsystem extends SubsystemBase {
 
         ShuffleboardTab tab = Shuffleboard.getTab("SHOOTER");
 
-        shooterMotor1 = new CANSparkMax(shooterMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
-        shooterMotor2 = new CANSparkMax(shooterMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
+        shooterMotorTop = new CANSparkMax(shooterMotor1ID, CANSparkLowLevel.MotorType.kBrushless);
+        shooterMotorBottom = new CANSparkMax(shooterMotor2ID, CANSparkLowLevel.MotorType.kBrushless);
 
-        shooterMotor1.restoreFactoryDefaults();
-        shooterMotor2.restoreFactoryDefaults();
+        shooterMotorTop.restoreFactoryDefaults();
+        shooterMotorBottom.restoreFactoryDefaults();
 
-        shooterMotor1.setIdleMode(CANSparkBase.IdleMode.kBrake);
-        shooterMotor2.setIdleMode(CANSparkBase.IdleMode.kBrake);
+        shooterMotorTop.setIdleMode(CANSparkBase.IdleMode.kBrake);
+        shooterMotorBottom.setIdleMode(CANSparkBase.IdleMode.kBrake);
 
-        shooterMotor1.setInverted(false);
-        shooterMotor2.setInverted(false);
+        shooterMotorTop.setInverted(false);
+        shooterMotorBottom.setInverted(true);
 
-        shooterMotor1.getPIDController().setP(24e-5);
-        shooterMotor2.getPIDController().setP(24e-5);
+        shooterMotorTop.getPIDController().setP(24e-5);
+        shooterMotorBottom.getPIDController().setP(24e-5);
 
-        shooterMotor1.getPIDController().setI(1e-6);
-        shooterMotor2.getPIDController().setI(1e-6);
+        shooterMotorTop.getPIDController().setI(1e-6);
+        shooterMotorBottom.getPIDController().setI(1e-6);
 
-        shooterMotor1.getPIDController().setD(4e-6);
-        shooterMotor2.getPIDController().setD(4e-6);
+        shooterMotorTop.getPIDController().setD(4e-6);
+        shooterMotorBottom.getPIDController().setD(4e-6);
 
-        shooterMotor1.getPIDController().setFF(30e-6);
-        shooterMotor2.getPIDController().setFF(30e-6);
+        shooterMotorTop.getPIDController().setFF(30e-6);
+        shooterMotorBottom.getPIDController().setFF(30e-6);
 
-        shooterMotor1.getPIDController().setIZone(0);
-        shooterMotor2.getPIDController().setIZone(0);
+        shooterMotorTop.getPIDController().setIZone(0);
+        shooterMotorBottom.getPIDController().setIZone(0);
 
-        shooterMotor1.getPIDController().setOutputRange(-1, 1);
-        shooterMotor2.getPIDController().setOutputRange(-1, 1);
+        shooterMotorTop.getPIDController().setOutputRange(-1, 1);
+        shooterMotorBottom.getPIDController().setOutputRange(-1, 1);
 
+        shooterControlMotor = new CANSparkMax(6, CANSparkMax.MotorType.kBrushless);
 
-        shooterControlMotor = new WPI_TalonSRX(shooterControlMotorID);
-
-        shooterControlMotor.setNeutralMode(NeutralMode.Brake);
+        shooterControlMotor.setIdleMode(CANSparkBase.IdleMode.kBrake);
         shooterControlMotor.setInverted(false);
-
 
         beamBreak = new DigitalInput(beamBreakID);
 
@@ -89,20 +80,20 @@ public class ShooterSubsystem extends SubsystemBase {
 //        }
 
         if (panelButtons[11].getAsBoolean()) {
-            shooterMotor1.getPIDController().setReference(-5700, CANSparkBase.ControlType.kVelocity);
-            shooterMotor2.getPIDController().setReference(5700, CANSparkBase.ControlType.kVelocity);
+            shooterMotorTop.getPIDController().setReference(5700, CANSparkBase.ControlType.kVelocity);
+            shooterMotorBottom.getPIDController().setReference(5700, CANSparkBase.ControlType.kVelocity);
         } else if (panelButtons[10].getAsBoolean()){
-            shooterMotor1.getPIDController().setReference(5700, CANSparkBase.ControlType.kVelocity);
-            shooterMotor2.getPIDController().setReference(-5700, CANSparkBase.ControlType.kVelocity);
+            shooterMotorTop.getPIDController().setReference(-5700, CANSparkBase.ControlType.kVelocity);
+            shooterMotorBottom.getPIDController().setReference(-5700, CANSparkBase.ControlType.kVelocity);
         } else {
-            shooterMotor1.getPIDController().setReference(0, CANSparkBase.ControlType.kVelocity);
-            shooterMotor2.getPIDController().setReference(0, CANSparkBase.ControlType.kVelocity);
+            shooterMotorTop.getPIDController().setReference(0, CANSparkBase.ControlType.kVelocity);
+            shooterMotorBottom.getPIDController().setReference(0, CANSparkBase.ControlType.kVelocity);
         }
 
         if (panelButtons[6].getAsBoolean()) {
-            shooterControlMotor.set(1);
+            shooterControlMotor.set(.25);
         } else if (panelButtons[3].getAsBoolean()) {
-            shooterControlMotor.set(-1);
+            shooterControlMotor.set(-.25);
         } else {
             shooterControlMotor.set(0);
         }
@@ -115,36 +106,32 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void setShooterOutput(double speed, boolean top, boolean bottom){
         if(top) {
-            shooterMotor1.set(speed);
+            shooterMotorTop.set(speed);
         }
         if(bottom) {
-            shooterMotor2.set(speed);
+            shooterMotorBottom.set(speed);
         }
     }
 
     public void setShooterSpeed(double speed){
-        shooterMotor1.getPIDController().setReference(speed, CANSparkBase.ControlType.kVelocity);
-        shooterMotor2.getPIDController().setReference(speed, CANSparkBase.ControlType.kVelocity);
+        shooterMotorTop.getPIDController().setReference(speed, CANSparkBase.ControlType.kVelocity);
+        shooterMotorBottom.getPIDController().setReference(speed, CANSparkBase.ControlType.kVelocity);
     }
 
-    public CANSparkMax getShooterMotor1() {
-        return shooterMotor1;
+    public CANSparkMax getShooterMotorTop() {
+        return shooterMotorTop;
     }
 
-    public CANSparkMax getShooterMotor2() {
-        return shooterMotor2;
+    public CANSparkMax getShooterMotorBottom() {
+        return shooterMotorBottom;
     }
 
     public double getShooterMotor1Speed(){
-        return shooterMotor1.getEncoder().getVelocity();
+        return shooterMotorTop.getEncoder().getVelocity();
     }
 
     public double getShooterMotor2Speed(){
-        return shooterMotor2.getEncoder().getVelocity();
-    }
-
-    public WPI_TalonSRX getShooterControlMotor() {
-        return shooterControlMotor;
+        return shooterMotorBottom.getEncoder().getVelocity();
     }
 
     public void setShooterControlSpeed(double speed){

@@ -6,12 +6,24 @@
 package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.jni.SignalLoggerJNI;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TestSubsystem;
+import sun.misc.Signal;
+
+import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import static frc.robot.positioning.FieldOrientation.getOrientation;
 
@@ -27,6 +39,9 @@ public class Robot extends TimedRobot
     
     private RobotContainer robotContainer;
 
+    StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault()
+            .getStructTopic("MyPose", Pose2d.struct).publish();
+
 
     
     /**
@@ -36,7 +51,7 @@ public class Robot extends TimedRobot
     @Override
     public void robotInit()
     {
-        SignalLogger.enableAutoLogging(false);
+        Constants.panelButtons[0].onTrue(new TestSubsystem().getCommand());
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         //robotContainer = new RobotContainer();
@@ -45,7 +60,8 @@ public class Robot extends TimedRobot
         CommandScheduler.getInstance().onCommandInitialize(this::onCommandInit);
         CommandScheduler.getInstance().onCommandFinish(this::onCommandFinished);
         CommandScheduler.getInstance().onCommandInterrupt(this::onCommandInterrupt);
-
+        DataLogManager.start();
+        DriverStation.startDataLog(DataLogManager.getLog(),true);
     }
 
     private void onCommandExecute(Command c){
@@ -72,6 +88,9 @@ public class Robot extends TimedRobot
      * <p>This runs after the mode specific periodic methods, but before LiveWindow and
      * SmartDashboard integrated updating.
      */
+
+    double x,y,rot = 0;
+    Random r = new Random();
     @Override
     public void robotPeriodic()
     {
@@ -81,6 +100,10 @@ public class Robot extends TimedRobot
         // block in order for anything in the Command-based framework to work.
 
 //        robotContainer.configureAutoTab();
+
+        SignalLogger.writeDoubleArray("Pose",new double[]{x+=(r.nextDouble(-0.01,0.01)),y+=(r.nextDouble(-0.01,0.01)),rot+=(r.nextDouble(-0.01,0.01))});
+        SignalLogger.writeString("Msg","test" + System.currentTimeMillis());
+        publisher.set(new Pose2d(x,y, Rotation2d.fromRadians(rot)));
 
         CommandScheduler.getInstance().run();
     }

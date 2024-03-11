@@ -28,8 +28,8 @@ public final class Constants
     public static final int extendMotorID = 14;
     public static final int ankleMotorID = 12;
 
-    public static final int shooterMotor1ID = 3;
-    public static final int shooterMotor2ID = 4;
+    public static final int shooterMotor1ID = 4;
+    public static final int shooterMotor2ID = 3;
     public static final int shooterControlMotorID = 30;
 
     public static final int rotateEncoderID = 0;
